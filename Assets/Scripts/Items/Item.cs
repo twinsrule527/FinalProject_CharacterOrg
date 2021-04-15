@@ -58,4 +58,44 @@ public class Item : MonoBehaviour
         }
     }
 
+    public ItemManager myManager;//The overall manager of this object - is one universal one
+
+    //Equip function equips it to a character, requiring the character you're equipping it to
+    public virtual void Equip(Character equipTo) {
+        _equippedCharacter = equipTo;
+        myManager.UnequippedItems.Remove(this);
+        foreach(var item in Modifier) {
+            //For every stat modifier this object has, it is added to the equipped Player's stat Modifiers
+            equipTo.StatModifier[item.Key] += item.Value;
+        }
+    }
+
+    //Unequipping is much easier, because it's already attached to a character
+    public virtual void Unequip() {
+        foreach(var item in Modifier) {
+            EquippedCharacter.StatModifier[item.Key] -= item.Value;
+        }
+        _equippedCharacter = null;
+        myManager.UnequippedItems.Add(this);
+    }
+
+    //This bool says whether the item is able to be equipped to the chosen character
+    public virtual bool EquippableTo(Character choice) {
+        //Base version will only check to see if the player's inventory slots are all full
+            //Higher-level versions check to see if other req.s are fulfilled
+        int temp = 0;
+        //This loop runs in case the Inventory contains some null items
+        foreach(Item item in choice.Inventory) {
+            if(item != null) {
+                temp++;
+            }
+        }
+        if(temp < choice.InventorySize) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

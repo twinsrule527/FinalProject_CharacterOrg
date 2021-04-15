@@ -9,6 +9,12 @@ public class Character : MonoBehaviour
     public Dictionary<StatType, int> Stat;//The character's base stats
     public Dictionary<StatType, int> StatModifier;//modifiers to character's stats, such as through items
     public List<Item> Inventory = new List<Item>();//A list of inventory items - I use a list rather than an array bc the max # of objects in the inventory can change
+    private int _inventorySize;
+    public int InventorySize {
+        get {
+            return _inventorySize;
+        }
+    }
     //Manages the character's health
     private int baseHealth;
     [HideInInspector] public int healthModifier;

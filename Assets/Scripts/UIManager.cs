@@ -4,8 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-//Manages characters, checking where they are/which ones are selected, etc.
-
+//Manages UI elements, checking where they are/which ones are selected, etc.
+    //Serves as an inetermediary between other managers that otherwise are unable to interact
 
 //This Enumerator exists to manage the 5 main stats that characters have
 public enum StatType {
@@ -18,13 +18,13 @@ public enum StatType {
 }
 
 //Quests are rather simple, so while characters and items have whole classes, Quests just have structs + a reference class
-public struct Quest {
+public struct Quest {//TODO: Add all the traits of a quest
     public bool exists;//Whether the quest even exists, as a check for when clicking on quests
 }
-public class Manager : MonoBehaviour
+public class UIManager : Singleton<UIManager>//Probably the only singleton in the game, because everything needs to access it
 {
-    private Character currentCharacter;
-    private Item currentItem;
+    public Character currentCharacter;
+    public Item currentItem;
     private Quest currentQuest;
     //Raycasting Stuff for managing 
     GraphicRaycaster m_Raycaster;
@@ -121,11 +121,11 @@ public class Manager : MonoBehaviour
 
     //UI elements for the currentItem
     [SerializeField] private Image curItemImage;
-    [SerializeField] private Text curItemNameText;
-    [SerializeField] private Text curItemTypeText;
-    [SerializeField] private Text curItemLevelText;
-    [SerializeField] private Text curItemPriceText;
-    [SerializeField] private Text curItemAbilityText;
+    [SerializeField] private TMP_Text curItemNameText;
+    [SerializeField] private TMP_Text curItemTypeText;
+    [SerializeField] private TMP_Text curItemLevelText;
+    [SerializeField] private TMP_Text curItemPriceText;
+    [SerializeField] private TMP_Text curItemAbilityText;
     [SerializeField] private Button SellPurchaseButton;
     [SerializeField] private Button EquipUnequipButton;
     //Refreshes the UI of the currently selected Item, similar to how is done with characters
