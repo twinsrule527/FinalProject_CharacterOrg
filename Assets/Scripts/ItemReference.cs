@@ -8,8 +8,9 @@ public class ItemReference : MonoBehaviour
 {
     [HideInInspector] public Item Reference;
     public Image myImage;
-
-    void Start() {
+    public Image myImageBack;//The Image back behind this object - will always be its parent
+    void Awake() {
         myImage = GetComponent<Image>();
+        myImageBack = transform.parent.GetComponent<Image>();
     }
 }

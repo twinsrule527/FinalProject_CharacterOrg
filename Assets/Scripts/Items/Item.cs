@@ -13,7 +13,13 @@ public enum ItemType {
 }
 public class Item : MonoBehaviour
 {
-    public Dictionary<StatType, int> Modifier;//What modifiers this item applies to various stats
+    //What modifiers this item applies to various stats
+    [SerializeField] protected Dictionary<StatType, int> _modifier;
+    public Dictionary<StatType, int> Modifier {
+        get {
+            return _modifier;
+        }
+    }
     [SerializeField] protected string _itemName;
     public string ItemName {
         get{
@@ -68,6 +74,11 @@ public class Item : MonoBehaviour
             //For every stat modifier this object has, it is added to the equipped Player's stat Modifiers
             equipTo.StatModifier[item.Key] += item.Value;
         }
+        _equippedCharacter.Inventory.Add(this);
+        //It then refreshes the UI;
+        UIManager.Instance.RefreshCharacterUI();
+        UIManager.Instance.RefreshItemUI();
+        myManager.RefreshUnequippedItemsUI();
     }
 
     //Unequipping is much easier, because it's already attached to a character
@@ -75,8 +86,13 @@ public class Item : MonoBehaviour
         foreach(var item in Modifier) {
             EquippedCharacter.StatModifier[item.Key] -= item.Value;
         }
+        _equippedCharacter.Inventory.Remove(this);//Remove it from the player's equipment
         _equippedCharacter = null;
         myManager.UnequippedItems.Add(this);
+        //It then refreshes the UI;
+        UIManager.Instance.RefreshCharacterUI();
+        UIManager.Instance.RefreshItemUI();
+        myManager.RefreshUnequippedItemsUI();
     }
 
     //This bool says whether the item is able to be equipped to the chosen character
@@ -96,6 +112,31 @@ public class Item : MonoBehaviour
         else {
             return false;
         }
+    }
+
+    //A method that allows for other scripts to declare the traits of this object
+    public virtual void DeclareTraits(Dictionary<StatType, int> n_modifier, string n_itemName, ItemType n_type, int n_level, int n_price, string n_abilityText, Sprite n_sprite) {
+        //Gets the 1 existing ItemManager as this object's manager
+        myManager = (ItemManager)FindObjectOfType(typeof(ItemManager));
+        //Transfers the Modifier dictionary over, making sure to replace all that need to be replaced
+        if(Modifier == null) {
+            _modifier = new Dictionary<StatType, int>();
+        }
+        foreach(var item in n_modifier) {
+            if(Modifier.ContainsKey(item.Key)) {
+                _modifier[item.Key] = n_modifier[item.Key];
+            }
+            else {
+                _modifier.Add(item.Key, item.Value);
+            }
+        }
+        //Transfers over other easy traits
+        _itemName = n_itemName;
+        _type = n_type;
+        _level = n_level;
+        _price = n_price;
+        _abilityText = n_abilityText;
+        _sprite = n_sprite;
     }
 
 }

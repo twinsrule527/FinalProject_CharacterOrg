@@ -27,6 +27,7 @@ public class Character : MonoBehaviour
     public bool alive;//Whether the character is alive
     void Start() {
         alive = true;
+        _inventorySize = 5;
         //Declares dictionaries, and starts assigning their attributes
         Stat = new Dictionary<StatType, int>();
         StatModifier = new Dictionary<StatType, int>();
@@ -102,17 +103,17 @@ public class Character : MonoBehaviour
         //Trying out a method where the different Stat Text displays are all in a dictionary - will have to be declared separately from in the Inspector
         for(int i = 0; i < StatType.GetNames(typeof(StatType)).Length; i++) {
             _statText[(StatType)i].text = Stat[(StatType)i].ToString();
-            if(StatModifier[StatType.Strength] > 0) {
+            if(StatModifier[(StatType)i] > 0) {
                _statText[(StatType)i].text += " (+" + StatModifier[(StatType)i].ToString() + ")";
             }
-            else if(StatModifier[StatType.Strength] < 0) {
+            else if(StatModifier[(StatType)i] < 0) {
                 _statText[(StatType)i].text += " (-" + Mathf.Abs(StatModifier[(StatType)i]).ToString() + ")";
             }
         }
         //Each inventory image is set according to the corresponding item in the inventory
         for(int i = 0; i < InventoryImage.Count; i++) {
             //If the object doesn't exist, it is invisible
-            if(Inventory.Count < i || Inventory[i] == null) {
+            if(Inventory.Count <= i || Inventory[i] == null) {
                 InventoryImage[i].enabled = false;
                 InventoryImage[i].GetComponent<ItemReference>().Reference = null;
             }

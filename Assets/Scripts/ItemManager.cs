@@ -10,6 +10,12 @@ public class ItemManager : MonoBehaviour
     public List<ItemReference> ShopItemSlots;
     void Start()
     {
+        ShopItems = new List<Item>();
+        UnequippedItems = new List<Item>();
+        RefreshShopItemsUI();
+        Item newItem = UIManager.Instance.GenerateItem.BasicGeneration(2);
+        UnequippedItems.Add(newItem);
+        RefreshUnequippedItemsUI();
         
     }
 
@@ -20,9 +26,11 @@ public class ItemManager : MonoBehaviour
 
     //this function and the next function refresh the UI for Items that are not equipped/in the shop, displaying whatever newly needs to be displayed
     public void RefreshUnequippedItemsUI() {
+        //Deletes all unequipped items which no longer exist
+        UnequippedItems.RemoveAll(item => item == null);
         //runs through all unequipped slots, and makes the Item there match what item should be there
         for(int i = 0; i < UnequippedItemSlots.Count; i++) {
-            if(UnequippedItems.Count < i || UnequippedItems[i] == null) {
+            if(UnequippedItems.Count <= i) {
                 UnequippedItemSlots[i].myImage.enabled = false;
                 UnequippedItemSlots[i].Reference = null;
             }
@@ -35,8 +43,10 @@ public class ItemManager : MonoBehaviour
     }
 
     public void RefreshShopItemsUI() {
+        //Deletes all shop items which don't exist
+        ShopItems.RemoveAll(item => item == null);
         for(int i = 0; i < ShopItemSlots.Count; i++) {
-            if(ShopItems.Count < i || ShopItems[i] == null) {
+            if(ShopItems.Count <= i) {
                 ShopItemSlots[i].myImage.enabled = false;
                 ShopItemSlots[i].Reference = null;
             }
@@ -59,6 +69,8 @@ public class ItemManager : MonoBehaviour
             if(UIManager.Instance.currentItem.EquippableTo(UIManager.Instance.currentCharacter)) {
                 UIManager.Instance.currentItem.Equip(UIManager.Instance.currentCharacter);
             }
+        }
+        else {
         }
     }
 }

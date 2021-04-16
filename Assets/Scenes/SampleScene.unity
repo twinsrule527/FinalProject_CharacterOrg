@@ -173,6 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &13900789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1361,6 +1362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &219724331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1380,7 +1382,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -4777571871551336714, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1450,6 +1453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!222 &220295278
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1783,6 +1787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &255433784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2093,6 +2098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d62870dd99e22d447a18ab1ce46ab4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GenerateItem: {fileID: 11400000, guid: a37b3e1c734dee849950f31236a5db0d, type: 2}
   currentCharacter: {fileID: 0}
   currentItem: {fileID: 0}
   curCharNameText: {fileID: 2050047807}
@@ -3758,6 +3764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!222 &540460340
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3847,6 +3854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &542655142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3866,7 +3874,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 3709946798044744348, guid: 981446e4a075c8941a3e4776b88df279,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3979,6 +3988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &618010219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3998,7 +4008,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 5906244566568587439, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5532,6 +5543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!1 &739196598
 GameObject:
   m_ObjectHideFlags: 0
@@ -6030,6 +6042,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852685224}
   m_CullTransparentMesh: 0
+--- !u!1 &877331891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 877331893}
+  - component: {fileID: 877331892}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &877331892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877331891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebda8d7fb0d3bf24385e9527053dc3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnequippedItems: []
+  UnequippedItemSlots:
+  - {fileID: 1522581055}
+  - {fileID: 1377725637}
+  - {fileID: 1685693306}
+  - {fileID: 219724330}
+  - {fileID: 1701844009}
+  - {fileID: 618010218}
+  - {fileID: 908228676}
+  - {fileID: 1316280869}
+  - {fileID: 1996697506}
+  - {fileID: 1810435318}
+  ShopItems: []
+  ShopItemSlots:
+  - {fileID: 1280925600}
+  - {fileID: 542655141}
+  - {fileID: 1050351156}
+  - {fileID: 905318298}
+  - {fileID: 13900788}
+  - {fileID: 2107144597}
+  - {fileID: 255433783}
+--- !u!4 &877331893
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877331891}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1296.9333, y: 516.96564, z: -4087.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &894546673
 GameObject:
   m_ObjectHideFlags: 0
@@ -6121,6 +6197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &905318299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6140,7 +6217,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 3986788454546454760, guid: 981446e4a075c8941a3e4776b88df279,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6210,6 +6288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &908228677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6229,7 +6308,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1941270710063104495, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6470,6 +6550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!1 &933390798
 GameObject:
   m_ObjectHideFlags: 0
@@ -7315,6 +7396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1050351157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7334,7 +7416,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 528583546439815867, guid: 981446e4a075c8941a3e4776b88df279, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8919,6 +9001,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1280925601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8938,7 +9021,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 5345940636838860047, guid: 981446e4a075c8941a3e4776b88df279,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9123,6 +9207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!1 &1286456364
 GameObject:
   m_ObjectHideFlags: 0
@@ -9422,6 +9507,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1316280870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9441,7 +9527,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 5553877146212253636, guid: bb8204607dbdd6c4ca520854f6909fb6,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9943,6 +10030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1377725638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10743,6 +10831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1522581056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11551,6 +11640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!222 &1630981206
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11640,6 +11730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!222 &1640116622
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12011,6 +12102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1685693307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12139,6 +12231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1701844010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12158,7 +12251,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -4048099815210877927, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12601,6 +12695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1810435319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12620,7 +12715,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 5885510165101699466, guid: bb8204607dbdd6c4ca520854f6909fb6,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12690,6 +12786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!222 &1816101095
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12965,6 +13062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!1 &1867633040
 GameObject:
   m_ObjectHideFlags: 0
@@ -13538,12 +13636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e58221921a746429bbdca304a5633b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Inventory:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  Inventory: []
   healthModifier: 0
   alive: 0
   _nameText: {fileID: 1286456366}
@@ -13650,6 +13743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &1996697507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13669,7 +13763,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -3255441570579098663, guid: bb8204607dbdd6c4ca520854f6909fb6,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14496,6 +14591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!1 &2075505670
 GameObject:
   m_ObjectHideFlags: 0
@@ -14815,6 +14911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reference: {fileID: 0}
   myImage: {fileID: 0}
+  myImageBack: {fileID: 0}
 --- !u!114 &2107144598
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,6 +23,7 @@ public struct Quest {//TODO: Add all the traits of a quest
 }
 public class UIManager : Singleton<UIManager>//Probably the only singleton in the game, because everything needs to access it
 {
+    public ItemGeneration GenerateItem;//The Scriptable Object that Generates Items
     public Character currentCharacter;
     public Item currentItem;
     private Quest currentQuest;
@@ -106,7 +107,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             curCharStatText[(StatType)i].text = currentCharacter.StatText[(StatType)i].text;
         }
         for(int i = 0; i<curInventoryImage.Count; i++) {
-            if(currentCharacter.Inventory.Count < i || currentCharacter.Inventory[i] == null) {
+            if(currentCharacter.Inventory.Count <= i || currentCharacter.Inventory[i] == null) {
                 curInventoryImage[i].enabled = false;
                 curInventoryImage[i].GetComponent<ItemReference>().Reference = null;
             }
@@ -133,7 +134,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         curItemImage.sprite = currentItem.Sprite;
         curItemNameText.text = currentItem.ItemName;
         curItemTypeText.text = currentItem.Type.ToString();
-        curItemLevelText.text = currentItem.Level.ToString();
+        curItemLevelText.text = "Level " + currentItem.Level.ToString();
         //An item in your inventory can only be sold for a fraction of its full price
         if(currentItem.InShop) {
             curItemPriceText.text = "Costs " + currentItem.Price.ToString() + " c";
