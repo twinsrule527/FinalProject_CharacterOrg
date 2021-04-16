@@ -14,7 +14,9 @@ public class ItemManager : MonoBehaviour
         UnequippedItems = new List<Item>();
         RefreshShopItemsUI();
         Item newItem = UIManager.Instance.GenerateItem.BasicGeneration(2);
+        Item newPotion = UIManager.Instance.GenerateItem.PotionGeneration(3);
         UnequippedItems.Add(newItem);
+        UnequippedItems.Add(newPotion);
         RefreshUnequippedItemsUI();
         
     }

@@ -12,5 +12,162 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e673e9c6ac2d9d64ba3d2e97be97e766, type: 3}
   m_Name: ItemGenerationScriptableObject
   m_EditorClassIdentifier: 
+  Items:
+  - ItemName: 
+    ItemSprite: {fileID: 0}
+    Type: 0
+    Level: 0
+  Potions:
+  - ItemName: Health Potion
+    ItemSprite: {fileID: 6622788129516597086, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: 6622788129516597086, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 2
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: 8997328508569808656, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 3
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: 8997328508569808656, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 4
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: 943461775031429281, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 5
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: 943461775031429281, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 6
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: -1743773469901046077, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 7
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: -1743773469901046077, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 8
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: -1941270710063104495, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 9
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Health Potion
+    ItemSprite: {fileID: -1941270710063104495, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 10
+    PotionType: 3
+    IsHealthPotion: 1
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 2
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: -9196622955102685460, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 3
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: -9196622955102685460, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 4
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 2567833056857064265, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 5
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 2567833056857064265, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 6
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Strength Potion
+    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 0
+    IsHealthPotion: 0
+  Specifics:
+  - ItemName: 
+    ItemSprite: {fileID: 0}
+    Type: 0
+    Level: 0
+    PrimaryModifier: 
+    PrimaryModifierValue: 
+    SecondaryModifier: 
+    SecondaryModifierValue: 
   test: {fileID: -4358107112616754020, guid: 981446e4a075c8941a3e4776b88df279, type: 3}
+  ItemPrefab: {fileID: 4572399419581619050, guid: 7a6bf2eb5db897d46ac055c8b58ab28c,
+    type: 3}
   Name: JOY

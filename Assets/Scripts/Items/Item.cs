@@ -87,6 +87,7 @@ public class Item : MonoBehaviour
             EquippedCharacter.StatModifier[item.Key] -= item.Value;
         }
         _equippedCharacter.Inventory.Remove(this);//Remove it from the player's equipment
+        _equippedCharacter.RefreshUI();
         _equippedCharacter = null;
         myManager.UnequippedItems.Add(this);
         //It then refreshes the UI;

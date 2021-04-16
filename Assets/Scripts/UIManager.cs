@@ -137,10 +137,10 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         curItemLevelText.text = "Level " + currentItem.Level.ToString();
         //An item in your inventory can only be sold for a fraction of its full price
         if(currentItem.InShop) {
-            curItemPriceText.text = "Costs " + currentItem.Price.ToString() + " c";
+            curItemPriceText.text = "Costs " + currentItem.Price.ToString() + " gold";
         }
         else {
-            curItemPriceText.text = "Sells for " + CalculateSellPrice(currentItem.Price).ToString() + " c";
+            curItemPriceText.text = "Sells for " + CalculateSellPrice(currentItem.Price).ToString() + " gold";
         }
         curItemAbilityText.text = currentItem.AbilityText;
         //For different buttons, they change depending on what options the player has
