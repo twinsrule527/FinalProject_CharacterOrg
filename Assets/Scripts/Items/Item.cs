@@ -107,8 +107,51 @@ public class Item : MonoBehaviour
                 temp++;
             }
         }
+        //If the player has fewer items than max, then it goes to the next step
         if(temp < choice.InventorySize) {
-            return true;
+            //If the player is a higher or equal level to the item, they go to the next step
+            if(choice.Level >= Level) {
+                 //If the player has not met the limit on that type of item:
+                 //runs through each type individually
+                 //if it's a potion, you can carry 2
+                 if(Type == ItemType.Potion) {
+                     int temp2 = 0;
+                     foreach(Item item in choice.Inventory) {
+                         if(item.Type == ItemType.Potion) {
+                             temp2++;
+                         }
+                     }
+                     if(temp2 >= 2) {
+                         return false;
+                     } 
+                     else {
+                         return true;
+                     }
+                 }
+                 //If it's a miscellaneous item, it's automatically able to be added
+                 else if(Type == ItemType.Misc) {
+                     return true;
+                 }
+                 //Otherwise, you can only have 1 item of that type
+                 else {
+                     int temp2 = 0;
+                     foreach(Item item in choice.Inventory) {
+                         if(item.Type == Type) {
+                             temp2++;
+                         }
+                     }
+                     if(temp2 >= 1) {
+                         return false;
+                     }
+                     else {
+                         return true;
+                     }
+                 }
+                 
+            }
+            else {
+                return false;
+            }
         }
         else {
             return false;

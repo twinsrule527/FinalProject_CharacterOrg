@@ -43,7 +43,7 @@ public class ItemGeneration : ScriptableObject
         modifiers.Add(StatType.Strength, 2);
         modifiers.Add(StatType.Defense, 3);
 
-        newItem.DeclareTraits(modifiers, "NAME", ItemType.Weapon, 2, 15, "This is my ability text", test);
+        newItem.DeclareTraits(modifiers, "NAME", ItemType.Weapon, 1, 15, "This is my ability text", test);
         return newItem;
     }
 

@@ -131,32 +131,242 @@ MonoBehaviour:
     PotionType: 0
     IsHealthPotion: 0
   - ItemName: Strength Potion
-    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    ItemSprite: {fileID: -6956877099157631411, guid: 17a0b31f60264654f91ae8e02a3b918b,
       type: 3}
     Type: 0
-    Level: 1
+    Level: 7
     PotionType: 0
     IsHealthPotion: 0
   - ItemName: Strength Potion
-    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    ItemSprite: {fileID: -6956877099157631411, guid: 17a0b31f60264654f91ae8e02a3b918b,
       type: 3}
     Type: 0
-    Level: 1
+    Level: 8
     PotionType: 0
     IsHealthPotion: 0
   - ItemName: Strength Potion
-    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    ItemSprite: {fileID: -4177568371208569489, guid: 17a0b31f60264654f91ae8e02a3b918b,
       type: 3}
     Type: 0
-    Level: 1
+    Level: 9
     PotionType: 0
     IsHealthPotion: 0
   - ItemName: Strength Potion
-    ItemSprite: {fileID: 140793111467100883, guid: 17a0b31f60264654f91ae8e02a3b918b,
+    ItemSprite: {fileID: -4177568371208569489, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 10
+    PotionType: 0
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: 3365802977668218275, guid: 17a0b31f60264654f91ae8e02a3b918b,
       type: 3}
     Type: 0
     Level: 1
-    PotionType: 0
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: 3365802977668218275, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 2
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: 3360195742035721283, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 3
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: 3360195742035721283, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 4
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: 1552169391728835979, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 5
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: 1552169391728835979, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 6
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: -4777571871551336714, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 7
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: -4777571871551336714, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 8
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: -2102413695004566604, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 9
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Magic Potion
+    ItemSprite: {fileID: -2102413695004566604, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 10
+    PotionType: 1
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: 8043420883251613940, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: 8043420883251613940, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 2
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: 4404884440413028597, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 3
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: 4404884440413028597, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 4
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: -4650826476470073214, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 5
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: -4650826476470073214, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 6
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: -7028953079116725980, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 7
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: -7028953079116725980, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 8
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: -2663114505165362531, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 9
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Defense Potion
+    ItemSprite: {fileID: -2663114505165362531, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 10
+    PotionType: 2
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: -4985558777376208634, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 1
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: -4985558777376208634, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 2
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: -5012262038788842060, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 3
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: -5012262038788842060, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 4
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: 4473492593693424386, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 5
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: 4473492593693424386, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 6
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: 2042694392391937062, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 7
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: 2042694392391937062, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 8
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: 5924399479181239633, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 9
+    PotionType: 4
+    IsHealthPotion: 0
+  - ItemName: Luck Potion
+    ItemSprite: {fileID: 5924399479181239633, guid: 17a0b31f60264654f91ae8e02a3b918b,
+      type: 3}
+    Type: 0
+    Level: 10
+    PotionType: 4
     IsHealthPotion: 0
   Specifics:
   - ItemName: 
