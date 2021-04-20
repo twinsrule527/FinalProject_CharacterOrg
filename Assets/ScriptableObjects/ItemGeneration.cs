@@ -27,6 +27,9 @@ public class ItemTraits {//This class contains all the general information for a
     public List<int> ModifierValue;
 }
 
+//This delegate is used for Special abilities that Items may have
+public delegate void ItemSpecialAbility(Item self, List<StatType> statsAffected);
+
 [CreateAssetMenu(menuName = "ScriptableObjects/ItemGeneration")]
 public class ItemGeneration : ScriptableObject
 {

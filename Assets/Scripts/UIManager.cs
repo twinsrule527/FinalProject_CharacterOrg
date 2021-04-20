@@ -126,6 +126,15 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
                         break;
                     }
                 }
+                if(results[i].gameObject.CompareTag("CharacterReference")) {
+                    //Character References on the Quest page work similar to with general Character
+                    CharacterReference checkRef = results[i].gameObject.GetComponent<CharacterReference>();
+                    if(checkRef.Reference.alive) {
+                        currentCharacter = checkRef.Reference;
+                        RefreshCharacterUI();
+                        break;
+                    }
+                }
                 if(results[i].gameObject.CompareTag("Cover")) {
                     break;
                 }
@@ -297,6 +306,12 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             
         }
 
+    }
+    //This Sorting Algorithm overrides the one in the ItemManager, but it doesn't need inputs
+    [Header("Inventory Sorting")]
+    [SerializeField] private TMP_Dropdown InventorySortDrop;
+    public void SortInventoryOverride() {
+        GeneralItemManager.SortInventory(ref GeneralItemManager.UnequippedItems, (SortByType) InventorySortDrop.value);
     }
     //PopUpGeneral Windows:
     [Header("PopUp Window General")]

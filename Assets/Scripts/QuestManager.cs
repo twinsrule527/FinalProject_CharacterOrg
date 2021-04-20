@@ -15,12 +15,16 @@ public struct Quest {
     public int goldReward;//Reward for Quest in Gold
     public List<Item> ItemReward;//Item Rewards
     public Party myParty;
+    //Below are things which are not really determined until while the quest is being completed
+    public float PercentQuestComplete;//How much of the quest the party manages to complete (1 = 100% - but it can go beyond that)
+    public List<string> QuestOccurences;//A list of strings which describe the going-ons during the quest
 
 }
 //This struct manages a Party of characters who are going on an adventure
 public struct Party {
     public List<Character> Members;
     public int PartyPower;//The total Strength + Magic Power of this Party
+    public List<float> PowerTarget;//How the damage will be assigned back at the characters
     public int PartyLuck;//The Total Luck of the party
     public List<Item> LuckItemReward;//Reward Items the characters receive bc of luck
     public int LuckGoldReward;//Additional Gold reward received bc of Luck
@@ -40,12 +44,104 @@ public class QuestManager : MonoBehaviour
             reference.gameObject.SetActive(false);
         }
         for(int i = 0; i< STARTING_NUM_QUESTS; i++) {
-            Quest newQuest = CreateNewQuest(i+1, 1);
+            Quest newQuest = CreateNewQuest(2, 1);
             activeQuests++;
             QuestSlots[i].Reference = newQuest;
         }
     }
 
+    //This script runs through a quest, outputting needed 
+    public void RunQuest(ref Quest quest) {
+        //The quest happens in 3 Steps:
+            //Step 1: StartQuest
+        //Goes through every character participating in this quest, and adds their StartQuest Functions
+        for(int i = 0; i < quest.partySize; i++) {
+            quest.myParty.Members[i].StartQuest(ref quest);
+        }
+        //Then, stats are added together in the quest's party struct
+        Party tempParty = quest.myParty;
+        foreach(Character chara in tempParty.Members) {
+            tempParty.PartyPower += (chara.Stat[StatType.Strength] + chara.StatModifier[StatType.Strength]);
+            tempParty.PartyPower += (chara.Stat[StatType.Magic] + chara.StatModifier[StatType.Magic]);
+            tempParty.PowerTarget.Add(AssignTargetAmount(chara.Stat[StatType.Strength] + chara.StatModifier[StatType.Strength], chara.Stat[StatType.Magic] + chara.StatModifier[StatType.Magic]));
+            tempParty.PartyLuck += (chara.Stat[StatType.Luck] + chara.StatModifier[StatType.Luck]);
+        }
+            //Step2: "DungeonRun"
+        //After stats have been added, the characters "run the dungeon", where the game just runs a set of numbers
+        quest.myParty = tempParty;
+        float QuestDiff;//This float will be used to determine if the characters complete the quest
+        QuestDiff = DIFF_FIRST_CHAR + DIFF_PER_LEVEL * quest.Level;
+        //If this is a quest for more than 1 character, additional difficulties are added
+        if(quest.partySize > 1) {
+            for(int i = 1; i < quest.partySize; i++) {
+                QuestDiff += (DIFF_FURTHER_CHARS + DIFF_PER_LEVEL * quest.Level);
+            }
+        }
+        //Then a little bit of randomization is added
+            //going to be slightly easier, bc the highest value is not included
+                //High-number-of-character quests have a more consistent difficulty rating
+        QuestDiff += Random.Range(-DIFF_RND_PER_LEVEL * quest.Level, DIFF_RND_PER_LEVEL * quest.Level);
+        //Compares quest difficulty to characters strength
+        quest.PercentQuestComplete = tempParty.PartyPower / QuestDiff;
+        //Deals damage back to players
+//------------------------------------------------------
+        //TODO: Make all this below more than a framework
+        int dmgToAssign = 100;
+        float totalEffPow = 0;
+        foreach(float target in tempParty.PowerTarget) {
+            totalEffPow += target;
+        }
+        List<float> AssignedDmg = new List<float>();
+        for(int i = 0; i < quest.partySize; i++) {
+            float tempDmg = dmgToAssign * tempParty.PowerTarget[i] / totalEffPow;
+            AssignedDmg.Add(tempDmg);
+        }
+        //Damage is reduced with Defense
+
+
+            //Luck is used to determine additional rewards
+        //First, group rewards:
+            //Gold
+        tempParty.LuckGoldReward = tempParty.PartyLuck + Random.Range(-2, 2);
+            //And possibly, an item
+        float rnd = Random.Range(0f, 1f);
+        float percPerLevelItem = ((float)tempParty.PartyLuck / quest.Level) / 100f;
+        for(int i = quest.Level; i > 0; i--) {
+            if(rnd < percPerLevelItem * (quest.Level - i + 1)) {
+                //Generate a new item of Level i
+                tempParty.LuckItemReward.Add(UIManager.Instance.GenerateItem.BasicGeneration(i));
+                break;
+            }
+        }
+        //Individual Rewards:
+            //Each character has a chance of generating an item, dependent on Luck
+        for(int i = 0; i < quest.partySize; i++) {
+            percPerLevelItem = CalculateIndividualLuckItemRewardPercent(tempParty.Members[i]) / quest.partySize;
+            rnd = Random.Range(0f, 1f);
+            for(int j = tempParty.Members[i].Level; j > 0; j--) {
+                if(rnd < percPerLevelItem * (tempParty.Members[i].Level - j + 1)) {
+                    tempParty.LuckItemReward.Add(UIManager.Instance.GenerateItem.BasicGeneration(j));
+                    break;
+                }
+            }
+        }
+        //After all Rewards are found
+            //Step3: EndQuest
+        //Each character has their individual endQuest abilities
+        for(int i = 0; i < quest.partySize; i++) {
+            quest.myParty.Members[i].EndQuest(ref quest);
+        }
+        //Checks to see if any characters are dead
+    }
+    //These variables are constants used to Run the Quest
+        //These 4 first consts declare how difficult the dungeon is
+    private const int DIFF_FIRST_CHAR = 15;
+    private const int DIFF_FURTHER_CHARS = 12;
+    private const int DIFF_PER_LEVEL = 5;
+    private const int DIFF_RND_PER_LEVEL = 2;
+//-------------------------------------------------------------------------
+
+    //Refreshes all the Quest UI
     public void RefreshEntireQuestPage() {
         //Every quest has its UI refreshed
         for(int i = 0; i <QuestSlots.Count; i++) {
@@ -174,10 +270,13 @@ public class QuestManager : MonoBehaviour
         Party tempParty = new Party();
         tempParty.Members = new List<Character>();
         tempParty.PartyPower = 0;
+        tempParty.PowerTarget = new List<float>();
         tempParty.PartyLuck = 0;
         tempParty.LuckItemReward = new List<Item>();
         tempParty.LuckGoldReward = 0;
         tempQuest.myParty = tempParty;
+        tempQuest.QuestOccurences = new List<string>();
+        tempQuest.PercentQuestComplete = 0;
         return tempQuest;
     }
 
@@ -192,4 +291,23 @@ public class QuestManager : MonoBehaviour
     private static List<Item> CreateItemReward(int numChar, int lvl) {
         return new List<Item>();
     }
+
+    //Calculates how much of a target a character is in the RunQuest-Party.PowerTarget section
+    private const float  MAGIC_TARGET_PERCENT = 1f / 3f;
+    private static float AssignTargetAmount(int str, int mag) {
+        float temp = 0;
+        temp += str;
+        temp += mag * MAGIC_TARGET_PERCENT;
+        return temp;
+    }
+    //Calculates chance a specific character will generate an item, dependent on luck
+    private const float INDIV_LUCK_ITEM_DIVIDER = 4f;
+    private static float CalculateIndividualLuckItemRewardPercent(Character chara) {
+        float basePerc = chara.Stat[StatType.Luck] + chara.StatModifier[StatType.Luck];
+        basePerc = basePerc / INDIV_LUCK_ITEM_DIVIDER;
+        basePerc = Mathf.Pow(basePerc, 2);
+        basePerc = basePerc / 100f;
+        return basePerc;
+    }
+
 }

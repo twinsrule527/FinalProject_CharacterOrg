@@ -63,7 +63,10 @@ public class Item : MonoBehaviour
             return _sprite;
         }
     }
-
+    //May have special abilities that are declared as delegates
+    public ItemSpecialAbility OnQuestStartAbility;
+    public ItemSpecialAbility OnQuestEndAbility;
+    public List<StatType> AbilityAffectedStats;
     public ItemManager myManager;//The overall manager of this object - is one universal one
 
     //Equip function equips it to a character, requiring the character you're equipping it to
@@ -156,6 +159,15 @@ public class Item : MonoBehaviour
         else {
             return false;
         }
+    }
+
+    //These functions are called whenever the equipped character starts/ends a quest
+    public virtual void StartQuest(ref Quest quest) {
+        //At the very least, it always triggers the start quest ability
+        OnQuestStartAbility(this, AbilityAffectedStats);
+    }
+    public virtual void EndQuest(ref Quest quest) {
+        OnQuestEndAbility(this, AbilityAffectedStats);
     }
 
     //A method that allows for other scripts to declare the traits of this object

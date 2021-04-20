@@ -1,7 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 //A manager object that specifically manages items that are not currently equipped/are in the shop
+public enum SortByType {
+    Alphabet,
+    ItemType,
+    ItemLevel,
+    ItemCost
+}
 public class ItemManager : MonoBehaviour
 {
     //List of existing items and where they appear on the screen
@@ -98,5 +105,23 @@ public class ItemManager : MonoBehaviour
         }
         else {
         }
+    }
+
+    //This function uses Linq/Lambdas to sort your inventory
+        //Based on a sort function I made for the RPG creator homework
+    public void SortInventory(ref List<Item> Items, SortByType sort) {
+        if(sort == SortByType.Alphabet) {
+            Items = Items.OrderBy(item => item.ItemName).ToList<Item>();
+        }
+        else if(sort == SortByType.ItemType) {
+            Items = Items.OrderBy(item => (int)item.Type).ToList<Item>();
+        }
+        else if(sort == SortByType.ItemLevel) {
+            Items = Items.OrderBy(item => item.Level).ToList<Item>();
+        }
+        else if(sort == SortByType.ItemCost) {
+            Items = Items.OrderBy(item => item.Price).ToList<Item>();
+        }
+        RefreshUnequippedItemsUI();
     }
 }

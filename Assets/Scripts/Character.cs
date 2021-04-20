@@ -56,10 +56,25 @@ public class Character : MonoBehaviour
     }
     
     //Has functions that trigger when you start or end a quest with this character
-    public void StartQuest() {//out Party myParty) {
+    public Quest refQuest;//The quest the player is currently on is used as a reference for some abilities
+    public void StartQuest(ref Quest quest) {
+        refQuest = quest;
+        //Character starts by triggering abilities
+        OnQuestStartAbility(this, AbilityAffectedStats);
+        //Also triggers abilities of all Items with StartQuest Abilties
+        for(int i = 0; i < Inventory.Count; i++) {
+            Inventory[i].StartQuest(ref quest);
+        }
 
     }
-    public void EndQuest() {
+    public void EndQuest(ref Quest quest) {
+        refQuest = quest;
+        //trigger Item EndQuest Abilities
+        for(int i = 0; i < Inventory.Count; i++) {
+            Inventory[i].EndQuest(ref quest);
+        }
+        //Triggers personal ability
+        OnQuestEndAbility(this, AbilityAffectedStats);
 
     }
 

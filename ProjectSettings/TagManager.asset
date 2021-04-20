@@ -9,6 +9,7 @@ TagManager:
   - Quest
   - Cover
   - Button
+  - CharacterReference
   layers:
   - Default
   - TransparentFX
