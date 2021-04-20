@@ -49,7 +49,15 @@ public class QuestManager : MonoBehaviour
             QuestSlots[i].Reference = newQuest;
         }
     }
-
+    //Triggered by the RunQuest Button, activates all active quests
+    public void RunAllActiveQuests() {
+        for(int i = 0; i < activeQuests; i++) {
+            //Each quest that has enough characters fires
+            if(QuestSlots[i].Reference.partySize == QuestSlots[i].Reference.myParty.Members.Count) {
+                RunQuest(ref QuestSlots[i].Reference);
+            }
+        }
+    }
     //This script runs through a quest, outputting needed 
     public void RunQuest(ref Quest quest) {
         //The quest happens in 3 Steps:
@@ -85,8 +93,7 @@ public class QuestManager : MonoBehaviour
         quest.PercentQuestComplete = tempParty.PartyPower / QuestDiff;
         //Deals damage back to players
 //------------------------------------------------------
-        //TODO: Make all this below more than a framework
-        int dmgToAssign = 100;
+        float dmgToAssign = QuestDiff;
         float totalEffPow = 0;
         foreach(float target in tempParty.PowerTarget) {
             totalEffPow += target;
@@ -97,7 +104,12 @@ public class QuestManager : MonoBehaviour
             AssignedDmg.Add(tempDmg);
         }
         //Damage is reduced with Defense
-
+        for(int i = 0; i < quest.partySize; i++) {
+            //Assign dmg to each character
+            Character tempChar = quest.myParty.Members[i];
+            int dmgDealt = Mathf.CeilToInt(AssignedDmg[i] / CalculateEffDef(tempChar));
+            tempChar.curHealth -= dmgDealt;
+        }
 
             //Luck is used to determine additional rewards
         //First, group rewards:
@@ -107,6 +119,10 @@ public class QuestManager : MonoBehaviour
         float rnd = Random.Range(0f, 1f);
         float percPerLevelItem = ((float)tempParty.PartyLuck / quest.Level) / 100f;
         for(int i = quest.Level; i > 0; i--) {
+            if(rnd > 0.99f) {
+                //Always has a small chance of getting no item
+                break;
+            }
             if(rnd < percPerLevelItem * (quest.Level - i + 1)) {
                 //Generate a new item of Level i
                 tempParty.LuckItemReward.Add(UIManager.Instance.GenerateItem.BasicGeneration(i));
@@ -116,15 +132,20 @@ public class QuestManager : MonoBehaviour
         //Individual Rewards:
             //Each character has a chance of generating an item, dependent on Luck
         for(int i = 0; i < quest.partySize; i++) {
-            percPerLevelItem = CalculateIndividualLuckItemRewardPercent(tempParty.Members[i]) / quest.partySize;
+            percPerLevelItem = CalculateIndividualLuckItemRewardPercent(tempParty.Members[i]) / tempParty.Members[i].Level;
             rnd = Random.Range(0f, 1f);
             for(int j = tempParty.Members[i].Level; j > 0; j--) {
+                if(rnd > 0.99f) {
+                    //Always has a small chance of getting no item
+                    break;
+                }
                 if(rnd < percPerLevelItem * (tempParty.Members[i].Level - j + 1)) {
                     tempParty.LuckItemReward.Add(UIManager.Instance.GenerateItem.BasicGeneration(j));
                     break;
                 }
             }
         }
+        quest.myParty = tempParty;
         //After all Rewards are found
             //Step3: EndQuest
         //Each character has their individual endQuest abilities
@@ -132,11 +153,37 @@ public class QuestManager : MonoBehaviour
             quest.myParty.Members[i].EndQuest(ref quest);
         }
         //Checks to see if any characters are dead
+            //Needs to occur separetly from EndQuest, bc characters might heal
+        foreach(Character chara in quest.myParty.Members) {
+            if(chara.curHealth <= 0) {
+                //Character dies
+                chara.Die(ref quest);
+            }
+        }
+        //Prepares for the EndQuest PopUp, configuring things
+        PopUp tempPopUp;
+        tempPopUp.ChosenCharacter = null;
+        tempPopUp.ChosenItem = null;
+        tempPopUp.ChosenQuest = quest;
+        tempPopUp.Type = PopUpType.QuestComplete;
+        UIManager.Instance.WaitingPopUps.Add(tempPopUp);
+        //Each character that levels up also will get a popUp
+        foreach(Character chara in quest.myParty.Members) {
+            if(chara.LeveledUp) {
+                PopUp charPopUp;
+                charPopUp.ChosenCharacter = chara;
+                charPopUp.ChosenItem = null;
+                charPopUp.ChosenQuest = quest;
+                charPopUp.Type = PopUpType.CharacterLevelUp;
+                UIManager.Instance.WaitingPopUps.Add(charPopUp);
+            }
+        }
+
     }
     //These variables are constants used to Run the Quest
         //These 4 first consts declare how difficult the dungeon is
-    private const int DIFF_FIRST_CHAR = 15;
-    private const int DIFF_FURTHER_CHARS = 12;
+    private const int DIFF_FIRST_CHAR = 18;
+    private const int DIFF_FURTHER_CHARS = 16;
     private const int DIFF_PER_LEVEL = 5;
     private const int DIFF_RND_PER_LEVEL = 2;
 //-------------------------------------------------------------------------
@@ -167,11 +214,11 @@ public class QuestManager : MonoBehaviour
         //For each item, it checks to see if it exists
         for(int i = 0; i < curItemReward.Count; i++) {
             if(CurQuest.ItemReward.Count <= i) {
-                curItemReward[i].myImage.enabled = false;
+                curItemReward[i].myImageBack.gameObject.SetActive(false);
                 curItemReward[i].Reference = null;
             }
             else {
-                curItemReward[i].myImage.enabled = true;
+                curItemReward[i].myImageBack.gameObject.SetActive(true);
                 curItemReward[i].Reference = CurQuest.ItemReward[i];
                 curItemReward[i].myImage.sprite = CurQuest.ItemReward[i].Sprite;
             }
@@ -308,6 +355,14 @@ public class QuestManager : MonoBehaviour
         basePerc = Mathf.Pow(basePerc, 2);
         basePerc = basePerc / 100f;
         return basePerc;
+    }
+
+    //Calculates how much the dmg a character takes is divided by
+    private static float CalculateEffDef(Character chara) {
+        float temp = chara.Stat[StatType.Defense] + chara.StatModifier[StatType.Defense];
+        temp = Mathf.Pow(temp, 0.5f);//Is square rooted
+        temp *= 1.5f;
+        return temp;
     }
 
 }

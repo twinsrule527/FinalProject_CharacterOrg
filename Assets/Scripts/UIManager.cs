@@ -21,13 +21,15 @@ public enum StatType {
 public enum PopUpType {
     None,
     NewCharacter,
-    CharacterLevelUp
+    CharacterLevelUp,
+    QuestComplete
 }
 //This struct makes use of the PopUpType by declaring any objects that need to be declared
 public struct PopUp {
     public PopUpType Type;
     public Character ChosenCharacter;
     public Item ChosenItem;
+    public Quest ChosenQuest;
 }
 public class UIManager : Singleton<UIManager>//Probably the only singleton in the game, because everything needs to access it
 {
@@ -59,6 +61,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         PopUp tempPopUp;
         tempPopUp.ChosenCharacter = null;
         tempPopUp.ChosenItem = null;
+        tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
         tempPopUp.Type = PopUpType.NewCharacter;
         for(int i =0; i < NUM_START_CHARACTERS; i++) {
             WaitingPopUps.Add(tempPopUp);
@@ -317,6 +320,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [Header("PopUp Window General")]
     [SerializeField] private GameObject NewCharacterPopUp;
     [SerializeField] private GameObject CharacterLevelUpPopUp;
+    [SerializeField] private GameObject QuestCompletePopUp;
     //This function starts a new PopUp, using the 0th element of the waitingPopUp List
     public void StartPopUp() {
         PopUp tempPopUp = WaitingPopUps[0];
@@ -324,16 +328,21 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         PopUpCoverImage.SetActive(true);
         curPopUp = tempPopUp.Type;
         //Depending on which popUp type it is, different things happen
-        if(tempPopUp.Type == PopUpType.NewCharacter) {
+        if(curPopUp == PopUpType.NewCharacter) {
             NewCharacterPopUp.SetActive(true);
             livingCharacters++;
             CreateNewCharacterStep1(1);
             RefreshNewCharacterPopUp();
         }
-        else if(tempPopUp.Type == PopUpType.CharacterLevelUp) {
+        else if(curPopUp == PopUpType.CharacterLevelUp) {
             CharacterLevelUpPopUp.SetActive(true);
             characterLevelledUp = tempPopUp.ChosenCharacter;
             RefreshLevelUpPopUp();
+        }
+        else if(curPopUp == PopUpType.QuestComplete) {
+            QuestCompletePopUp.SetActive(true);
+            completedQuest = tempPopUp.ChosenQuest;
+            RefreshQuestCompletePopUp();
         }
     }
     //This function ends the current popUp, returning to the base screen
@@ -521,6 +530,111 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         currentItem = startPotion;
         startPotion.Equip(characterLevelledUp);
         CharacterLevelUpPopUp.SetActive(false);
+        EndPopUp();
+    }
+
+    //PopUp Function 3: QuestComplete
+    [HideInInspector] public Quest completedQuest;
+    [Header("PopUp Window 3: Quest Complete")]
+    [SerializeField] private TMP_Text QuestCompleteTitle;
+    [SerializeField] private TMP_Text QuestCompleteBasicDescription;
+    [SerializeField] private TMP_Text QuestCompleteRewardText;
+    [SerializeField] private List<ItemReference> QuestCompleteItemReward;
+    [SerializeField] private TMP_Text QuestCompleteLuckText;
+    [SerializeField] private List<ItemReference> QuestCompleteLuckItem;
+
+    //Raycast UI
+    private void QuestCompleteRaycast(List<RaycastResult> results) {
+        //Does nothing
+    }
+    //Determines the percent of a reward that is given for a quest
+    private void DetermineQuestPercReward(float percComplete, ref int money, ref List<Item> items) {
+        //Only calculates something new if your reward is less than 100%
+        if(percComplete < 1) {
+            money = Mathf.FloorToInt(money * percComplete);
+            int itemsKeepNum = 0;
+            for(int i = 0; i < items.Count; i++) {
+                if(i * 1f / items.Count < percComplete) {
+                    itemsKeepNum++;
+                }
+            }
+            //Destroys unneeded items
+            while(items.Count > itemsKeepNum) {
+                Destroy(items[items.Count - 1].gameObject);
+                items.RemoveAt(items.Count - 1);
+            }
+
+
+        }
+    }
+    //Refreshes the UI
+    public void RefreshQuestCompletePopUp() {
+        QuestCompleteTitle.text = "\"" + completedQuest.Title + "\" Quest Finished!";
+        int questCompletePercentInt = Mathf.FloorToInt(completedQuest.PercentQuestComplete * 100);
+        if(questCompletePercentInt < 100) {
+            QuestCompleteBasicDescription.text = "A " + completedQuest.partySize.ToString() + " person party completed " + questCompletePercentInt.ToString() + "% of the quest. As such, the party receives these rewards:";
+            int rewardMoney = completedQuest.goldReward;
+            //Determines gold and Item Rewards, and then posts them
+            DetermineQuestPercReward(completedQuest.PercentQuestComplete, ref rewardMoney, ref completedQuest.ItemReward);
+            QuestCompleteRewardText.text = rewardMoney.ToString() + " gold";
+            for(int i = 0; i < QuestCompleteItemReward.Count; i++) {
+                if(completedQuest.ItemReward.Count <= i) {
+                    QuestCompleteItemReward[i].myImageBack.gameObject.SetActive(false);
+                    QuestCompleteItemReward[i].Reference = null;
+                }
+                else {
+                    QuestCompleteItemReward[i].myImageBack.gameObject.SetActive(true);
+                    QuestCompleteItemReward[i].Reference = completedQuest.ItemReward[i];
+                    QuestCompleteItemReward[i].myImage.sprite = completedQuest.ItemReward[i].Sprite;
+                }
+            }
+
+        }
+        else {
+            QuestCompleteBasicDescription.text = "A " + completedQuest.partySize.ToString() + " person party completed 100% of the quest. As such, the party receives these rewards:";
+            QuestCompleteRewardText.text = completedQuest.goldReward.ToString() + " gold";
+            for(int i = 0; i < QuestCompleteItemReward.Count; i++) {
+                if(completedQuest.ItemReward.Count <= i) {
+                    QuestCompleteItemReward[i].myImageBack.gameObject.SetActive(false);
+                    QuestCompleteItemReward[i].Reference = null;
+                }
+                else {
+                    QuestCompleteItemReward[i].myImageBack.gameObject.SetActive(true);
+                    QuestCompleteItemReward[i].Reference = completedQuest.ItemReward[i];
+                    QuestCompleteItemReward[i].myImage.sprite = completedQuest.ItemReward[i].Sprite;
+                }
+            }
+        }
+        //Also shows Luck Rewards
+        QuestCompleteLuckText.text = completedQuest.myParty.LuckGoldReward.ToString() + " gold";
+        for(int i = 0; i < QuestCompleteLuckItem.Count; i++) {
+            if(completedQuest.myParty.LuckItemReward.Count <= i) {
+                    QuestCompleteLuckItem[i].myImageBack.gameObject.SetActive(false);
+                    QuestCompleteLuckItem[i].Reference = null;
+                }
+                else {
+                    QuestCompleteLuckItem[i].myImageBack.gameObject.SetActive(true);
+                    QuestCompleteLuckItem[i].Reference = completedQuest.myParty.LuckItemReward[i];
+                    QuestCompleteLuckItem[i].myImage.sprite = completedQuest.myParty.LuckItemReward[i].Sprite;
+                }
+        }
+        //TODO: Also needs to have text of other effects, but that will be added later
+    }
+    //Finalizes quest rewards, than closes this pop-up
+    public void CloseQuestCompletePopUp() {
+        //Adds all items to your Unequipped Items
+        foreach(Item item in completedQuest.ItemReward) {
+            GeneralItemManager.UnequippedItems.Add(item);
+        }
+        foreach(Item item in completedQuest.myParty.LuckItemReward) {
+            GeneralItemManager.UnequippedItems.Add(item);
+        }
+        _currentGold += (completedQuest.goldReward + completedQuest.myParty.LuckGoldReward);
+        foreach(Character chara in completedQuest.myParty.Members) {
+            chara.RefreshUI();
+        }
+        RefreshCharacterUI();
+        QuestCompletePopUp.SetActive(false);
         EndPopUp();
     }
 }

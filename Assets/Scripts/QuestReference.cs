@@ -48,11 +48,11 @@ public class QuestReference : MonoBehaviour
             _goldRewardText.text = Reference.goldReward.ToString() + " gold";
             for(int i = 0; i < _itemRewardImage.Count; i++) {
                 if(Reference.ItemReward.Count <= i) {
-                    _itemRewardImage[i].myImage.enabled = false;
+                    _itemRewardImage[i].myImageBack.gameObject.SetActive(false);
                     _itemRewardImage[i].Reference = null;
                 }
                 else {
-                    _itemRewardImage[i].myImage.enabled = true;
+                    _itemRewardImage[i].myImageBack.gameObject.SetActive(true);
                     _itemRewardImage[i].Reference = Reference.ItemReward[i];
                     _itemRewardImage[i].myImage.sprite = Reference.ItemReward[i].Sprite;
                 }

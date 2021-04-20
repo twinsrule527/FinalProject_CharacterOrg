@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     [HideInInspector] public int healthModifier;
     [HideInInspector] public int curHealth;
 
-    private int xp;//Experience (required to level up)
+    [SerializeField] private float xp;//Experience (required to level up)
     public int Level;
     public string CharacterName;
     //Stuff related to leveling up
@@ -65,8 +65,17 @@ public class Character : MonoBehaviour
         for(int i = 0; i < Inventory.Count; i++) {
             Inventory[i].StartQuest(ref quest);
         }
+        quest = refQuest;
 
     }
+    private bool _leveledUp;
+    public bool LeveledUp {
+        get {
+            return _leveledUp;
+        }
+    }
+    private const float HEAL_DIVIDE = 5f;
+    private const int XP_PER_QUEST_LEVEL = 4;
     public void EndQuest(ref Quest quest) {
         refQuest = quest;
         //trigger Item EndQuest Abilities
@@ -75,7 +84,19 @@ public class Character : MonoBehaviour
         }
         //Triggers personal ability
         OnQuestEndAbility(this, AbilityAffectedStats);
+        //Character also gains experience (need to calculate this)
+        //TODO: Have an accurate amount
+        xp += XP_PER_QUEST_LEVEL * quest.Level * quest.PercentQuestComplete;
+        //Character heals, depending on their endurance
+        curHealth += Mathf.CeilToInt((Stat[StatType.Endurance] + StatModifier[StatType.Endurance]) / HEAL_DIVIDE);
+        curHealth = Mathf.Clamp(curHealth, 0, baseHealth);
+        quest = refQuest;
+    }
 
+    //This function occurs when the character dies
+    public void Die(ref Quest quest) {
+        alive = false;
+        //NEED TO: Delete items, show up on the PopUp, and More
     }
 
     //These objects are UI objects that this affects

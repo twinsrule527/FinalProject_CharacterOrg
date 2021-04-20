@@ -7,7 +7,7 @@ public class CharacterReference : MonoBehaviour
 {
     public Character Reference;
     public TMP_Text myTitleText;
-    void Start()
+    void Awake()
     {
         myTitleText = GetComponentInChildren<TMP_Text>();
     }
