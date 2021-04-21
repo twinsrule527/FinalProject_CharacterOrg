@@ -445,6 +445,11 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         NewCharacterPopUp.SetActive(false);
         CharacterLevelUpPopUp.SetActive(true);
         curPopUp = PopUpType.CharacterLevelUp;
+        //Character is given a starting potion
+        Item startPotion = GenerateItem.PotionGeneration(1);
+        currentItem = startPotion;
+        currentCharacter = newCharacter;
+        startPotion.Equip(newCharacter);
         RefreshLevelUpPopUp();
     }
 
@@ -523,13 +528,14 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         //Character has a few final things that needs to be done
         //Health needs to be set to starting health
         characterLevelledUp.RefreshHealth();
-        characterLevelledUp.curHealth = characterLevelledUp.baseHealth;
-        //Character is given a starting potion
-        Item startPotion = GenerateItem.PotionGeneration(1);
-        currentCharacter = characterLevelledUp;
-        currentItem = startPotion;
-        startPotion.Equip(characterLevelledUp);
+        if(characterLevelledUp.Level == 1) {
+            characterLevelledUp.curHealth = characterLevelledUp.baseHealth;
+        }
         CharacterLevelUpPopUp.SetActive(false);
+        currentCharacter = characterLevelledUp;
+        characterLevelledUp.RefreshUI();
+        RefreshCharacterUI();
+        RefreshItemUI();
         EndPopUp();
     }
 

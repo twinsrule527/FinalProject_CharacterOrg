@@ -50,14 +50,14 @@ public class Item : MonoBehaviour
             return _abilityText;
         }
     }
-    private Character _equippedCharacter;//Character it is equipped to; = null if not equipped
+    protected Character _equippedCharacter;//Character it is equipped to; = null if not equipped
     public Character EquippedCharacter {
         get {
             return _equippedCharacter;
         }
     }
     public bool InShop;//Whether the item is in the shop or your general inventory
-    [SerializeField] private Sprite _sprite;
+    [SerializeField] protected Sprite _sprite;
     public Sprite Sprite {
         get {
             return _sprite;

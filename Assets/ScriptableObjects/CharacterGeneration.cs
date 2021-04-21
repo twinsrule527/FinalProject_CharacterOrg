@@ -16,6 +16,10 @@ public enum AbilityReference {LvlIncreaseSpecific, LvlIncreaseChoice, QuestIncre
 [CreateAssetMenu(menuName = "ScriptableObjects/CharacterGeneration")]
 public class CharacterGeneration : ScriptableObject
 {
+    //This integer array declares how experience a character needs to level up
+            //TODO: Needs to be made more accurate
+    public static readonly int[] LevelUpXP = {0, 10, 25, 45, 70, 100, 135, 175, 220, 265};
+    
     [SerializeField] private List<Ability> possibleAbilities;
     //Determines a possible ability this new character can start with
     public Ability DetermineSpecialAbility(int charLevel) {

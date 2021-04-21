@@ -58,6 +58,7 @@ public class Character : MonoBehaviour
     //Has functions that trigger when you start or end a quest with this character
     public Quest refQuest;//The quest the player is currently on is used as a reference for some abilities
     public void StartQuest(ref Quest quest) {
+        _leveledUp = false;
         refQuest = quest;
         //Character starts by triggering abilities
         OnQuestStartAbility(this, AbilityAffectedStats);
@@ -85,8 +86,10 @@ public class Character : MonoBehaviour
         //Triggers personal ability
         OnQuestEndAbility(this, AbilityAffectedStats);
         //Character also gains experience (need to calculate this)
-        //TODO: Have an accurate amount
         xp += XP_PER_QUEST_LEVEL * quest.Level * quest.PercentQuestComplete;
+        if(xp >= CharacterGeneration.LevelUpXP[Level]) {
+            _leveledUp = true;
+        }
         //Character heals, depending on their endurance
         curHealth += Mathf.CeilToInt((Stat[StatType.Endurance] + StatModifier[StatType.Endurance]) / HEAL_DIVIDE);
         curHealth = Mathf.Clamp(curHealth, 0, baseHealth);
@@ -182,8 +185,10 @@ public class Character : MonoBehaviour
     private const float BASE_HP_VALUE = 5;
     //Using their Endurance stat + endurance modifiers, determines what their health should be
     public void RefreshHealth() {
-        float tempHealth = BASE_HP_VALUE;
-        tempHealth += Level / 4f * Stat[StatType.Endurance];
-        baseHealth = Mathf.CeilToInt(tempHealth);
+        float tempHealthBase = BASE_HP_VALUE;
+        int maxHealthTemp = baseHealth;
+        tempHealthBase += Level / 4f * Stat[StatType.Endurance];
+        baseHealth = Mathf.CeilToInt(tempHealthBase);
+        curHealth += Mathf.CeilToInt(baseHealth - maxHealthTemp);
     }
 }

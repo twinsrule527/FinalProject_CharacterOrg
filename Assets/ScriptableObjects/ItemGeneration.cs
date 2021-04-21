@@ -51,7 +51,10 @@ public class ItemGeneration : ScriptableObject
     }
 
     public Item PotionGeneration(int itemLevel) {
-        Item newPotion = Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
+        Item newItem = Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
+        GameObject newObj = newItem.gameObject;
+        Destroy(newItem);
+        Item newPotion = newObj.AddComponent<ItemPotion>();
         List<PotionTraits> lvlPotions = new List<PotionTraits>();
         foreach(PotionTraits item in Potions) {
             if(item.Level == itemLevel) {
@@ -60,9 +63,14 @@ public class ItemGeneration : ScriptableObject
         }
         PotionTraits rnd = lvlPotions[Random.Range(0, lvlPotions.Count)];
         Dictionary<StatType, int> modifiers = new Dictionary<StatType, int>();
-        modifiers.Add(StatType.Strength, 0);
+        modifiers.Add(rnd.PotionType, 0);
         string PotionAbilityText = DeclareText(ItemType.Potion, rnd.Level, rnd.PotionType, rnd.IsHealthPotion);
         newPotion.DeclareTraits(modifiers, rnd.ItemName, rnd.Type, rnd.Level, 0, PotionAbilityText, rnd.ItemSprite);
+        //The potion's special abilities are inherent to the PotionType, so they are actually in the RunQuest function
+        newPotion.OnQuestStartAbility = DoNothing;
+        newPotion.OnQuestEndAbility = DoNothing;
+        newPotion.AbilityAffectedStats = new List<StatType>();
+        newPotion.AbilityAffectedStats.Add(rnd.PotionType);
         return newPotion;
     }
 
@@ -86,4 +94,8 @@ public class ItemGeneration : ScriptableObject
         return "";
     }
 
+    //This is for when an item does not have a special ability at a certain trigger time
+    public void DoNothing(Item self, List<StatType> statsAffected) {
+
+    }
 }

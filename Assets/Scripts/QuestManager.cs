@@ -57,6 +57,19 @@ public class QuestManager : MonoBehaviour
                 RunQuest(ref QuestSlots[i].Reference);
             }
         }
+        //Can I create new quests here?
+            //THiS DOESN"T WORK YET - NEED TO FIGURE OUT HOW TO MANAGE NEW QUESTS
+        /*activeQuests = 0;
+        for(int i = 0; i< STARTING_NUM_QUESTS; i++) {
+            Quest newQuest = CreateNewQuest(Random.Range(1, 4), 1);
+            activeQuests++;
+            QuestSlots[i].Reference = newQuest;
+        }
+        RefreshEntireQuestPage();
+        foreach(Character chara in UIManager.Instance.allCharacters) {
+            chara.inParty = false;
+        }
+        */
     }
     //This script runs through a quest, outputting needed 
     public void RunQuest(ref Quest quest) {
@@ -171,6 +184,7 @@ public class QuestManager : MonoBehaviour
         foreach(Character chara in quest.myParty.Members) {
             if(chara.LeveledUp) {
                 PopUp charPopUp;
+                UIManager.Instance.GenerateCharacter.LevelUpCharacter(chara);
                 charPopUp.ChosenCharacter = chara;
                 charPopUp.ChosenItem = null;
                 charPopUp.ChosenQuest = quest;
@@ -358,10 +372,11 @@ public class QuestManager : MonoBehaviour
     }
 
     //Calculates how much the dmg a character takes is divided by
+    private const float DEF_MULTIPLIER = 1.75f;
     private static float CalculateEffDef(Character chara) {
         float temp = chara.Stat[StatType.Defense] + chara.StatModifier[StatType.Defense];
         temp = Mathf.Pow(temp, 0.5f);//Is square rooted
-        temp *= 1.5f;
+        temp *= DEF_MULTIPLIER;
         return temp;
     }
 
