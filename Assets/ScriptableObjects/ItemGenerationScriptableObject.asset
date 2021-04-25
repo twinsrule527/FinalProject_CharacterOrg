@@ -369,14 +369,226 @@ MonoBehaviour:
     PotionType: 4
     IsHealthPotion: 0
   Specifics:
-  - ItemName: 
-    ItemSprite: {fileID: 0}
-    Type: 0
-    Level: 0
-    PrimaryModifier: 
-    PrimaryModifierValue: 
-    SecondaryModifier: 
-    SecondaryModifierValue: 
+  - ItemName: Sturdy Longsword
+    ItemSprite: {fileID: 4527026174034522040, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 1
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Swift Rapier
+    ItemSprite: {fileID: 3739026926192724656, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 1
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Bronzed Blade
+    ItemSprite: {fileID: 2027108528228405890, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 1
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Throwing Axe
+    ItemSprite: {fileID: -8985010843214417120, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Oaken Bow
+    ItemSprite: {fileID: -2285672247204920219, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 1
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Simple Crossbow
+    ItemSprite: {fileID: 8336928005987820657, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 1
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 0400000002000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Chainmail
+    ItemSprite: {fileID: 5315819035549621314, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Leather Plate
+    ItemSprite: {fileID: 5726005414377856930, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 1
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 0400000002000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Steel Breastplate
+    ItemSprite: {fileID: 988147387693850065, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Colored Tunic
+    ItemSprite: {fileID: 4826588332583493090, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 1
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Paled Guard
+    ItemSprite: {fileID: -6377678542805712099, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Hardy Ring
+    ItemSprite: {fileID: -7133179848114279509, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 1
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Jeweled Ring
+    ItemSprite: {fileID: 2564539705355744966, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 1
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Ring of Protection
+    ItemSprite: {fileID: -5004764601928154522, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Power Ring
+    ItemSprite: {fileID: 55694293842935981, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 1
+    PrimaryModifier: 01000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Ring of Grit
+    ItemSprite: {fileID: 7979533786736483028, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 1
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 00000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Layered Shield
+    ItemSprite: {fileID: -1799358085550871037, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Steeled Shield
+    ItemSprite: {fileID: -7625764479782006866, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Bulwark Shield
+    ItemSprite: {fileID: -8410613286569868894, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 1
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 0200000000000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 
+    Ability: 0
+  - ItemName: Worn Woodshield
+    ItemSprite: {fileID: -2501344064910074163, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 1
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 
+    Ability: 0
   test: {fileID: -4358107112616754020, guid: 981446e4a075c8941a3e4776b88df279, type: 3}
   ItemPrefab: {fileID: 4572399419581619050, guid: 7a6bf2eb5db897d46ac055c8b58ab28c,
     type: 3}

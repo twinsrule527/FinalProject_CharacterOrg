@@ -9,6 +9,7 @@ public enum ItemType {
     Weapon,
     Armor,
     Ring,
+    Shield,
     Misc
 }
 public class Item : MonoBehaviour
@@ -37,6 +38,9 @@ public class Item : MonoBehaviour
         get {
             return _level;
         }
+        set {
+            _level = value;
+        }
     }
     [SerializeField] protected int _price;
     public int Price {
@@ -48,6 +52,9 @@ public class Item : MonoBehaviour
     public string AbilityText {
         get {
             return _abilityText;
+        }
+        set {
+            _abilityText = value;
         }
     }
     protected Character _equippedCharacter;//Character it is equipped to; = null if not equipped
@@ -162,6 +169,8 @@ public class Item : MonoBehaviour
     }
 
     //These functions are called whenever the equipped character starts/ends a quest
+    public bool abilityActive;//Some abilities will only sometimes be active, so this toggles that
+    public int abilityValue;//Some abilities will need to save an integer value, so we have this variable
     public virtual void StartQuest(ref Quest quest) {
         //At the very least, it always triggers the start quest ability
         OnQuestStartAbility(this, AbilityAffectedStats);

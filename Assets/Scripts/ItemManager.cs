@@ -90,7 +90,33 @@ public class ItemManager : MonoBehaviour
             }
         }
     }
-
+    //This function refreshes new ShopItems
+    private const int MAX_SHOP_COUNT = 6;
+    public void UpdateShop() {
+        int removedItemLvl = 1;
+        if(ShopItems.Count > 0) {
+            removedItemLvl = ShopItems[0].Level;
+            Destroy(ShopItems[0].gameObject);
+            ShopItems.RemoveAt(0);
+        }
+        int highestLvl = 0;
+        foreach(Character chara in UIManager.Instance.allCharacters) {
+            if(chara.alive && chara.gameObject.activeInHierarchy) {
+                if(chara.Level > highestLvl) {
+                    highestLvl = chara.Level;
+                }
+            }
+        }
+        int curIncrease = 0;
+        while(ShopItems.Count < MAX_SHOP_COUNT && ShopItems.Count < highestLvl) {
+            int newItemLevel = (removedItemLvl - 1 + MAX_SHOP_COUNT + curIncrease) % highestLvl + 1;
+            Item newItem = UIManager.Instance.GenerateItem.BasicGeneration(newItemLevel);
+            newItem.InShop = true;
+            ShopItems.Add(newItem);
+            curIncrease++;
+        }
+        RefreshShopItemsUI();
+    }
     //This function equips/unequips the currently selected Item, after going through a double-check to see if that's possible
     public void EquipUnequipCurrentItem() {
         //Does different things depending if the current Item is equipped or unequipped
@@ -104,6 +130,40 @@ public class ItemManager : MonoBehaviour
             }
         }
         else {
+        }
+    }
+    //This function sells/buys an item - If selling, it has a popUp first
+    public void BuySellCurrentitem() {
+        Item curItem = UIManager.Instance.currentItem;
+        //Buys the item if it is in the shop
+        if(curItem.InShop) {
+            if(UIManager.Instance.CurrentGold >= curItem.Price) {
+                UIManager.Instance.CurrentGold -= curItem.Price;
+                UnequippedItems.Add(curItem);
+                ShopItems.Remove(curItem);
+                curItem.InShop = false;
+                RefreshShopItemsUI();
+                RefreshUnequippedItemsUI();
+                UIManager.Instance.RefreshItemUI();
+            }
+            else {
+                UIManager.Instance.RefreshItemUI();
+            }
+        }
+        //if you are selling the item, a popUp shows up
+        else {
+            if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
+                //Holding shift skips the popUp
+                UIManager.Instance.SellCurItem();
+            }
+            else {
+                PopUp tempPopUp;
+                tempPopUp.ChosenCharacter = null;
+                tempPopUp.ChosenItem = curItem;
+                tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+                tempPopUp.Type = PopUpType.SellItem;
+                UIManager.Instance.WaitingPopUps.Add(tempPopUp);
+            }
         }
     }
 

@@ -43,11 +43,14 @@ public class QuestManager : MonoBehaviour
             QuestSlots.Add(reference);
             reference.gameObject.SetActive(false);
         }
-        for(int i = 0; i< STARTING_NUM_QUESTS; i++) {
-            Quest newQuest = CreateNewQuest(2, 1);
+        //THIS IS CREATED TOO EARLY IN THE GAME
+        /*List<Quest> newQuests = CreateNewQuestsUsingCurrent();
+        for(int i = 0; i< newQuests.Count; i++) {
+            Quest newQuest = newQuests[i];
             activeQuests++;
             QuestSlots[i].Reference = newQuest;
         }
+        */
     }
     //Triggered by the RunQuest Button, activates all active quests
     public void RunAllActiveQuests() {
@@ -57,19 +60,78 @@ public class QuestManager : MonoBehaviour
                 RunQuest(ref QuestSlots[i].Reference);
             }
         }
-        //Can I create new quests here?
-            //THiS DOESN"T WORK YET - NEED TO FIGURE OUT HOW TO MANAGE NEW QUESTS
-        /*activeQuests = 0;
-        for(int i = 0; i< STARTING_NUM_QUESTS; i++) {
-            Quest newQuest = CreateNewQuest(Random.Range(1, 4), 1);
-            activeQuests++;
-            QuestSlots[i].Reference = newQuest;
-        }
-        RefreshEntireQuestPage();
+        //Reduces number of active quests to 0
+        activeQuests = 0;
+        UIManager.Instance.SwitchItemQuestPage();
         foreach(Character chara in UIManager.Instance.allCharacters) {
             chara.inParty = false;
         }
-        */
+
+        //Check to see if this means you unlock a new character
+            //Calculation: 1/2 + 1 of alive characters are level X or higher, where X is the number of alive characters
+        List<Character> visibleCharacters = new List<Character>();
+        List<Character> livingCharacters = new List<Character>();
+        foreach(Character chara in UIManager.Instance.allCharacters) {
+            if(chara.gameObject.activeInHierarchy) {
+                visibleCharacters.Add(chara);
+                if(chara.alive) {
+                    livingCharacters.Add(chara);
+                }
+            }
+        }
+        int numChars = livingCharacters.Count;
+        int numCalc = 0;
+        foreach(Character chara in livingCharacters) {
+            if(chara.Level >= numChars) {
+                numCalc++;
+            }
+        }
+        if(numChars > 1 && numCalc >= Mathf.FloorToInt(numChars / 2f) + 1) {
+            //Create a new character
+            PopUp tempPopUp;
+            tempPopUp.ChosenCharacter = null;
+            tempPopUp.ChosenItem = null;
+            tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+            tempPopUp.Type = PopUpType.NewCharacter;
+            UIManager.Instance.WaitingPopUps.Add(tempPopUp);
+        }
+        //This second chance exists to replace a dead character
+            //Only happens if no characters are levelling up
+        else {
+            if(visibleCharacters.Count > livingCharacters.Count) {
+                bool charLvled = false;
+                foreach(Character chara in livingCharacters) {
+                    if(chara.LeveledUp) {
+                        charLvled = true;
+                    }
+                }
+                if(!charLvled) {
+                    //See the longest time a character has been dead for
+                    Character reviveChar = null;
+                    for(int i = 0; i < visibleCharacters.Count; i++) {
+                        if(!visibleCharacters[i].alive) {
+                            visibleCharacters[i].timeSinceDeath++;
+                            if(visibleCharacters[i].timeSinceDeath > visibleCharacters[i].Level) {
+                                reviveChar = visibleCharacters[i];
+                            }
+                        }
+                    }
+                    if(reviveChar != null) {
+                        reviveChar.Level = 0;
+                        reviveChar.alive = true;
+                        reviveChar.gameObject.SetActive(true);
+                    }
+                    //Create a new character
+                    PopUp tempPopUp;
+                    tempPopUp.ChosenCharacter = null;
+                    tempPopUp.ChosenItem = null;
+                    tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+                    tempPopUp.Type = PopUpType.NewCharacter;
+                    UIManager.Instance.WaitingPopUps.Add(tempPopUp);
+                }
+            }
+        }
+        
     }
     //This script runs through a quest, outputting needed 
     public void RunQuest(ref Quest quest) {
@@ -319,6 +381,119 @@ public class QuestManager : MonoBehaviour
         //Then, UI is refreshed
         RefreshEntireQuestPage();
     }
+    //This function creates several quests, depending on the characters who are currently alive
+        //Will always generate twice the needed quests - one set rounding down in level, one rounding up
+    private const int MIN_QUEST_SIZE = 2;
+    private const int MAX_QUEST_SIZE = 6;
+    public List<Quest> CreateNewQuestsUsingCurrent() {
+        //First, needs to delete any unused Items from old quests
+        foreach(QuestReference reference in QuestSlots) {
+            if(reference.Reference.ItemReward != null ) {
+                foreach(Item item in reference.Reference.ItemReward) {
+                    //If the unequipped items do not contain this item, it is destroyed
+                    if(!UIManager.Instance.GeneralItemManager.UnequippedItems.Contains(item)) {
+                        Destroy(item.gameObject);
+                    }
+                }
+                reference.Reference.ItemReward = null;
+            }
+        }
+        List<Quest> newQuests = new List<Quest>();
+        List<Character> liveChars = new List<Character>();
+        float aveLevel = 0;//Average level of a living character
+        int maxLevelOnQuest = 0;
+        int minLevelOnQuest = 10;
+        foreach(Character chara in UIManager.Instance.allCharacters) {
+            if(chara.gameObject.activeInHierarchy && chara.alive) {
+                liveChars.Add(chara);
+                aveLevel += chara.Level;
+                if(chara.Level > maxLevelOnQuest) {
+                    maxLevelOnQuest = chara.Level;
+                }
+                if(chara.Level < minLevelOnQuest) {
+                    minLevelOnQuest = chara.Level;
+                }
+            }
+        }
+        aveLevel = aveLevel / (float)liveChars.Count;
+        //Will only create 2 quests total if the number of chars isn't high enough
+        if(liveChars.Count < MIN_QUEST_SIZE * 2) {
+            newQuests.Add(CreateNewQuest(liveChars.Count, Mathf.CeilToInt(aveLevel)));
+            newQuests.Add(CreateNewQuest(liveChars.Count, Mathf.FloorToInt(aveLevel)));
+            return newQuests;
+        }
+        else {
+            //Runs through this twice, so you get enough quests
+            for(int i = 0; i < 2; i++) {
+                int numCharAccountedFor = liveChars.Count;
+                List<int> newQuestNumbers = new List<int>();
+                while(numCharAccountedFor > MIN_QUEST_SIZE * 2) {
+                    int maxSize = Mathf.Clamp(numCharAccountedFor, MIN_QUEST_SIZE, MAX_QUEST_SIZE);
+                    int newQuestSize = Random.Range(MIN_QUEST_SIZE, maxSize);
+                    newQuestNumbers.Add(newQuestSize);
+                    numCharAccountedFor -= newQuestSize;
+                }
+                //Deals with last few characters
+                if(numCharAccountedFor == MIN_QUEST_SIZE * 2) {
+                    int rnd = Random.Range(0, 2);
+                    if(rnd == 0) {
+                        newQuestNumbers.Add(numCharAccountedFor);
+                    }
+                    else {
+                        newQuestNumbers.Add(MIN_QUEST_SIZE);
+                        newQuestNumbers.Add(MIN_QUEST_SIZE);
+                    }
+                }
+                else {
+                    newQuestNumbers.Add(numCharAccountedFor);
+                }
+                //For each quest, it is given an appropriate quest level
+                int lvlsToDistribute = Mathf.RoundToInt(aveLevel * liveChars.Count);
+                List<int> newQuestLevels = new List<int>();
+                for(int j = 0; j < newQuestNumbers.Count; j++) {
+                    newQuestLevels.Add(minLevelOnQuest);
+                    lvlsToDistribute -= minLevelOnQuest * newQuestNumbers[j];
+                }
+                if(i == 0) {
+                    //Rounds up
+                    while(lvlsToDistribute > 0) {
+                        int rnd = Random.Range(0, newQuestLevels.Count);
+                        //Adds a level, and removes that much from the levels to distribute
+                        newQuestLevels[rnd] += 1;
+                        lvlsToDistribute -= newQuestNumbers[rnd];
+                        //If it reaches max level, it is removed, and a quest is created
+                        if(newQuestLevels[rnd] >= maxLevelOnQuest) {
+                            newQuests.Add(CreateNewQuest(newQuestNumbers[rnd], newQuestLevels[rnd]));
+                            newQuestLevels.RemoveAt(rnd);
+                            newQuestNumbers.RemoveAt(rnd);
+                        }
+                    }
+                }
+                else {
+                    //Rounds down
+                    while(lvlsToDistribute > MIN_QUEST_SIZE) {
+                        int rnd = Random.Range(0, newQuestLevels.Count);
+                        //Adds a level, and removes that much from the levels to distribute
+                        newQuestLevels[rnd] += 1;
+                        lvlsToDistribute -= newQuestNumbers[rnd];
+                        //If it reaches max level, it is removed, and a quest is created
+                        if(newQuestLevels[rnd] >= maxLevelOnQuest) {
+                            newQuests.Add(CreateNewQuest(newQuestNumbers[rnd], newQuestLevels[rnd]));
+                            newQuestLevels.RemoveAt(rnd);
+                            newQuestNumbers.RemoveAt(rnd);
+                        }
+                    }
+                }
+                //Then, remaining questnumbers are turned into quests
+                while(newQuestLevels.Count > 0) {
+                    newQuests.Add(CreateNewQuest(newQuestNumbers[0], newQuestLevels[0]));
+                    newQuestLevels.RemoveAt(0);
+                    newQuestNumbers.RemoveAt(0);
+                }
+            }
+            return newQuests;
+        }
+    }
     //Creating a new quest depends only on the number of characters and the level of the quest
     public static Quest CreateNewQuest(int numChar, int lvl) {
         Quest tempQuest = new Quest();
@@ -326,8 +501,8 @@ public class QuestManager : MonoBehaviour
         tempQuest.Title = "";
         tempQuest.partySize = numChar;
         tempQuest.Level = lvl;
-        tempQuest.goldReward = CalculateGoldReward(numChar, lvl);
         tempQuest.ItemReward = CreateItemReward(numChar, lvl);
+        tempQuest.goldReward = CalculateGoldReward(numChar, lvl, tempQuest.ItemReward);
         Party tempParty = new Party();
         tempParty.Members = new List<Character>();
         tempParty.PartyPower = 0;
@@ -342,15 +517,38 @@ public class QuestManager : MonoBehaviour
     }
 
     //This function determines a gold reward for a quest
-    private static int CalculateGoldReward(int numChar, int lvl) {
+    private const int AVE_GOLD_PER_LEVEL_CHAR = 15;
+    private static int CalculateGoldReward(int numChar, int lvl, List<Item> currItemReward) {
         int tempReward = 0;
         //TODO: Determine the correct amount of reward per quest
-        tempReward += numChar * lvl;
-        tempReward += Random.Range(-5, 5);
+        tempReward += numChar * lvl * AVE_GOLD_PER_LEVEL_CHAR;
+        tempReward += Random.Range(0, AVE_GOLD_PER_LEVEL_CHAR / 2);
+        //Reduce Temp reward depending on ItemRewards
+        foreach(Item item in currItemReward) {
+            tempReward -= item.Price;
+        }
+        //Has a minimum reward amount
+        if(tempReward < 0) {
+            tempReward = Random.Range(AVE_GOLD_PER_LEVEL_CHAR / 3, AVE_GOLD_PER_LEVEL_CHAR);
+        }
         return tempReward;
     }
+    //This function determines what items are received for a quest
+    private const int MAX_ITEM_REWARDS = 4;
     private static List<Item> CreateItemReward(int numChar, int lvl) {
-        return new List<Item>();
+        List<Item> rewardList = new List<Item>();
+        //Always generates a potion
+        Item newItem = UIManager.Instance.GenerateItem.PotionGeneration(lvl);
+        rewardList.Add(newItem);
+        //Has a chance to get a few more items, depending on the lvl and Number of Characters
+        float rnd = Random.Range(0f, 1f);
+        for(int i = 1; i < MAX_ITEM_REWARDS; i++) {
+            if(rnd < lvl * numChar * (0.15f / (MAX_ITEM_REWARDS - 1) * i )) {
+                newItem = UIManager.Instance.GenerateItem.BasicGeneration(Random.Range(1, lvl +1));
+                rewardList.Add(newItem);
+            }
+        } 
+        return rewardList;
     }
 
     //Calculates how much of a target a character is in the RunQuest-Party.PowerTarget section

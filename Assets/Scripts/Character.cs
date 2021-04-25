@@ -80,9 +80,11 @@ public class Character : MonoBehaviour
     public void EndQuest(ref Quest quest) {
         refQuest = quest;
         //trigger Item EndQuest Abilities
-        for(int i = 0; i < Inventory.Count; i++) {
+        for(int i = Inventory.Count - 1; i >= 0; i--) {
             Inventory[i].EndQuest(ref quest);
         }
+        //then removes all items that were destroyed //NOT WORKING
+        //Inventory.RemoveAll(item => item == null);
         //Triggers personal ability
         OnQuestEndAbility(this, AbilityAffectedStats);
         //Character also gains experience (need to calculate this)
@@ -97,9 +99,20 @@ public class Character : MonoBehaviour
     }
 
     //This function occurs when the character dies
+    public int timeSinceDeath;//How long it's been since this character has died - after a certain point, you unlock a new character
     public void Die(ref Quest quest) {
         alive = false;
+        _leveledUp = false;
+        baseHealth = 0;
+        curHealth = 0;
+        xp = 0;
+        timeSinceDeath = 0;
+        UIManager.Instance.livingCharacters--;
         //NEED TO: Delete items, show up on the PopUp, and More
+        foreach(Item item in Inventory) {
+            Destroy(item.gameObject);
+        }
+        //gameObject.SetActive(false);
     }
 
     //These objects are UI objects that this affects
@@ -142,43 +155,49 @@ public class Character : MonoBehaviour
     [SerializeField] private List<Image> InventoryImage;
     //This function refreshes the UI associated with this specific character
     public void RefreshUI() {
-        _nameText.text = CharacterName;
-        _levelText.text = "Level " + Level.ToString();
-        //Health is slight more complicated
-        _healthText.text = "HP: " + curHealth.ToString() + "/" + (baseHealth + healthModifier).ToString();
-        HealthBar.fillAmount = (float)curHealth / (float)(baseHealth + healthModifier);
-        /*
-        StrText.text = Stat[StatType.Strength].ToString();
-        if(StatModifier[StatType.Strength] > 0) {
-            StrText.text += " (+" + StatModifier[StatType.Strength].ToString() + ")";
+        if(alive) {
+            _nameText.text = CharacterName;
+            _levelText.text = "Level " + Level.ToString();
+            //Health is slight more complicated
+            _healthText.text = "HP: " + curHealth.ToString() + "/" + (baseHealth + healthModifier).ToString();
+            HealthBar.fillAmount = (float)curHealth / (float)(baseHealth + healthModifier);
+            /*
+            StrText.text = Stat[StatType.Strength].ToString();
+            if(StatModifier[StatType.Strength] > 0) {
+                StrText.text += " (+" + StatModifier[StatType.Strength].ToString() + ")";
+            }
+            else if(StatModifier[StatType.Strength] < 0) {
+                StrText.text += " (-" + Mathf.Abs(StatModifier[StatType.Strength]).ToString() + ")";
+            }
+            */
+            //Trying out a method where the different Stat Text displays are all in a dictionary - will have to be declared separately from in the Inspector
+            for(int i = 0; i < StatType.GetNames(typeof(StatType)).Length; i++) {
+                _statText[(StatType)i].text = Stat[(StatType)i].ToString();
+                if(StatModifier[(StatType)i] > 0) {
+                _statText[(StatType)i].text += " + " + StatModifier[(StatType)i].ToString();
+                }
+                else if(StatModifier[(StatType)i] < 0) {
+                    _statText[(StatType)i].text += " - " + Mathf.Abs(StatModifier[(StatType)i]).ToString();
+                }
+            }
+            //Each inventory image is set according to the corresponding item in the inventory
+            for(int i = 0; i < InventoryImage.Count; i++) {
+                //If the object doesn't exist, it is invisible
+                if(Inventory.Count <= i || Inventory[i] == null) {
+                    InventoryImage[i].enabled = false;
+                    InventoryImage[i].GetComponent<ItemReference>().Reference = null;
+                }
+                else {
+                    //Otherwise, the image matches that of the Item
+                    InventoryImage[i].enabled = true;
+                    InventoryImage[i].sprite = Inventory[i].Sprite;
+                    InventoryImage[i].GetComponent<ItemReference>().Reference = Inventory[i];
+                }
+            }
         }
-        else if(StatModifier[StatType.Strength] < 0) {
-            StrText.text += " (-" + Mathf.Abs(StatModifier[StatType.Strength]).ToString() + ")";
-        }
-        */
-        //Trying out a method where the different Stat Text displays are all in a dictionary - will have to be declared separately from in the Inspector
-        for(int i = 0; i < StatType.GetNames(typeof(StatType)).Length; i++) {
-            _statText[(StatType)i].text = Stat[(StatType)i].ToString();
-            if(StatModifier[(StatType)i] > 0) {
-               _statText[(StatType)i].text += " + " + StatModifier[(StatType)i].ToString();
-            }
-            else if(StatModifier[(StatType)i] < 0) {
-                _statText[(StatType)i].text += " - " + Mathf.Abs(StatModifier[(StatType)i]).ToString();
-            }
-        }
-        //Each inventory image is set according to the corresponding item in the inventory
-        for(int i = 0; i < InventoryImage.Count; i++) {
-            //If the object doesn't exist, it is invisible
-            if(Inventory.Count <= i || Inventory[i] == null) {
-                InventoryImage[i].enabled = false;
-                InventoryImage[i].GetComponent<ItemReference>().Reference = null;
-            }
-            else {
-                //Otherwise, the image matches that of the Item
-                InventoryImage[i].enabled = true;
-                InventoryImage[i].sprite = Inventory[i].Sprite;
-                InventoryImage[i].GetComponent<ItemReference>().Reference = Inventory[i];
-            }
+        else {
+            //If not alive, things happen differently
+            _nameText.text = "DEAD";
         }
     }
 
@@ -190,5 +209,9 @@ public class Character : MonoBehaviour
         tempHealthBase += Level / 4f * Stat[StatType.Endurance];
         baseHealth = Mathf.CeilToInt(tempHealthBase);
         curHealth += Mathf.CeilToInt(baseHealth - maxHealthTemp);
+    }
+    //Resets XP for when you get a new character
+    public void ResetXP() {
+        xp = 0;
     }
 }

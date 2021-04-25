@@ -22,7 +22,8 @@ public enum PopUpType {
     None,
     NewCharacter,
     CharacterLevelUp,
-    QuestComplete
+    QuestComplete,
+    SellItem
 }
 //This struct makes use of the PopUpType by declaring any objects that need to be declared
 public struct PopUp {
@@ -40,7 +41,6 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     public Character currentCharacter;
     public Item currentItem;
     public QuestReference currentQuestReference;
-    private int _currentGold;
     public int CurrentGold;
     //Raycasting Stuff for managing 
     GraphicRaycaster m_Raycaster;
@@ -89,6 +89,18 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         //if therere are no PopUps, but you have the option for PopUps, then PopUps occur
         if(curPopUp == PopUpType.None && WaitingPopUps.Count > 0) {
             StartPopUp();
+        }
+        //After all popUps fire, check to see if new quests need to be created
+        else if(curPopUp == PopUpType.None) {
+            if(GeneralQuestManager.activeQuests == 0) {
+                List<Quest> newQuests = GeneralQuestManager.CreateNewQuestsUsingCurrent();
+                for(int i = 0; i< newQuests.Count; i++) {
+                    Quest newQuest = newQuests[i];
+                    GeneralQuestManager.activeQuests++;
+                    GeneralQuestManager.QuestSlots[i].Reference = newQuest;
+                }
+                GeneralItemManager.UpdateShop();
+            }
         }
         if(Input.GetMouseButtonDown(0)) {
             m_PointerEventData = new PointerEventData(m_EventSystem);
@@ -249,20 +261,6 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
 
     //This function refreshes the Buttons for the selected Item, showing what your options are
     public void RefreshItemButtonUI() {
-        TMP_Text shopText = SellPurchaseButton.GetComponentInChildren<TMP_Text>();
-        if(currentItem.InShop) {
-            shopText.text = "Buy Item";
-            if(CurrentGold >= currentItem.Price) {
-                SellPurchaseButton.interactable = true;
-            }
-            else {
-                SellPurchaseButton.interactable = false;
-            }
-        }
-        else {
-            shopText.text = "Sell Item";
-            SellPurchaseButton.interactable = true;
-        }
         TMP_Text equipText = EquipUnequipButton.GetComponentInChildren<TMP_Text>();
         if(currentItem.EquippedCharacter != null) {
             equipText.text = "Unequip Item";
@@ -276,6 +274,22 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             else {
                 EquipUnequipButton.interactable = false;
             }
+        }
+        TMP_Text shopText = SellPurchaseButton.GetComponentInChildren<TMP_Text>();
+        if(currentItem.InShop) {
+            shopText.text = "Buy Item";
+            //items in shop are not equippable
+            EquipUnequipButton.interactable = false;
+            if(CurrentGold >= currentItem.Price) {
+                SellPurchaseButton.interactable = true;
+            }
+            else {
+                SellPurchaseButton.interactable = false;
+            }
+        }
+        else {
+            shopText.text = "Sell Item";
+            SellPurchaseButton.interactable = true;
         }
     }
 
@@ -321,6 +335,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private GameObject NewCharacterPopUp;
     [SerializeField] private GameObject CharacterLevelUpPopUp;
     [SerializeField] private GameObject QuestCompletePopUp;
+    [SerializeField] private GameObject SellItemPopUp;
     //This function starts a new PopUp, using the 0th element of the waitingPopUp List
     public void StartPopUp() {
         PopUp tempPopUp = WaitingPopUps[0];
@@ -343,6 +358,11 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             QuestCompletePopUp.SetActive(true);
             completedQuest = tempPopUp.ChosenQuest;
             RefreshQuestCompletePopUp();
+        }
+        else if(curPopUp == PopUpType.SellItem) {
+            SellItemPopUp.SetActive(true);
+            SellItemItem.Reference = tempPopUp.ChosenItem;
+            RefreshSellItemPopUp();
         }
     }
     //This function ends the current popUp, returning to the base screen
@@ -433,6 +453,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         }
         //First, character gets their name
         newCharacter.CharacterName = NameField.text;
+        newCharacter.Level = 0;
         //To assign the ability, we return to Character Generation Code
         GenerateCharacter.AssignCharacterWithAbility(newCharacter, SelectedAbility, 1);
         abilityIsSelected = false;
@@ -450,6 +471,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         currentItem = startPotion;
         currentCharacter = newCharacter;
         startPotion.Equip(newCharacter);
+        newCharacter.ResetXP();
         RefreshLevelUpPopUp();
     }
 
@@ -635,12 +657,56 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         foreach(Item item in completedQuest.myParty.LuckItemReward) {
             GeneralItemManager.UnequippedItems.Add(item);
         }
-        _currentGold += (completedQuest.goldReward + completedQuest.myParty.LuckGoldReward);
+        CurrentGold += (completedQuest.goldReward + completedQuest.myParty.LuckGoldReward);
         foreach(Character chara in completedQuest.myParty.Members) {
             chara.RefreshUI();
         }
         RefreshCharacterUI();
+        RefreshItemUI();
+        currentItem = GeneralItemManager.UnequippedItems[GeneralItemManager.UnequippedItems.Count - 1];
+        GeneralItemManager.RefreshShopItemsUI();
+        GeneralItemManager.RefreshUnequippedItemsUI();
         QuestCompletePopUp.SetActive(false);
+        EndPopUp();
+    }
+
+    //Pop-Up Function 4: Confirm the Selling of an Item
+    [Header("PopUp Window 4: Selling an Item")]
+    [SerializeField] private TMP_Text SellItemDescription;
+    [SerializeField] private ItemReference SellItemItem;
+    private void SellItemRaycast(List<RaycastResult> results) {
+        //Does nothing
+    }
+    public void RefreshSellItemPopUp() {
+        SellItemDescription.text = "You are about to sell " + SellItemItem.Reference.ItemName + " for " + CalculateSellPrice(SellItemItem.Reference.Price).ToString() + " gold.";
+        SellItemItem.myImage.sprite = SellItemItem.Reference.Sprite;
+    }
+    public void SellCurItem() {
+        if(currentItem.EquippedCharacter == null) {
+            GeneralItemManager.UnequippedItems.Remove(currentItem);
+            CurrentGold += CalculateSellPrice(currentItem.Price);
+            Destroy(currentItem.gameObject);
+            GeneralItemManager.RefreshUnequippedItemsUI();
+        }
+        else {
+            currentItem.EquippedCharacter.Inventory.Remove(currentItem);
+            CurrentGold += CalculateSellPrice(currentItem.Price);
+            currentItem.EquippedCharacter.RefreshUI();
+            Destroy(currentItem.gameObject);
+            RefreshCharacterUI();
+            
+        }
+        if(GeneralItemManager.UnequippedItems.Count > 0) {
+            currentItem = GeneralItemManager.UnequippedItems[GeneralItemManager.UnequippedItems.Count - 1];
+        }
+        else if(GeneralItemManager.ShopItems.Count > 0) {
+            currentItem = GeneralItemManager.ShopItems[0];
+        }
+        RefreshItemUI();
+            
+    }
+    public void CloseSellItemPopUp() {
+        SellItemPopUp.SetActive(false);
         EndPopUp();
     }
 }
