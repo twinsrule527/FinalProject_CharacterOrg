@@ -452,9 +452,9 @@ MonoBehaviour:
     Type: 2
     Level: 1
     PrimaryModifier: 03000000
-    PrimaryModifierValue: 01000000
+    PrimaryModifierValue: 02000000
     SecondaryModifier: 0400000002000000
-    SecondaryModifierValue: 0100000001000000
+    SecondaryModifierValue: 0100000002000000
     AbilityStats: 
     Ability: 0
   - ItemName: Steel Breastplate
@@ -589,7 +589,1122 @@ MonoBehaviour:
     SecondaryModifierValue: 02000000
     AbilityStats: 
     Ability: 0
-  test: {fileID: -4358107112616754020, guid: 981446e4a075c8941a3e4776b88df279, type: 3}
+  - ItemName: Shadowed Sword
+    ItemSprite: {fileID: 149778666627672531, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 2
+    PrimaryModifier: 01000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0000000002000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 00000000
+    Ability: 4
+  - ItemName: Crystal Blade
+    ItemSprite: {fileID: -2799373485085324749, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 2
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 01000000
+    Ability: 18
+  - ItemName: BroadHammer
+    ItemSprite: {fileID: -5300914672564575093, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 2
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0000000002000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 00000000
+    Ability: 10
+  - ItemName: Ornate Bow
+    ItemSprite: {fileID: -1438988719777534301, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 2
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0000000001000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 01000000
+    Ability: 13
+  - ItemName: Sylvan Tunic
+    ItemSprite: {fileID: 8419240518060320564, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 2
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0200000001000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 01000000
+    Ability: 3
+  - ItemName: Damaged Chest
+    ItemSprite: {fileID: 6784398808608819871, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 2
+    PrimaryModifier: 01000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 02000000
+    Ability: 1
+  - ItemName: Decorations of War
+    ItemSprite: {fileID: -2176719259958357, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 2
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 010000000400000003000000
+    SecondaryModifierValue: 010000000100000001000000
+    AbilityStats: 00000000
+    Ability: 5
+  - ItemName: Night Torso
+    ItemSprite: {fileID: -6242022031208664429, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 2
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 01000000
+    Ability: 11
+  - ItemName: Lion's Aegis
+    ItemSprite: {fileID: -2528247947583666677, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 2
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 02000000
+    Ability: 12
+  - ItemName: Crossed Ward
+    ItemSprite: {fileID: 7273092606535493188, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 2
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 00000000
+    Ability: 2
+  - ItemName: Bronzed Shield
+    ItemSprite: {fileID: -4920174716268022450, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 2
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0200000004000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 04000000
+    Ability: 11
+  - ItemName: Rich Cover
+    ItemSprite: {fileID: -4514560407112762456, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 2
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 03000000
+    Ability: 18
+  - ItemName: Entrusted Ring
+    ItemSprite: {fileID: 677502270059275527, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 2
+    PrimaryModifier: 01000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0400000000000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 04000000
+    Ability: 9
+  - ItemName: Wurm's Charm
+    ItemSprite: {fileID: 1751530225748308311, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 2
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 01000000
+    Ability: 4
+  - ItemName: Simple Band
+    ItemSprite: {fileID: 4028607064558066358, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 2
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0000000002000000
+    SecondaryModifierValue: 0100000001000000
+    AbilityStats: 02000000
+    Ability: 10
+  - ItemName: Surging Ring
+    ItemSprite: {fileID: -5004764601928154522, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 2
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 01000000
+    SecondaryModifier: 0100000003000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 03000000
+    Ability: 12
+  - ItemName: Blazing Sword
+    ItemSprite: {fileID: -2579257858904185128, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 3
+    PrimaryModifier: 01000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0100000002000000
+    AbilityStats: 00000000
+    Ability: 17
+  - ItemName: Gilded Dagger
+    ItemSprite: {fileID: 7582991080991620542, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 3
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 07000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 04000000
+    Ability: 6
+  - ItemName: Mossy Hatchet
+    ItemSprite: {fileID: 8178667818110783756, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 3
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0000000002000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 0400000000000000
+    Ability: 16
+  - ItemName: Assassin's Crossbow
+    ItemSprite: {fileID: -8274926072344801659, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 3
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 0300000004000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 02000000
+    Ability: 14
+  - ItemName: Reinforced Chainmail
+    ItemSprite: {fileID: -5258635047433521897, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 3
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0000000003000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 02000000
+    Ability: 4
+  - ItemName: General's Outfit
+    ItemSprite: {fileID: 2008269318842493528, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 3
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 020000000100000000000000
+    SecondaryModifierValue: 0100000002000000
+    AbilityStats: 01000000
+    Ability: 12
+  - ItemName: Gladiatorial Plate
+    ItemSprite: {fileID: 4993359749979645211, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 3
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 07000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 02000000
+    Ability: 6
+  - ItemName: Enhanced Chestplate
+    ItemSprite: {fileID: 4560907441486953998, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 3
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 0100000002000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 01000000
+    Ability: 2
+  - ItemName: Crested Shield
+    ItemSprite: {fileID: -6360074097839947756, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0100000002000000
+    SecondaryModifierValue: 0100000002000000
+    AbilityStats: 01000000
+    Ability: 14
+  - ItemName: Shimmering Shield
+    ItemSprite: {fileID: 6276926167765710962, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Studded Shield
+    ItemSprite: {fileID: -5736639840620344096, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 03000000
+    Ability: 17
+  - ItemName: Triangular Defense
+    ItemSprite: {fileID: -2545628400282538105, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0200000003000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 03000000
+    Ability: 4
+  - ItemName: Demon's Ring
+    ItemSprite: {fileID: -4279905431361334837, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 3
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 0100000002000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 03000000
+    Ability: 3
+  - ItemName: Sunny Ring
+    ItemSprite: {fileID: -7007561880444651266, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 3
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0400000002000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 04000000
+    Ability: 10
+  - ItemName: Forceful Crest
+    ItemSprite: {fileID: 4989145604512176204, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 3
+    PrimaryModifier: 01000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 00000000
+    Ability: 9
+  - ItemName: Warped Ring
+    ItemSprite: {fileID: -5313693046750297233, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 3
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 05000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 04000000
+    Ability: 2
+  - ItemName: Corrupted Blade
+    ItemSprite: {fileID: 3813490144303830361, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 4
+    PrimaryModifier: 00000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 0400000002000000
+    SecondaryModifierValue: 0300000002000000
+    AbilityStats: 01000000
+    Ability: 1
+  - ItemName: Butcher's Cleaver
+    ItemSprite: {fileID: -5808141155813069778, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 4
+    PrimaryModifier: 0000000003000000
+    PrimaryModifierValue: 0400000003000000
+    SecondaryModifier: 0100000002000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 01000000
+    Ability: 0
+  - ItemName: Swift Bow
+    ItemSprite: {fileID: -1285378431910252262, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 4
+    PrimaryModifier: 0100000004000000
+    PrimaryModifierValue: 0300000002000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 5
+  - ItemName: Horned Plate
+    ItemSprite: {fileID: 4994454594068937097, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 4
+    PrimaryModifier: 0100000003000000
+    PrimaryModifierValue: 0200000002000000
+    SecondaryModifier: 0200000000000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 0000000002000000
+    Ability: 16
+  - ItemName: Leather Plate
+    ItemSprite: {fileID: 2598265999045994666, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 4
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 0200000004000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 02000000
+    Ability: 9
+  - ItemName: Diluted Robes
+    ItemSprite: {fileID: -5939215888686670893, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 4
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0300000002000000
+    SecondaryModifier: 0300000000000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 02000000
+    Ability: 17
+  - ItemName: Faithful Shield
+    ItemSprite: {fileID: -8432607072014239079, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 4
+    PrimaryModifier: 0200000004000000
+    PrimaryModifierValue: 0300000003000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 02000000
+    Ability: 3
+  - ItemName: Faithful Shield
+    ItemSprite: {fileID: -8432607072014239079, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 4
+    PrimaryModifier: 0200000004000000
+    PrimaryModifierValue: 0300000003000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 02000000
+    Ability: 3
+  - ItemName: Checkered Shield
+    ItemSprite: {fileID: -1764045043543372687, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 4
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 0000000001000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 04000000
+    Ability: 1
+  - ItemName: Wurmscale Shield
+    ItemSprite: {fileID: -7849928706458458985, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 4
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0300000002000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0100000002000000
+    AbilityStats: 02000000
+    Ability: 11
+  - ItemName: Iron Band
+    ItemSprite: {fileID: 6470856447970724921, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 4
+    PrimaryModifier: 0400000003000000
+    PrimaryModifierValue: 0200000002000000
+    SecondaryModifier: 000000000100000002000000
+    SecondaryModifierValue: 030000000300000003000000
+    AbilityStats: 02000000
+    Ability: 0
+  - ItemName: Ring of Rainbows
+    ItemSprite: {fileID: 1880307527676791042, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 4
+    PrimaryModifier: 0400000001000000
+    PrimaryModifierValue: 0400000002000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 02000000
+    Ability: 13
+  - ItemName: Crystal Luck
+    ItemSprite: {fileID: 7060798331153128303, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 4
+    PrimaryModifier: 0400000000000000
+    PrimaryModifierValue: 0200000003000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 04000000
+    Ability: 4
+  - ItemName: Jagged Cutlass
+    ItemSprite: {fileID: -3611731591158697938, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 5
+    PrimaryModifier: 0000000004000000
+    PrimaryModifierValue: 0500000002000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 04000000
+    Ability: 17
+  - ItemName: Blade of Light
+    ItemSprite: {fileID: -6306214961795287615, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 5
+    PrimaryModifier: 0100000002000000
+    PrimaryModifierValue: 0400000004000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 01000000
+    Ability: 10
+  - ItemName: Passion Bow
+    ItemSprite: {fileID: -2560659844553957796, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 5
+    PrimaryModifier: 0000000003000000
+    PrimaryModifierValue: 0400000003000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 00000000
+    Ability: 12
+  - ItemName: Pink Outfit
+    ItemSprite: {fileID: -4717626913637711119, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0500000003000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 03000000
+    Ability: 7
+  - ItemName: Gold-Trimmed Robe
+    ItemSprite: {fileID: -7491084298897844696, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 0100000004000000
+    PrimaryModifierValue: 0400000005000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 0200000001000000
+    Ability: 16
+  - ItemName: Shifting Armor
+    ItemSprite: {fileID: -1830775292724261770, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 08000000
+    SecondaryModifier: 0000000003000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 03000000
+    Ability: 15
+  - ItemName: Emerald Shield
+    ItemSprite: {fileID: 3954294113065891932, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 5
+    PrimaryModifier: 0200000004000000
+    PrimaryModifierValue: 0400000004000000
+    SecondaryModifier: 0100000003000000
+    SecondaryModifierValue: 0300000001000000
+    AbilityStats: 00000000
+    Ability: 18
+  - ItemName: Burning Shield
+    ItemSprite: {fileID: 6206815139073225341, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 5
+    PrimaryModifier: 0100000000000000
+    PrimaryModifierValue: 0600000005000000
+    SecondaryModifier: 0200000004000000
+    SecondaryModifierValue: 0500000004000000
+    AbilityStats: 01000000
+    Ability: 6
+  - ItemName: Banner Aegis
+    ItemSprite: {fileID: 342254843383814740, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 5
+    PrimaryModifier: 0000000002000000
+    PrimaryModifierValue: 0500000003000000
+    SecondaryModifier: 0400000003000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 03000000
+    Ability: 9
+  - ItemName: Ring of Warding
+    ItemSprite: {fileID: 1133073627898285654, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 5
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0400000004000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 02000000
+    Ability: 7
+  - ItemName: Charged Ring
+    ItemSprite: {fileID: 5203047024082222018, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 5
+    PrimaryModifier: 0400000002000000
+    PrimaryModifierValue: 0500000003000000
+    SecondaryModifier: 0100000000000000
+    SecondaryModifierValue: 0300000001000000
+    AbilityStats: 00000000
+    Ability: 14
+  - ItemName: Pricey Ring
+    ItemSprite: {fileID: -4729541788881793474, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 5
+    PrimaryModifier: 0100000003000000
+    PrimaryModifierValue: 0400000003000000
+    SecondaryModifier: 040000000000000002000000
+    SecondaryModifierValue: 020000000200000001000000
+    AbilityStats: 02000000
+    Ability: 18
+  - ItemName: Training Blade
+    ItemSprite: {fileID: 816931189915380840, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 6
+    PrimaryModifier: 000000000200000004000000
+    PrimaryModifierValue: 040000000400000003000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 02000000
+    Ability: 2
+  - ItemName: Enduring Pick
+    ItemSprite: {fileID: 2248183090437939371, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 6
+    PrimaryModifier: 0000000002000000
+    PrimaryModifierValue: 0500000005000000
+    SecondaryModifier: 0100000003000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 03000000
+    Ability: 8
+  - ItemName: Beetleshell Armor
+    ItemSprite: {fileID: 6001002501247670236, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 6
+    PrimaryModifier: 020000000100000004000000
+    PrimaryModifierValue: 060000000500000003000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 01000000
+    Ability: 9
+  - ItemName: Ancient Chestplate
+    ItemSprite: {fileID: 7324917899942515326, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 6
+    PrimaryModifier: 000000000200000001000000
+    PrimaryModifierValue: 080000000700000006000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 01000000
+    Ability: 6
+  - ItemName: Bony Guard
+    ItemSprite: {fileID: 3871761334410803311, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 6
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0600000004000000
+    SecondaryModifier: 0300000000000000
+    SecondaryModifierValue: 0300000001000000
+    AbilityStats: 0100000004000000
+    Ability: 16
+  - ItemName: Pristine Shield
+    ItemSprite: {fileID: 6029639901809881222, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 6
+    PrimaryModifier: 030000000200000001000000
+    PrimaryModifierValue: 040000000400000004000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0300000002000000
+    AbilityStats: 01000000
+    Ability: 0
+  - ItemName: Enhancement Ring
+    ItemSprite: {fileID: -1058166591000734556, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 6
+    PrimaryModifier: 000000000100000002000000
+    PrimaryModifierValue: 020000000300000003000000
+    SecondaryModifier: 0300000004000000
+    SecondaryModifierValue: 0300000003000000
+    AbilityStats: 01000000
+    Ability: 5
+  - ItemName: Ring of Time
+    ItemSprite: {fileID: 4679312186307102738, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 6
+    PrimaryModifier: 0100000003000000
+    PrimaryModifierValue: 0600000005000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 04000000
+    Ability: 7
+  - ItemName: Modifying Weapon
+    ItemSprite: {fileID: -8508973384377901747, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 7
+    PrimaryModifier: 0000000002000000
+    PrimaryModifierValue: 0800000007000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 04000000
+    Ability: 15
+  - ItemName: Bloody Axe
+    ItemSprite: {fileID: 5331073702517197526, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 7
+    PrimaryModifier: 0000000004000000
+    PrimaryModifierValue: 0500000005000000
+    SecondaryModifier: 0300000004000000
+    SecondaryModifierValue: 0400000002000000
+    AbilityStats: 00000000
+    Ability: 1
+  - ItemName: Volcanic Chestplate
+    ItemSprite: {fileID: -1226223256622377434, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 7
+    PrimaryModifier: 0200000004000000
+    PrimaryModifierValue: 0800000007000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 05000000
+    AbilityStats: 00000000
+    Ability: 19
+  - ItemName: Gaudy Breastplate
+    ItemSprite: {fileID: 5958791852334989252, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 7
+    PrimaryModifier: 010000000300000004000000
+    PrimaryModifierValue: 050000000500000005000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 02000000
+    Ability: 8
+  - ItemName: Royal Shield
+    ItemSprite: {fileID: 685035289912286496, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 7
+    PrimaryModifier: 0100000000000000
+    PrimaryModifierValue: 0700000006000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 04000000
+    Ability: 12
+  - ItemName: Reflective Guard
+    ItemSprite: {fileID: -8614984716821174799, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 7
+    PrimaryModifier: 020000000100000004000000
+    PrimaryModifierValue: 070000000400000003000000
+    SecondaryModifier: 03000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 01000000
+    Ability: 7
+  - ItemName: Ring of Seeing
+    ItemSprite: {fileID: 4885142456612819248, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 7
+    PrimaryModifier: 0200000004000000
+    PrimaryModifierValue: 0800000003000000
+    SecondaryModifier: 0100000003000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 04000000
+    Ability: 14
+  - ItemName: Ring of Fear
+    ItemSprite: {fileID: 4258023664618844087, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 7
+    PrimaryModifier: 010000000300000002000000
+    PrimaryModifierValue: 050000000400000004000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 8
+  - ItemName: Grass Ring
+    ItemSprite: {fileID: 5496080404110683783, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 8
+    PrimaryModifier: 0100000003000000
+    PrimaryModifierValue: 0900000008000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 00000000
+    Ability: 19
+  - ItemName: Absorbing Shield
+    ItemSprite: {fileID: 1013489901253447070, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 8
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0700000005000000
+    SecondaryModifier: 0400000003000000
+    SecondaryModifierValue: 0300000003000000
+    AbilityStats: 01000000
+    Ability: 17
+  - ItemName: Frightening Torso
+    ItemSprite: {fileID: -2857717792027594263, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 8
+    PrimaryModifier: 02000000000000000300000004000000
+    PrimaryModifierValue: 06000000050000000400000003000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 01000000
+    Ability: 0
+  - ItemName: Sword of Storms
+    ItemSprite: {fileID: -1298167449283036218, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 8
+    PrimaryModifier: 000000000100000004000000
+    PrimaryModifierValue: 060000000400000003000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 05000000
+    AbilityStats: 04000000
+    Ability: 8
+  - ItemName: Decaying Bow
+    ItemSprite: {fileID: 6124130109093853780, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 9
+    PrimaryModifier: 010000000000000003000000
+    PrimaryModifierValue: 090000000800000007000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 05000000
+    AbilityStats: 04000000
+    Ability: 19
+  - ItemName: Wide Chestplate
+    ItemSprite: {fileID: 5093004981928745804, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 9
+    PrimaryModifier: 0200000003000000
+    PrimaryModifierValue: 0800000008000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 05000000
+    AbilityStats: 04000000
+    Ability: 7
+  - ItemName: Twisting Shield
+    ItemSprite: {fileID: 45925265316148882, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 9
+    PrimaryModifier: 010000000200000003000000
+    PrimaryModifierValue: 060000000500000005000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 04000000
+    Ability: 13
+  - ItemName: Dimensional Ring
+    ItemSprite: {fileID: 2658983714858233852, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 9
+    PrimaryModifier: 0100000002000000
+    PrimaryModifierValue: 0900000009000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 04000000
+    Ability: 15
+  - ItemName: Tightening Brace
+    ItemSprite: {fileID: 5998041746755465989, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 10
+    PrimaryModifier: 0300000001000000
+    PrimaryModifierValue: 0800000007000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0400000004000000
+    AbilityStats: 01000000
+    Ability: 8
+  - ItemName: Manufactured Shield
+    ItemSprite: {fileID: -7709139010792754900, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 10
+    PrimaryModifier: 000000000200000003000000
+    PrimaryModifierValue: 0a0000000800000006000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 01000000
+    Ability: 19
+  - ItemName: Robes of Finality
+    ItemSprite: {fileID: 3854607898052518781, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 10
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0a00000006000000
+    SecondaryModifier: 0300000004000000
+    SecondaryModifierValue: 0400000004000000
+    AbilityStats: 00000000
+    Ability: 11
+  - ItemName: SWORD
+    ItemSprite: {fileID: -1209548224876763378, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 2
+    Level: 10
+    PrimaryModifier: 000000000100000004000000
+    PrimaryModifierValue: 080000000600000006000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 04000000
+    AbilityStats: 00000000
+    Ability: 3
+  test: {fileID: 6029639901809881222, guid: 3ee14e8210740d74ea64901f42d56fac, type: 3}
   ItemPrefab: {fileID: 4572399419581619050, guid: 7a6bf2eb5db897d46ac055c8b58ab28c,
     type: 3}
   Name: JOY
+  RerollWeapon:
+  - ItemName: Modifying Weapon
+    ItemSprite: {fileID: -8508973384377901747, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 7
+    PrimaryModifier: 0000000002000000
+    PrimaryModifierValue: 0800000007000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Modifying Weapon
+    ItemSprite: {fileID: -443999814429573111, guid: 981446e4a075c8941a3e4776b88df279,
+      type: 3}
+    Type: 1
+    Level: 7
+    PrimaryModifier: 000000000400000001000000
+    PrimaryModifierValue: 060000000500000005000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 01000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Modifying Weapon
+    ItemSprite: {fileID: -6578625334973250426, guid: 1461e86c52299ec46abeca59b134d1e4,
+      type: 3}
+    Type: 1
+    Level: 7
+    PrimaryModifier: 0000000001000000
+    PrimaryModifierValue: 0600000006000000
+    SecondaryModifier: 0200000003000000
+    SecondaryModifierValue: 0300000001000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Modifying Weapon
+    ItemSprite: {fileID: 4643800911165770717, guid: 654f158ce941fa64f9c29adfa5548027,
+      type: 3}
+    Type: 1
+    Level: 7
+    PrimaryModifier: 0100000004000000
+    PrimaryModifierValue: 0700000006000000
+    SecondaryModifier: 02000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 15
+  RerollArmor:
+  - ItemName: Shifting Armor
+    ItemSprite: {fileID: -1830775292724261770, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 08000000
+    SecondaryModifier: 0000000003000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Shifting Armor
+    ItemSprite: {fileID: -3694940016459990805, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 0200000001000000
+    PrimaryModifierValue: 0300000004000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0300000002000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Shifting Armor
+    ItemSprite: {fileID: -874698554648470218, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 0000000003000000
+    PrimaryModifierValue: 0500000004000000
+    SecondaryModifier: 0200000001000000
+    SecondaryModifierValue: 0200000001000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Shifting Armor
+    ItemSprite: {fileID: -2380765053531743799, guid: db37580cfacc86347a9832dc7e796b92,
+      type: 3}
+    Type: 2
+    Level: 5
+    PrimaryModifier: 0200000004000000
+    PrimaryModifierValue: 0300000006000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 15
+  RerollShield:
+  - ItemName: Shimmering Shield
+    ItemSprite: {fileID: 6276926167765710962, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 04000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Shimmering Shield
+    ItemSprite: {fileID: 1226814825952317282, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 04000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0100000002000000
+    SecondaryModifierValue: 0200000002000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Shimmering Shield
+    ItemSprite: {fileID: 1013489901253447070, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 02000000
+    PrimaryModifierValue: 02000000
+    SecondaryModifier: 030000000000000004000000
+    SecondaryModifierValue: 020000000200000002000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Shimmering Shield
+    ItemSprite: {fileID: 849409409671500329, guid: 3ee14e8210740d74ea64901f42d56fac,
+      type: 3}
+    Type: 4
+    Level: 3
+    PrimaryModifier: 03000000
+    PrimaryModifierValue: 03000000
+    SecondaryModifier: 0000000004000000
+    SecondaryModifierValue: 0100000003000000
+    AbilityStats: 00000000
+    Ability: 15
+  RerollRing:
+  - ItemName: Dimensional Ring
+    ItemSprite: {fileID: 2658983714858233852, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 9
+    PrimaryModifier: 0100000002000000
+    PrimaryModifierValue: 0900000009000000
+    SecondaryModifier: 00000000
+    SecondaryModifierValue: 02000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Dimensional Ring
+    ItemSprite: {fileID: -3155135198136744584, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 9
+    PrimaryModifier: 0100000003000000
+    PrimaryModifierValue: 0700000007000000
+    SecondaryModifier: 04000000
+    SecondaryModifierValue: 06000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Dimensional Ring
+    ItemSprite: {fileID: -9103866344227871696, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 9
+    PrimaryModifier: 0300000004000000
+    PrimaryModifierValue: 0600000005000000
+    SecondaryModifier: 0100000002000000
+    SecondaryModifierValue: 0500000004000000
+    AbilityStats: 00000000
+    Ability: 15
+  - ItemName: Dimensional Ring
+    ItemSprite: {fileID: 7787862378581885498, guid: 1e263817bda58894f98ec60f80411a48,
+      type: 3}
+    Type: 3
+    Level: 9
+    PrimaryModifier: 0000000004000000
+    PrimaryModifierValue: 0c00000005000000
+    SecondaryModifier: 01000000
+    SecondaryModifierValue: 03000000
+    AbilityStats: 00000000
+    Ability: 15

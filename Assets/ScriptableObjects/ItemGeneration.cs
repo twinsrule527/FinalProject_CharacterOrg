@@ -5,16 +5,23 @@ using UnityEngine;
 public enum ItemAbilityReference {
     None,
     Bloodied,
+    BorrowStat,
     Butter,
     Challenge,
     Consolation,
     Cursed,
+    DiverseInventory,
     EmptyHanded,
+    Leveled,
+    MultiplyBase,
     Powerhouse,
     Rally,
     Random,
+    RepeatBonus,
     Reroll,
     Swap,
+    Tidal,
+    Wealthy,
     Worn
 }
 [System.Serializable]
@@ -94,6 +101,7 @@ public class ItemGeneration : ScriptableObject
         Item newItem = Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
         float rnd = Random.Range(0f, 1f);
         //Has a chance to be a item that generates at this level, or has a chance to be a levelled up lower level item
+        SpecificTraits specItem;
         if(rnd > 0.1f * (itemLevel - 1)) {
             List<SpecificTraits> lvlItems = new List<SpecificTraits>();
             foreach(SpecificTraits item in Specifics) {
@@ -101,7 +109,8 @@ public class ItemGeneration : ScriptableObject
                     lvlItems.Add(item);
                 }
             }
-            SpecificTraits specItem = lvlItems[Random.Range(0, lvlItems.Count)];
+            int random = Random.Range(0, lvlItems.Count);
+            specItem = lvlItems[random];
             Dictionary<StatType, int> modifiers = new Dictionary<StatType, int>();
             for(int i = 0; i < specItem.PrimaryModifier.Count; i++) {
                 modifiers.Add(specItem.PrimaryModifier[i], specItem.PrimaryModifierValue[i]);
@@ -119,7 +128,7 @@ public class ItemGeneration : ScriptableObject
                     lvlItems.Add(item);
                 }
             }
-            SpecificTraits specItem = lvlItems[Random.Range(0, lvlItems.Count)];
+            specItem = lvlItems[Random.Range(0, lvlItems.Count)];
             int baseLevel = specItem.Level;
             //increase traits as needed
             for(int i = 0; i < specItem.PrimaryModifierValue.Count; i++) {
@@ -147,8 +156,101 @@ public class ItemGeneration : ScriptableObject
 
         }
         //Needs to generate abilities
-        newItem.OnQuestEndAbility = DoNothing;
-        newItem.OnQuestStartAbility = DoNothing;
+            //Goes through each ability enumerator
+        if(specItem.Ability == ItemAbilityReference.Bloodied) {
+            newItem.OnQuestStartAbility = BloodiedStartQuest;
+            newItem.OnQuestEndAbility = BloodiedEndQuest;
+            newItem.AbilityText += BloodiedDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.BorrowStat) {
+            newItem.OnQuestStartAbility = BorrowStatStartQuest;
+            newItem.OnQuestEndAbility = BorrowStatEndQuest;
+            newItem.AbilityText += BorrowStatDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Challenge) {
+            newItem.OnQuestStartAbility = ChallengeStartQuest;
+            newItem.OnQuestEndAbility = ChallengeEndQuest;
+            newItem.AbilityText += ChallengeDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Consolation) {
+            newItem.OnQuestStartAbility = ConsolationStartQuest;
+            newItem.OnQuestEndAbility = ConsolationEndQuest;
+            newItem.AbilityText += ConsolationDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Cursed) {
+            newItem.OnQuestStartAbility = CursedStartQuest;
+            newItem.OnQuestEndAbility = CursedEndQuest;
+            newItem.AbilityText += CursedDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.DiverseInventory) {
+            newItem.OnQuestStartAbility = DiverseInventoryStartQuest;
+            newItem.OnQuestEndAbility = DiverseInventoryEndQuest;
+            newItem.AbilityText += DiverseInventoryDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.EmptyHanded) {
+            newItem.OnQuestStartAbility = EmptyHandedStartQuest;
+            newItem.OnQuestEndAbility = EmptyHandedEndQuest;
+            newItem.AbilityText += EmptyHandedDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Leveled) {
+            newItem.OnQuestStartAbility = LeveledStartQuest;
+            newItem.OnQuestEndAbility = LeveledEndQuest;
+            newItem.AbilityText += LeveledDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.MultiplyBase) {
+            newItem.OnQuestStartAbility = MultiplyBaseStartQuest;
+            newItem.OnQuestEndAbility = MultiplyBaseEndQuest;
+            newItem.AbilityText += MultiplyBaseDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Powerhouse) {
+            newItem.OnQuestStartAbility = PowerhouseStartQuest;
+            newItem.OnQuestEndAbility = PowerhouseEndQuest;
+            newItem.AbilityText += PowerhouseDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Rally) {
+            newItem.OnQuestStartAbility = RallyStartQuest;
+            newItem.OnQuestEndAbility = RallyEndQuest;
+            newItem.AbilityText += RallyDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Random) {
+            newItem.OnQuestStartAbility = RandomStartQuest;
+            newItem.OnQuestEndAbility = RandomEndQuest;
+            newItem.AbilityText += RandomDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.RepeatBonus) {
+            newItem.OnQuestStartAbility = RepeatBonusStartQuest;
+            newItem.OnQuestEndAbility = RepeatBonusEndQuest;
+            newItem.AbilityText += RepeatBonusDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Reroll) {
+            newItem.OnQuestStartAbility = DoNothing;
+            newItem.OnQuestEndAbility = RerollEndQuest;
+            newItem.AbilityText += RerollDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Swap) {
+            newItem.OnQuestStartAbility = SwapStartQuest;
+            newItem.OnQuestEndAbility = SwapEndQuest;
+            newItem.AbilityText += SwapDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Tidal) {
+            newItem.OnQuestStartAbility = TidalStartQuest;
+            newItem.OnQuestEndAbility = TidalEndQuest;
+            newItem.AbilityText += TidalDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Wealthy) {
+            newItem.OnQuestStartAbility = DoNothing;
+            newItem.OnQuestEndAbility = WealthyEndQuest;
+            newItem.AbilityText += WealthyDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else if(specItem.Ability == ItemAbilityReference.Worn) {
+            newItem.OnQuestStartAbility = DoNothing;
+            newItem.OnQuestEndAbility = WornEndQuest;
+            newItem.AbilityText += WornDeclareText(newItem, newItem.AbilityAffectedStats);
+        }
+        else {
+            newItem.OnQuestEndAbility = DoNothing;
+            newItem.OnQuestStartAbility = DoNothing;
+        }
         return newItem;
     }
     public Item PotionGeneration(int itemLevel) {
@@ -249,6 +351,38 @@ public class ItemGeneration : ScriptableObject
         }
         newString = newString.TrimEnd(',', ' ');
         newString += " while the character carrying this is not at full health";
+        return newString;
+    }
+    
+    //"BorrowStat" Ability - Increases stat if it is lower than another party member's by an amount relative to that party member's
+    public void BorrowStatStartQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        StatType stat = statsAffected[0];
+        //Checks to see if the stat can be increased, then if it can, it increases it
+        int myStat = myChar.Stat[stat];
+        int curVal = myChar.Stat[stat];
+        foreach(Character chara in myChar.refQuest.myParty.Members) {
+            if(chara.Stat[stat] > curVal) {
+                curVal = chara.Stat[stat];
+            }
+        }
+        if(myStat < curVal) {
+            myChar.StatModifier[stat] += Mathf.CeilToInt((curVal - myStat) / 2f);
+            self.abilityValue = Mathf.CeilToInt((curVal - myStat) / 2f);
+            self.abilityActive = true;
+        }
+        else {
+            self.abilityActive = false;
+        }
+    }
+    public void BorrowStatEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        if(self.abilityActive) {
+            myChar.StatModifier[statsAffected[0]] -= self.abilityValue;
+        }
+    }
+    public string BorrowStatDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = "Boosts " + statsAffected[0].ToString() + " if another character in the party has a higher value for that stat.";
         return newString;
     }
 
@@ -372,6 +506,47 @@ public class ItemGeneration : ScriptableObject
         return newString;
     }
 
+    //"DiverseInventory" ability - gives a bonus to a stat, relative to how many different level items you have
+    public void DiverseInventoryStartQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        List<int> inventoryLevels = new List<int>();
+        foreach(Item item in myChar.Inventory) {
+            if(!inventoryLevels.Contains(item.Level)) {
+                inventoryLevels.Add(item.Level);
+            }
+        }
+        self.abilityValue = inventoryLevels.Count;
+        foreach(StatType stat in statsAffected) {
+            if(stat != StatType.Endurance) {
+                myChar.StatModifier[stat] += Mathf.FloorToInt(inventoryLevels.Count * Mathf.Sqrt(self.Level) * 0.75f);
+                string tempString = "Due to a diverse inventory, " + myChar.CharacterName + " gets +" + Mathf.FloorToInt(inventoryLevels.Count * Mathf.Sqrt(self.Level) * 0.75f).ToString() + " " + stat.ToString() + " from their " + self.ItemName + ".";
+                myChar.refQuest.QuestOccurences.Add(tempString);
+            }
+        }
+    }
+    public void DiverseInventoryEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        foreach(StatType stat in statsAffected) {
+            if(stat != StatType.Endurance) {
+                myChar.StatModifier[stat] -= Mathf.FloorToInt(self.abilityValue * Mathf.Sqrt(self.Level) * 0.75f);
+            }
+            else {
+                myChar.curHealth += Mathf.FloorToInt(self.abilityValue * Mathf.Sqrt(self.Level) * 0.5f);
+                string tempString = myChar.CharacterName + "'s " + self.ItemName + " healed " + Mathf.FloorToInt(self.abilityValue * Mathf.Sqrt(self.Level) * 0.5f).ToString() + " health due to their diverse inventory.";
+                myChar.refQuest.QuestOccurences.Add(tempString);
+            }
+        }
+    }
+    public string DiverseInventoryDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = " Gives a bonus to ";
+        foreach(StatType stat in statsAffected) {
+            newString += stat.ToString() + "' ";
+        }
+        newString = newString.TrimEnd(',', ' ');
+        newString += " relative to the different levels of items its character carries.";
+        return newString;
+    }
+
     //"EmptyHanded" ability - Depending on the level of the item and how many empty inventory slots the character has, gives a better bonus
     public void EmptyHandedStartQuest(Item self, List<StatType> statsAffected) {
         Character myChar = self.EquippedCharacter;
@@ -407,6 +582,53 @@ public class ItemGeneration : ScriptableObject
         newString += " for having empty Inventory slots.";
         return newString;
     }
+
+    //"Leveled" Ability - gives a bonus at the beginning of a quest relative to the character's level, rather than the item's level
+    public void LeveledStartQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        self.abilityValue = myChar.Level;
+        foreach(StatType stat in statsAffected) {
+            if(stat != StatType.Endurance) {
+                myChar.StatModifier[stat] += self.abilityValue;
+            }
+        }
+    }
+    public void LeveledEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        foreach(StatType stat in statsAffected) {
+            if(stat != StatType.Endurance) {
+                myChar.StatModifier[stat] -= self.abilityValue;
+            }
+            else {
+                myChar.curHealth += Mathf.FloorToInt(self.abilityValue / 2f);
+            }
+        }
+    }
+    public string LeveledDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = "Gives a bonus to the equipped character's ";
+        foreach(StatType stat in statsAffected) {
+            newString += stat.ToString() + "' ";
+        }
+        newString = newString.TrimEnd(',', ' ');
+        newString += " relative to the character's level.";
+        return newString;
+    }
+
+    //"MultiplyBase" Ability - gives a bonus to a stat relative to the character's base value fo that stat
+    public void MultiplyBaseStartQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        myChar.StatModifier[statsAffected[0]] += Mathf.FloorToInt(myChar.Stat[statsAffected[0]] * 0.25f);
+        self.abilityValue = Mathf.FloorToInt(myChar.Stat[statsAffected[0]] * 0.25f);
+    }
+    public void MultiplyBaseEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        myChar.StatModifier[statsAffected[0]] -= self.abilityValue;
+    }
+    public string MultiplyBaseDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = "Applies a bonus multiplier to the equipped character's base " + statsAffected[0].ToString() + ".";
+        return newString;
+    }
+
     //"Powerhouse" Ability - gives a bonus if the corresponding stat is the highest base of any character in the party
     public void PowerhouseStartQuest(Item self, List<StatType> statsAffected) {
         Character myChar = self.EquippedCharacter;
@@ -516,6 +738,28 @@ public class ItemGeneration : ScriptableObject
         string newString = "Gives a +" + self.Level.ToString() + " bonus to a random stat during quests.";
         return newString;
     }
+
+    //"RepeatBonus" Ability - Doubles the stat bonus given by other modifiers
+    public void RepeatBonusStartQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        if(statsAffected[0] != StatType.Endurance) {
+            self.abilityValue = myChar.StatModifier[statsAffected[0]];
+            myChar.StatModifier[statsAffected[0]] += self.abilityValue;
+            string tempString = "Bonus modifiers on " + myChar.CharacterName + "'s " + statsAffected[0].ToString() + " were doubled, due to their " + self.ItemName + ".";
+            myChar.refQuest.QuestOccurences.Add(tempString);
+        }
+    }
+    public void RepeatBonusEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        if(statsAffected[0] != StatType.Endurance) {
+            myChar.StatModifier[statsAffected[0]] -= self.abilityValue;
+        }
+    }
+    public string RepeatBonusDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = "Doubles the bonuses applied to the equipped character's " + statsAffected[0].ToString() +".";
+        return newString;
+    }
+
     //"Reroll" Ability - Rerolls into another item of the same type after each quest
     public List<SpecificTraits> RerollWeapon;
     public List<SpecificTraits> RerollArmor;
@@ -599,6 +843,63 @@ public class ItemGeneration : ScriptableObject
     }
     public string SwapDeclareText(Item self, List<StatType> statsAffected) {
         string newString = "Increases the equipped character's " + statsAffected[1].ToString() + " but reduces their " + statsAffected[0].ToString() + " by half as much.";
+        return newString;
+    }
+
+    //"Tidal" ability - Bonus ability, increases over multiple quests, then drops
+    private const int TIDAL_MODULO = 6;
+    public void TidalStartQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        foreach(StatType stat in statsAffected) {
+            if(stat != StatType.Endurance) {
+                myChar.StatModifier[stat] += (self.Level - 3 + self.abilityValue);
+                string tempString = myChar.CharacterName + " got a bonus of +" + (self.Level - 2 + self.abilityValue).ToString() + " " + stat.ToString() + " from their " + self.ItemName +".";
+                myChar.refQuest.QuestOccurences.Add(tempString);
+            }
+        }
+    }
+    public void TidalEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        foreach(StatType stat in statsAffected) {
+            if(stat != StatType.Endurance) {
+                myChar.StatModifier[stat] -= (self.Level - 3 + self.abilityValue);
+            }
+            else {
+                myChar.curHealth += Mathf.FloorToInt((self.Level - 3 + self.abilityValue) / 2f);
+                string tempString = myChar.CharacterName + " was healed " + Mathf.FloorToInt((self.Level - 2 + self.abilityValue) / 2f).ToString() + " health by their " + self.ItemName + ".";
+                myChar.refQuest.QuestOccurences.Add(tempString);
+            }
+        }
+        //Tidal level increases by one
+        self.abilityValue = (self.abilityValue + 1) % TIDAL_MODULO;
+    }
+    public string TidalDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = "Gives an additional bonus to ";
+        foreach(StatType stat in statsAffected) {
+            newString += stat.ToString() + "' ";
+        }
+        newString = newString.TrimEnd(',', ' ');
+        newString += "that increases/decreases from quest to quest.";
+        return newString;
+    }
+
+    //"Wealthy" Ability - Grants an additional gold bonus relative to the affected stats
+        //Does not have a start quest ability
+    public void WealthyEndQuest(Item self, List<StatType> statsAffected) {
+        Character myChar = self.EquippedCharacter;
+        foreach(StatType stat in statsAffected) {
+            myChar.refQuest.myParty.LuckGoldReward += Mathf.CeilToInt((myChar.Stat[stat] + myChar.StatModifier[stat]) / 2f);
+            string tempString = myChar.CharacterName + " found " + Mathf.CeilToInt((myChar.Stat[stat] + myChar.StatModifier[stat]) / 2f).ToString() + " gold due to their " + self.ItemName + ".";
+            myChar.refQuest.QuestOccurences.Add(tempString);
+        }
+    }
+    public string WealthyDeclareText(Item self, List<StatType> statsAffected) {
+        string newString = "Grants a gold reward during quests relative to the equipped character's ";
+        foreach(StatType stat in statsAffected) {
+            newString += stat.ToString() + "' ";
+        }
+        newString = newString.TrimEnd(',', ' ');
+        newString += ".";
         return newString;
     }
 
