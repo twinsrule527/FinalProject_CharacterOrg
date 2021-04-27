@@ -102,27 +102,31 @@ public class CharacterGeneration : ScriptableObject
 
         //After assigning stats, the character is assigned their special ability
         character.AbilityString = ability.displayText;
-        if(ability.reference == AbilityReference.LvlIncreaseChoice) {
-            character.OnLevelUpAbility = LevelUpIncreaseChoiceStat;
-            character.OnQuestEndAbility = DoNothing;
-            character.OnQuestStartAbility = DoNothing;
-        }
-        else if(ability.reference == AbilityReference.LvlIncreaseSpecific) {
-            character.OnLevelUpAbility = LevelUpIncreaseSpecificStats;
-            character.OnQuestEndAbility = DoNothing;
-            character.OnQuestStartAbility = DoNothing;
-        }
-        else if(ability.reference == AbilityReference.QuestIncrease) {
-            character.OnLevelUpAbility = DoNothing;
-            character.OnQuestStartAbility = StartQuestIncreasePartyStat;
-            character.OnQuestEndAbility = EndQuestIncreasePartyStat;
-        }
+        character.myAbilityReference = ability.reference;
+        DeclareCharAbility(character, ability.reference);
         character.AbilityAffectedStats = new List<StatType>(ability.statsAffected);
         character.alive = true;
 
         //Finally, the character levels up to the needed level
         for(int i = 0; i<lvl; i++) {
             LevelUpCharacter(character);
+        }
+    }
+    public void DeclareCharAbility(Character character, AbilityReference reference) {
+        if(reference == AbilityReference.LvlIncreaseChoice) {
+            character.OnLevelUpAbility = LevelUpIncreaseChoiceStat;
+            character.OnQuestEndAbility = DoNothing;
+            character.OnQuestStartAbility = DoNothing;
+        }
+        else if(reference == AbilityReference.LvlIncreaseSpecific) {
+            character.OnLevelUpAbility = LevelUpIncreaseSpecificStats;
+            character.OnQuestEndAbility = DoNothing;
+            character.OnQuestStartAbility = DoNothing;
+        }
+        else if(reference == AbilityReference.QuestIncrease) {
+            character.OnLevelUpAbility = DoNothing;
+            character.OnQuestStartAbility = StartQuestIncreasePartyStat;
+            character.OnQuestEndAbility = EndQuestIncreasePartyStat;
         }
     }
     //This function levels up a character once

@@ -64,7 +64,7 @@ public class ItemGeneration : ScriptableObject
     public PotionTraits[] Potions;
     public SpecificTraits[] Specifics;
     [SerializeField] private Sprite test;
-    [SerializeField] private Item ItemPrefab;
+    [SerializeField] public Item ItemPrefab;
     public string Name;
     public Item BasicGeneration(int itemLevel) {
         /*Item newItem = Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
@@ -156,93 +156,99 @@ public class ItemGeneration : ScriptableObject
 
         }
         //Needs to generate abilities
+        newItem.AbilityReference = specItem.Ability;
+        newItem.AbilityAffectedStats = specItem.AbilityStats;
             //Goes through each ability enumerator
-        if(specItem.Ability == ItemAbilityReference.Bloodied) {
+        DeclareItemAbility(newItem, specItem.Ability);
+        return newItem;
+    }
+    public void DeclareItemAbility(Item newItem, ItemAbilityReference Ability) {
+        if(Ability == ItemAbilityReference.Bloodied) {
             newItem.OnQuestStartAbility = BloodiedStartQuest;
             newItem.OnQuestEndAbility = BloodiedEndQuest;
             newItem.AbilityText += BloodiedDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.BorrowStat) {
+        else if(Ability == ItemAbilityReference.BorrowStat) {
             newItem.OnQuestStartAbility = BorrowStatStartQuest;
             newItem.OnQuestEndAbility = BorrowStatEndQuest;
             newItem.AbilityText += BorrowStatDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Challenge) {
+        else if(Ability == ItemAbilityReference.Challenge) {
             newItem.OnQuestStartAbility = ChallengeStartQuest;
             newItem.OnQuestEndAbility = ChallengeEndQuest;
             newItem.AbilityText += ChallengeDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Consolation) {
+        else if(Ability == ItemAbilityReference.Consolation) {
             newItem.OnQuestStartAbility = ConsolationStartQuest;
             newItem.OnQuestEndAbility = ConsolationEndQuest;
             newItem.AbilityText += ConsolationDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Cursed) {
+        else if(Ability == ItemAbilityReference.Cursed) {
             newItem.OnQuestStartAbility = CursedStartQuest;
             newItem.OnQuestEndAbility = CursedEndQuest;
             newItem.AbilityText += CursedDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.DiverseInventory) {
+        else if(Ability == ItemAbilityReference.DiverseInventory) {
             newItem.OnQuestStartAbility = DiverseInventoryStartQuest;
             newItem.OnQuestEndAbility = DiverseInventoryEndQuest;
             newItem.AbilityText += DiverseInventoryDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.EmptyHanded) {
+        else if(Ability == ItemAbilityReference.EmptyHanded) {
             newItem.OnQuestStartAbility = EmptyHandedStartQuest;
             newItem.OnQuestEndAbility = EmptyHandedEndQuest;
             newItem.AbilityText += EmptyHandedDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Leveled) {
+        else if(Ability == ItemAbilityReference.Leveled) {
             newItem.OnQuestStartAbility = LeveledStartQuest;
             newItem.OnQuestEndAbility = LeveledEndQuest;
             newItem.AbilityText += LeveledDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.MultiplyBase) {
+        else if(Ability == ItemAbilityReference.MultiplyBase) {
             newItem.OnQuestStartAbility = MultiplyBaseStartQuest;
             newItem.OnQuestEndAbility = MultiplyBaseEndQuest;
             newItem.AbilityText += MultiplyBaseDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Powerhouse) {
+        else if(Ability == ItemAbilityReference.Powerhouse) {
             newItem.OnQuestStartAbility = PowerhouseStartQuest;
             newItem.OnQuestEndAbility = PowerhouseEndQuest;
             newItem.AbilityText += PowerhouseDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Rally) {
+        else if(Ability == ItemAbilityReference.Rally) {
             newItem.OnQuestStartAbility = RallyStartQuest;
             newItem.OnQuestEndAbility = RallyEndQuest;
             newItem.AbilityText += RallyDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Random) {
+        else if(Ability == ItemAbilityReference.Random) {
             newItem.OnQuestStartAbility = RandomStartQuest;
             newItem.OnQuestEndAbility = RandomEndQuest;
             newItem.AbilityText += RandomDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.RepeatBonus) {
+        else if(Ability == ItemAbilityReference.RepeatBonus) {
             newItem.OnQuestStartAbility = RepeatBonusStartQuest;
             newItem.OnQuestEndAbility = RepeatBonusEndQuest;
             newItem.AbilityText += RepeatBonusDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Reroll) {
+        else if(Ability == ItemAbilityReference.Reroll) {
             newItem.OnQuestStartAbility = DoNothing;
             newItem.OnQuestEndAbility = RerollEndQuest;
             newItem.AbilityText += RerollDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Swap) {
+        else if(Ability == ItemAbilityReference.Swap) {
             newItem.OnQuestStartAbility = SwapStartQuest;
             newItem.OnQuestEndAbility = SwapEndQuest;
             newItem.AbilityText += SwapDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Tidal) {
+        else if(Ability == ItemAbilityReference.Tidal) {
             newItem.OnQuestStartAbility = TidalStartQuest;
             newItem.OnQuestEndAbility = TidalEndQuest;
             newItem.AbilityText += TidalDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Wealthy) {
+        else if(Ability == ItemAbilityReference.Wealthy) {
             newItem.OnQuestStartAbility = DoNothing;
             newItem.OnQuestEndAbility = WealthyEndQuest;
             newItem.AbilityText += WealthyDeclareText(newItem, newItem.AbilityAffectedStats);
         }
-        else if(specItem.Ability == ItemAbilityReference.Worn) {
+        else if(Ability == ItemAbilityReference.Worn) {
             newItem.OnQuestStartAbility = DoNothing;
             newItem.OnQuestEndAbility = WornEndQuest;
             newItem.AbilityText += WornDeclareText(newItem, newItem.AbilityAffectedStats);
@@ -251,7 +257,6 @@ public class ItemGeneration : ScriptableObject
             newItem.OnQuestEndAbility = DoNothing;
             newItem.OnQuestStartAbility = DoNothing;
         }
-        return newItem;
     }
     public Item PotionGeneration(int itemLevel) {
         Item newItem = Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);

@@ -29,11 +29,6 @@ public class ItemManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            Item newPotion = UIManager.Instance.GenerateItem.PotionGeneration(1);
-            UnequippedItems.Add(newPotion);
-            RefreshUnequippedItemsUI();
-        }
     }
 
     //this function and the next function refresh the UI for Items that are not equipped/in the shop, displaying whatever newly needs to be displayed

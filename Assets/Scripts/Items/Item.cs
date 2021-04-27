@@ -74,6 +74,7 @@ public class Item : MonoBehaviour
     public ItemSpecialAbility OnQuestStartAbility;
     public ItemSpecialAbility OnQuestEndAbility;
     public List<StatType> AbilityAffectedStats;
+    public ItemAbilityReference AbilityReference;
     public ItemManager myManager;//The overall manager of this object - is one universal one
 
     //Equip function equips it to a character, requiring the character you're equipping it to

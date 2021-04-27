@@ -22,6 +22,14 @@ public class Character : MonoBehaviour
     [HideInInspector] public int curHealth;
 
     [SerializeField] private float xp;//Experience (required to level up)
+    public float XP {
+        get {
+            return xp;
+        }
+        set {
+            xp = value;
+        }
+    }
     public int Level;
     public string CharacterName;
     //Stuff related to leveling up
@@ -31,6 +39,7 @@ public class Character : MonoBehaviour
     public CharacterAbility OnLevelUpAbility;
     public CharacterAbility OnQuestStartAbility;
     public CharacterAbility OnQuestEndAbility;
+    public AbilityReference myAbilityReference;
     [HideInInspector] public List<StatType> AbilityAffectedStats;//Stats that are affected by the character's ability
     public string AbilityString;
     public bool inParty;//Whether the Character is in a party for a quest or not
