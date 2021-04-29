@@ -137,6 +137,11 @@ public class QuestManager : MonoBehaviour
     public void RunQuest(ref Quest quest) {
         //The quest happens in 3 Steps:
             //Step 1: StartQuest
+        //Text log declares who's on the text;
+        foreach(Character chara in quest.myParty.Members) {
+            string newString = chara.CharacterName + " joined this quest.";
+            quest.QuestOccurences.Add(newString);
+        }
         //Goes through every character participating in this quest, and adds their StartQuest Functions
         for(int i = 0; i < quest.partySize; i++) {
             quest.myParty.Members[i].StartQuest(ref quest);
@@ -184,6 +189,7 @@ public class QuestManager : MonoBehaviour
             Character tempChar = quest.myParty.Members[i];
             int dmgDealt = Mathf.CeilToInt(AssignedDmg[i] / CalculateEffDef(tempChar));
             tempChar.curHealth -= dmgDealt;
+            string newString = tempChar.CharacterName + " was dealt " + dmgDealt.ToString() + " damage.";
         }
 
             //Luck is used to determine additional rewards

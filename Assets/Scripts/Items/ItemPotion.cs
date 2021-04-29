@@ -16,6 +16,8 @@ public class ItemPotion : Item
         }
         else {
             EquippedCharacter.StatModifier[AbilityAffectedStats[0]] += CalculatePotency(Level, false);
+            string newString = EquippedCharacter.CharacterName + " drank a potion, increasing their " + AbilityAffectedStats[0].ToString() + " by " + CalculatePotency(Level, true).ToString() + ".";
+            quest.QuestOccurences.Add(newString);
         }
     }
     public override void EndQuest(ref Quest quest)
@@ -25,6 +27,8 @@ public class ItemPotion : Item
         if(AbilityAffectedStats.Contains(StatType.Endurance)) {
             //If the character needs to drink the potion they do, but otherwise they don't
             if(EquippedCharacter.curHealth - CalculatePotency(Level, true) <= 0 || EquippedCharacter.curHealth < EquippedCharacter.baseHealth) {
+                string newString = EquippedCharacter.CharacterName + " drank a Health Potion, healing " + CalculatePotency(Level, true).ToString() + " health.";
+                quest.QuestOccurences.Add(newString);
                 Unequip();
                 myManager.UnequippedItems.Remove(this);
                 Destroy(gameObject);

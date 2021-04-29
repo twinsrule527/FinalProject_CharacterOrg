@@ -570,6 +570,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private List<ItemReference> QuestCompleteItemReward;
     [SerializeField] private TMP_Text QuestCompleteLuckText;
     [SerializeField] private List<ItemReference> QuestCompleteLuckItem;
+    [SerializeField] private TMP_Text QuestCompleteTextLog;
 
     //Raycast UI
     private void QuestCompleteRaycast(List<RaycastResult> results) {
@@ -647,6 +648,11 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
                 }
         }
         //TODO: Also needs to have text of other effects, but that will be added later
+        string textLogString = "";
+        foreach(string str in completedQuest.QuestOccurences) {
+            textLogString += str + "\n";
+        }
+        QuestCompleteTextLog.text = textLogString;
     }
     //Finalizes quest rewards, than closes this pop-up
     public void CloseQuestCompletePopUp() {

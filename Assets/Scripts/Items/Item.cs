@@ -86,6 +86,7 @@ public class Item : MonoBehaviour
             equipTo.StatModifier[item.Key] += item.Value;
         }
         _equippedCharacter.Inventory.Add(this);
+        _equippedCharacter.RefreshHealth();
         //It then refreshes the UI;
         UIManager.Instance.RefreshCharacterUI();
         UIManager.Instance.RefreshItemUI();
@@ -99,6 +100,7 @@ public class Item : MonoBehaviour
         }
         _equippedCharacter.Inventory.Remove(this);//Remove it from the player's equipment
         _equippedCharacter.RefreshUI();
+        _equippedCharacter.RefreshHealth();
         _equippedCharacter = null;
         myManager.UnequippedItems.Add(this);
         //It then refreshes the UI;

@@ -100,10 +100,15 @@ public class Character : MonoBehaviour
         xp += XP_PER_QUEST_LEVEL * quest.Level * quest.PercentQuestComplete;
         if(xp >= CharacterGeneration.LevelUpXP[Level]) {
             _leveledUp = true;
+            string levelupString = CharacterName + " leveled up!";
+            refQuest.QuestOccurences.Add(levelupString);
         }
         //Character heals, depending on their endurance
         curHealth += Mathf.CeilToInt((Stat[StatType.Endurance] + StatModifier[StatType.Endurance]) / HEAL_DIVIDE);
         curHealth = Mathf.Clamp(curHealth, 0, baseHealth);
+        if(curHealth > 0) {
+            string healthString = CharacterName + " healed back up to " + curHealth.ToString() + " health.";
+        }
         quest = refQuest;
     }
 
@@ -121,6 +126,8 @@ public class Character : MonoBehaviour
         foreach(Item item in Inventory) {
             Destroy(item.gameObject);
         }
+        string deathString = CharacterName + " died.";
+        quest.QuestOccurences.Add(deathString);
         //gameObject.SetActive(false);
     }
 
@@ -215,7 +222,7 @@ public class Character : MonoBehaviour
     public void RefreshHealth() {
         float tempHealthBase = BASE_HP_VALUE;
         int maxHealthTemp = baseHealth;
-        tempHealthBase += Level / 4f * Stat[StatType.Endurance];
+        tempHealthBase += Level / 4f * (Stat[StatType.Endurance] + StatModifier[StatType.Endurance]);
         baseHealth = Mathf.CeilToInt(tempHealthBase);
         curHealth += Mathf.CeilToInt(baseHealth - maxHealthTemp);
     }
