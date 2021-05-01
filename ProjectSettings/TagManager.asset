@@ -10,6 +10,7 @@ TagManager:
   - Cover
   - Button
   - CharacterReference
+  - Save
   layers:
   - Default
   - TransparentFX

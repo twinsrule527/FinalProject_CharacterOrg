@@ -5,10 +5,12 @@ using System.IO;
 //This script is used to manage saving the game
 [System.Serializable]
 public class SaveFile {//This serializable class is the class which is put in a JSON save file
+    public string FileName;//Name of the File
     public List<CharacterSave> myCharacters;
     public List<ItemSave> myUnequippedItems;
     public List<ItemSave> myShopItems;
     public List<QuestSave> myQuests;
+    public int Gold;
 }
 [System.Serializable] public struct CharacterSave {//Just saves all the character information in a simpler serializable form
     public string CharacterName;
@@ -44,78 +46,165 @@ public class SaveFile {//This serializable class is the class which is put in a 
     public List<ItemSave> ItemRewards;
     //Does not include any characters on the quest, bc save must occur before that
 }
+[System.Serializable] public struct SaveList {//Saves the existing save files as a list of strings, so it can be loaded when the game is opened to edit them
+    public List<string> FileNames;//Name of the file 
+    public List<int> NumChars;//How many characters are in the corresponding save file
+    public List<int> HighestLevel;//The highest level of a character in the save file
+}
 public class SaveGameJSON : MonoBehaviour
 {
-    public void CreateSaveFile() {
-        SaveFile newFile = new SaveFile();
-        newFile.myCharacters = new List<CharacterSave>();
-        newFile.myShopItems = new List<ItemSave>();
-        newFile.myUnequippedItems = new List<ItemSave>();
-        newFile.myQuests = new List<QuestSave>();
-        UIManager Manager = UIManager.Instance;
-        foreach(Character chara in Manager.allCharacters) {
-            if(chara.gameObject.activeInHierarchy && chara.alive) {
-                newFile.myCharacters.Add(CreateCharacterSave(chara));
+    private const string BASE_SAVE_FILE_NAME = "~Saves";//Name of the save file which contains reference to other save files
+    //Create a new Save File
+    public void CreateSaveFile(string filename) {
+        //Only saves it if the save file is not the same as the BASE_SAVE_FILE_NAME
+        if(filename != BASE_SAVE_FILE_NAME) {
+            SaveFile newFile = new SaveFile();
+            newFile.myCharacters = new List<CharacterSave>();
+            newFile.myShopItems = new List<ItemSave>();
+            newFile.myUnequippedItems = new List<ItemSave>();
+            newFile.myQuests = new List<QuestSave>();
+            UIManager Manager = UIManager.Instance;
+            foreach(Character chara in Manager.allCharacters) {
+                if(chara.gameObject.activeInHierarchy && chara.alive) {
+                    newFile.myCharacters.Add(CreateCharacterSave(chara));
+                }
             }
-        }
-        foreach(Item item in Manager.GeneralItemManager.UnequippedItems) {
-            newFile.myUnequippedItems.Add(CreateItemSave(item));
-        }
-        foreach(Item item in Manager.GeneralItemManager.ShopItems) {
-            newFile.myShopItems.Add(CreateItemSave(item));
-        }
-        foreach(QuestReference slot in Manager.GeneralQuestManager.QuestSlots) {
-            if(slot.Reference.exists) {
-                newFile.myQuests.Add(CreateQuestSave(slot.Reference));
+            foreach(Item item in Manager.GeneralItemManager.UnequippedItems) {
+                newFile.myUnequippedItems.Add(CreateItemSave(item));
             }
+            foreach(Item item in Manager.GeneralItemManager.ShopItems) {
+                newFile.myShopItems.Add(CreateItemSave(item));
+            }
+            foreach(QuestReference slot in Manager.GeneralQuestManager.QuestSlots) {
+                if(slot.Reference.exists) {
+                    newFile.myQuests.Add(CreateQuestSave(slot.Reference));
+                }
+            }
+            newFile.Gold = Manager.CurrentGold;
+            //After adding everything to this new Save File, saves the file through JSON
+            //File is saved to the list of saves
+            SaveDeleteFile(newFile, false);
+            string JSONConversion = JsonUtility.ToJson(newFile);
+            WriteToFile(JSONConversion, filename);
         }
-        //After adding everything to this new Save File, saves the file through JSON
-        string JSONConversion = JsonUtility.ToJson(newFile);
-        WriteToFile(JSONConversion, "mySave");
 
     }
-    public void LoadSaveFile() {
-        string JSONString = ReadFromFile("mySave");
-        SaveFile loadedFile = JsonUtility.FromJson<SaveFile>(JSONString);
-        //Goes through each element of the loaded file, overwriting existing info
-        UIManager Manager = UIManager.Instance;
-        foreach(Character chara in Manager.allCharacters) {
-            chara.gameObject.SetActive(false);
+    //Load an existing save File
+    public void LoadSaveFile(string filename) {
+        if(filename != BASE_SAVE_FILE_NAME) {
+            string JSONString = ReadFromFile(filename);
+            SaveFile loadedFile = JsonUtility.FromJson<SaveFile>(JSONString);
+            //Goes through each element of the loaded file, overwriting existing info
+            UIManager Manager = UIManager.Instance;
+            foreach(Character chara in Manager.allCharacters) {
+                chara.gameObject.SetActive(false);
+            }
+            for(int i = 0; i < loadedFile.myCharacters.Count; i++) {
+                LoadCharacterSave(Manager.allCharacters[i], loadedFile.myCharacters[i]);
+            }
+            Manager.GeneralItemManager.UnequippedItems = new List<Item>();
+            foreach(ItemSave item in loadedFile.myUnequippedItems) {
+                Item newItem = LoadItemSave(item);
+                Manager.GeneralItemManager.UnequippedItems.Add(newItem);
+            }
+            Manager.GeneralItemManager.ShopItems = new List<Item>();
+            foreach(ItemSave item in loadedFile.myShopItems) {
+                Item newItem = LoadItemSave(item);
+                Manager.GeneralItemManager.ShopItems.Add(newItem);
+            }
+            foreach(QuestReference questRef in Manager.GeneralQuestManager.QuestSlots) {
+                questRef.gameObject.SetActive(false);
+            }
+            for(int i = 0; i < loadedFile.myQuests.Count; i++) {
+                LoadQuestSave(loadedFile.myQuests[i], Manager.GeneralQuestManager.QuestSlots[i]);
+            }
+            Manager.CurrentGold = loadedFile.Gold;
+            //Then, everything needs to get refreshed
+            string JSONConversion = JsonUtility.ToJson(loadedFile);
+            WriteToFile(JSONConversion, BASE_SAVE_FILE_NAME);
         }
-        for(int i = 0; i < loadedFile.myCharacters.Count; i++) {
-            LoadCharacterSave(Manager.allCharacters[i], loadedFile.myCharacters[i]);
+    }
+    //Additional Save File that saves existing files
+        //Is opened, then writes/overwrites files
+            //The second bool tells you whether the file is being deleted or added
+    public void SaveDeleteFile(SaveFile newFile, bool delete) {
+        string readFile = ReadFromFile(BASE_SAVE_FILE_NAME);
+        SaveList baseFile = JsonUtility.FromJson<SaveList>(readFile);
+        //If it is deleting, it does something different than otherwise
+        if(delete) {
+            if(baseFile.FileNames.Contains(newFile.FileName)) {
+                //Deletes the file if it exists
+                File.Delete(Application.persistentDataPath + "\\" + newFile.FileName);
+                int pos = baseFile.FileNames.IndexOf(newFile.FileName);
+                baseFile.FileNames.RemoveAt(pos);
+                baseFile.NumChars.RemoveAt(pos);
+                baseFile.HighestLevel.RemoveAt(pos);
+            }
         }
-        Manager.GeneralItemManager.UnequippedItems = new List<Item>();
-        foreach(ItemSave item in loadedFile.myUnequippedItems) {
-            Item newItem = LoadItemSave(item);
-            Manager.GeneralItemManager.UnequippedItems.Add(newItem);
-        }
-        Manager.GeneralItemManager.ShopItems = new List<Item>();
-        foreach(ItemSave item in loadedFile.myShopItems) {
-            Item newItem = LoadItemSave(item);
-            Manager.GeneralItemManager.ShopItems.Add(newItem);
-        }
-        foreach(QuestReference questRef in Manager.GeneralQuestManager.QuestSlots) {
-            questRef.gameObject.SetActive(false);
-        }
-        for(int i = 0; i < loadedFile.myQuests.Count; i++) {
-            LoadQuestSave(loadedFile.myQuests[i], Manager.GeneralQuestManager.QuestSlots[i]);
-        }
-        //Then, everything needs to get refreshed
+        else {
+            if(baseFile.FileNames.Contains(newFile.FileName)) {
+                //If the save file exists, it overwrites it (just re-adds it to the end of the list at the moment)
+                int pos = baseFile.FileNames.IndexOf(newFile.FileName);
+                baseFile.FileNames.RemoveAt(pos);
+                baseFile.NumChars.RemoveAt(pos);
+                baseFile.HighestLevel.RemoveAt(pos);
+                baseFile.FileNames.Add(newFile.FileName);
+                baseFile.NumChars.Add(newFile.myCharacters.Count);
+                int highestLvl = 0;
+                foreach(CharacterSave chara in newFile.myCharacters) {
+                    if(chara.Level > highestLvl) {
+                        highestLvl = chara.Level;
+                    }
+                }
+                baseFile.HighestLevel.Add(highestLvl);
 
+            }
+            else {
+                //Otherwise, it creates a new savefile.
+                baseFile.FileNames.Add(newFile.FileName);
+                baseFile.NumChars.Add(newFile.myCharacters.Count);
+                int highestLvl = 0;
+                foreach(CharacterSave chara in newFile.myCharacters) {
+                    if(chara.Level > highestLvl) {
+                        highestLvl = chara.Level;
+                    }
+                }
+                baseFile.HighestLevel.Add(highestLvl);
+            }
+        }
+        //Then, writes the save to the file
+
+    }
+    //Function for loading the existing SaveManagerFile
+    public SaveList LoadExistingSaves() {
+        string loadString = ReadFromFile(BASE_SAVE_FILE_NAME);
+        SaveList myList = JsonUtility.FromJson<SaveList>(loadString);
+        return myList;
+    }
+    //Checks to see if the Existing saves file exists, and if it doesn't, it creates it
+    public void CreateExistingSavesFile() {
+        if(!File.Exists(Application.persistentDataPath + "\\" + BASE_SAVE_FILE_NAME)) {
+            SaveList newList = new SaveList();
+            newList.FileNames = new List<string>();
+            newList.HighestLevel = new List<int>();
+            newList.NumChars = new List<int>();
+            string ListJSON = JsonUtility.ToJson(newList);
+            WriteToFile(ListJSON, BASE_SAVE_FILE_NAME);
+        }
     }
     //Function for writing the JSON string to the save file - Used the code from Class 10 - Save Files; Slide 28
-    private void WriteToFile(string toWrite, string filename) {
+    public void WriteToFile(string toWrite, string filename) {
         StreamWriter writer = new StreamWriter(Application.persistentDataPath + "\\" + filename, false);
         writer.WriteLine(toWrite);
         writer.Close();
     }
-    private string ReadFromFile(string filename) {
+    public string ReadFromFile(string filename) {
         StreamReader reader = new StreamReader(Application.persistentDataPath + "\\" + filename, true);
         string readString = reader.ReadToEnd();
         reader.Close();
         return readString;
     }
+    //Each of these following functions writes to/loads from a saveable format, CHaracters, Items, and Quests
     public CharacterSave CreateCharacterSave(Character chosenCharacter) {
         CharacterSave nSave = new CharacterSave();
         nSave.CharacterName = chosenCharacter.CharacterName;
@@ -213,6 +302,7 @@ public class SaveGameJSON : MonoBehaviour
 
 }
 
+//Serializable Dictionary (couldn't remember if dictionaries were fully save-able, and this was a quick thing to do - and actually may have uses in other places)
 //Based this on the serializable Quaternion/Vector3 provided in class from https://answers.unity.com/questions/956047/serialize-quaternion-or-vector3.html
     // By Unity forum user Cherno
 [System.Serializable] public struct SerializableStatDictionary {//Turns a stat dictionary into a more serializable form

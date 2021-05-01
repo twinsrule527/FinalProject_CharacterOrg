@@ -34,10 +34,12 @@ public struct PopUp {
 }
 public class UIManager : Singleton<UIManager>//Probably the only singleton in the game, because everything needs to access it
 {
+    public bool GameRunning;//Whether the game is currently running or not
     public ItemGeneration GenerateItem;//The Scriptable Object that Generates Items
     public CharacterGeneration GenerateCharacter;//THe scriptable Object that generates characters' Abilities (mainly)
     public ItemManager GeneralItemManager;
     public QuestManager GeneralQuestManager;
+    public SaveManagement GeneralSaveManager;
     public Character currentCharacter;
     public Item currentItem;
     public QuestReference currentQuestReference;
@@ -55,6 +57,30 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     private const int NUM_START_CHARACTERS = 2;//number of characters the player starts with access to
     public List<PopUp> WaitingPopUps;
     void Start() {
+        WaitingPopUps = new List<PopUp>();
+        //Starts the manner for creating characters - will deactivate all characters not yet needed
+        Character[] tempCharacters = FindObjectsOfType<Character>();
+        foreach(Character chara in tempCharacters) {
+            allCharacters.Add(chara);
+        }
+        for(int i = 0;  i< allCharacters.Count; i++) {
+            allCharacters[i].gameObject.SetActive(false);
+        }
+        curCharStatText = new Dictionary<StatType, TMP_Text>();
+        curCharStatText.Add(StatType.Strength, curStrText);
+        curCharStatText.Add(StatType.Magic, curMagText);
+        curCharStatText.Add(StatType.Defense, curDefText);
+        curCharStatText.Add(StatType.Endurance, curEndText);
+        curCharStatText.Add(StatType.Luck, curLuckText);
+        m_Raycaster = GetComponent<GraphicRaycaster>();
+        m_EventSystem = GetComponent<EventSystem>();
+        
+    }
+
+    //Stuff that was in Start() but needs to be moved when the game actually starts
+    [SerializeField] private GameObject StartGameScreen;
+    public void StartNewGame() {
+        StartGameScreen.SetActive(false);
         _itemPageActive = true;
         QuestPage.SetActive(false);
         WaitingPopUps = new List<PopUp>();
@@ -66,106 +92,106 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         for(int i =0; i < NUM_START_CHARACTERS; i++) {
             WaitingPopUps.Add(tempPopUp);
         }
-        //Starts the manner for creating characters - will deactivate all characters not yet needed
-        Character[] tempCharacters = FindObjectsOfType<Character>();
-        foreach(Character chara in tempCharacters) {
-            allCharacters.Add(chara);
-        }
-        for(int i = 0;  i< allCharacters.Count; i++) {
-            allCharacters[i].gameObject.SetActive(false);
-        }
         CurrentGold = 0;
-        curCharStatText = new Dictionary<StatType, TMP_Text>();
-        curCharStatText.Add(StatType.Strength, curStrText);
-        curCharStatText.Add(StatType.Magic, curMagText);
-        curCharStatText.Add(StatType.Defense, curDefText);
-        curCharStatText.Add(StatType.Endurance, curEndText);
-        curCharStatText.Add(StatType.Luck, curLuckText);
-        m_Raycaster = GetComponent<GraphicRaycaster>();
-        m_EventSystem = GetComponent<EventSystem>();
+        GameRunning = true;
+        
     }
 
     void Update() {
-        //if therere are no PopUps, but you have the option for PopUps, then PopUps occur
-        if(curPopUp == PopUpType.None && WaitingPopUps.Count > 0) {
-            StartPopUp();
-        }
-        //After all popUps fire, check to see if new quests need to be created
-        else if(curPopUp == PopUpType.None) {
-            if(GeneralQuestManager.activeQuests == 0) {
-                List<Quest> newQuests = GeneralQuestManager.CreateNewQuestsUsingCurrent();
-                for(int i = 0; i< newQuests.Count; i++) {
-                    Quest newQuest = newQuests[i];
-                    GeneralQuestManager.activeQuests++;
-                    GeneralQuestManager.QuestSlots[i].Reference = newQuest;
+        //This all only occurs if there is a game running
+        if(GameRunning) {
+            //if therere are no PopUps, but you have the option for PopUps, then PopUps occur
+            if(curPopUp == PopUpType.None && WaitingPopUps.Count > 0) {
+                StartPopUp();
+            }
+            //After all popUps fire, check to see if new quests need to be created
+            else if(curPopUp == PopUpType.None) {
+                if(GeneralQuestManager.activeQuests == 0) {
+                    List<Quest> newQuests = GeneralQuestManager.CreateNewQuestsUsingCurrent();
+                    for(int i = 0; i< newQuests.Count; i++) {
+                        Quest newQuest = newQuests[i];
+                        GeneralQuestManager.activeQuests++;
+                        GeneralQuestManager.QuestSlots[i].Reference = newQuest;
+                    }
+                    GeneralItemManager.UpdateShop();
                 }
-                GeneralItemManager.UpdateShop();
+            }
+            if(Input.GetMouseButtonDown(0)) {
+                m_PointerEventData = new PointerEventData(m_EventSystem);
+                m_PointerEventData.position = Input.mousePosition;
+                List<RaycastResult> results = new List<RaycastResult>();
+                m_Raycaster.Raycast(m_PointerEventData, results);
+                //Gets the first object in the list that can be interacted with, and interacts with it
+                //If there is no Pop-up window, there's different actions than if there is a pop-up window
+                if(curPopUp == PopUpType.None) {
+                    for(int i = 0; i< results.Count; i++) {
+                        
+                            //These tag are used to determine something that can be clicked but isn't a button
+                        if(results[i].gameObject.CompareTag("Character")) {
+                            //if it is a choosable character, it becomes the current character
+                                //Objects with the "Character" tag will always have a parent with the Character Class
+                            Character checkCharacter = results[i].gameObject.GetComponentInParent<Character>();
+                            if(checkCharacter.alive) {
+                                currentCharacter = checkCharacter;
+                                RefreshCharacterUI();
+                                break;
+                            }
+                        }
+                        if(results[i].gameObject.CompareTag("Item")) {
+                            //Objects with the "Item" tag will always have an ItemReference compoenent
+                            ItemReference checkItem = results[i].gameObject.GetComponent<ItemReference>();
+                            if(checkItem.Reference != null) {
+                                currentItem = checkItem.Reference;
+                                RefreshItemUI();
+                                break;
+                            }
+                        }
+                        if(results[i].gameObject.CompareTag("Quest")) {
+                            //Objects with "Quest" tag always have a QuestReference class
+                            QuestReference checkQuest = results[i].gameObject.GetComponent<QuestReference>();
+                            if(checkQuest.Reference.exists) {
+                                currentQuestReference = checkQuest;
+                                GeneralQuestManager.RefreshSelectedQuest();
+                                break;
+                            }
+                        }
+                        if(results[i].gameObject.CompareTag("CharacterReference")) {
+                            //Character References on the Quest page work similar to with general Character
+                            CharacterReference checkRef = results[i].gameObject.GetComponent<CharacterReference>();
+                            if(checkRef.Reference.alive) {
+                                currentCharacter = checkRef.Reference;
+                                RefreshCharacterUI();
+                                break;
+                            }
+                        }
+                        if(results[i].gameObject.CompareTag("Cover")) {
+                            break;
+                        }
+                    
+                    }
+                }
+                else {
+                    //Different PopUp Windows have different functions
+                    if(curPopUp == PopUpType.NewCharacter) {
+                        //1 = A New Character Window
+                        NewCharacterRaycast(results);
+                    }
+                    else if(curPopUp == PopUpType.CharacterLevelUp) {
+                        //2 = LevelUp character window (has no actions to take here)
+                        LevelUpRaycast(results);
+                    }
+                }
             }
         }
-        if(Input.GetMouseButtonDown(0)) {
-            m_PointerEventData = new PointerEventData(m_EventSystem);
-            m_PointerEventData.position = Input.mousePosition;
-            List<RaycastResult> results = new List<RaycastResult>();
-            m_Raycaster.Raycast(m_PointerEventData, results);
-            //Gets the first object in the list that can be interacted with, and interacts with it
-            //If there is no Pop-up window, there's different actions than if there is a pop-up window
-            if(curPopUp == PopUpType.None) {
-            for(int i = 0; i< results.Count; i++) {
-                
-                    //These tag are used to determine something that can be clicked but isn't a button
-                if(results[i].gameObject.CompareTag("Character")) {
-                    //if it is a choosable character, it becomes the current character
-                        //Objects with the "Character" tag will always have a parent with the Character Class
-                    Character checkCharacter = results[i].gameObject.GetComponentInParent<Character>();
-                    if(checkCharacter.alive) {
-                        currentCharacter = checkCharacter;
-                        RefreshCharacterUI();
-                        break;
-                    }
-                }
-                if(results[i].gameObject.CompareTag("Item")) {
-                    //Objects with the "Item" tag will always have an ItemReference compoenent
-                    ItemReference checkItem = results[i].gameObject.GetComponent<ItemReference>();
-                    if(checkItem.Reference != null) {
-                        currentItem = checkItem.Reference;
-                        RefreshItemUI();
-                        break;
-                    }
-                }
-                if(results[i].gameObject.CompareTag("Quest")) {
-                    //Objects with "Quest" tag always have a QuestReference class
-                    QuestReference checkQuest = results[i].gameObject.GetComponent<QuestReference>();
-                    if(checkQuest.Reference.exists) {
-                        currentQuestReference = checkQuest;
-                        GeneralQuestManager.RefreshSelectedQuest();
-                        break;
-                    }
-                }
-                if(results[i].gameObject.CompareTag("CharacterReference")) {
-                    //Character References on the Quest page work similar to with general Character
-                    CharacterReference checkRef = results[i].gameObject.GetComponent<CharacterReference>();
-                    if(checkRef.Reference.alive) {
-                        currentCharacter = checkRef.Reference;
-                        RefreshCharacterUI();
-                        break;
-                    }
-                }
-                if(results[i].gameObject.CompareTag("Cover")) {
-                    break;
-                }
-               
-            }
-            }
-            else {
-                //Different PopUp Windows have different functions
-                if(curPopUp == PopUpType.NewCharacter) {
-                    //1 = A New Character Window
-                    NewCharacterRaycast(results);
-                }
-                else if(curPopUp == PopUpType.CharacterLevelUp) {
-                    //2 = LevelUp character window (has no actions to take here)
-                    LevelUpRaycast(results);
-                }
+        else {
+            //If the game isn't yet running the UIManager might still have to manage button presses
+            if(Input.GetMouseButtonDown(0)) {
+                m_PointerEventData = new PointerEventData(m_EventSystem);
+                m_PointerEventData.position = Input.mousePosition;
+                List<RaycastResult> results = new List<RaycastResult>();
+                m_Raycaster.Raycast(m_PointerEventData, results);
+                //Does the pregame raycast
+                PreGameRaycast(results);
             }
         }
     }
@@ -369,6 +395,16 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     public void EndPopUp() {
         PopUpCoverImage.SetActive(false);
         curPopUp = PopUpType.None;
+    }
+    //PopUp Window Function 0: Pregame - before the game actually starts
+    private void PreGameRaycast(List<RaycastResult> results) {
+        for(int i = 0; i < results.Count; i++) {
+            //If the player is selecting a save file, it shows up
+            if(results[i].gameObject.CompareTag("Save")) {
+                GeneralSaveManager.SelectSave(results[i].gameObject);
+                break;
+            }
+        }
     }
     //PopUp Window Function 1: When the PopUp window is for a new Character
     [Header("PopUp Window 1: New Character")]
