@@ -31,6 +31,7 @@ public struct Party {
 }
 public class QuestManager : MonoBehaviour
 {
+    public QuestNameGeneration GenerateQuestName;//Has access to the QuestNameGeneration ScriptableObject, so it can create names
     //Has reference to the existing possible quests
     public List<QuestReference> QuestSlots;
     public int activeQuests;
@@ -91,7 +92,7 @@ public class QuestManager : MonoBehaviour
             PopUp tempPopUp;
             tempPopUp.ChosenCharacter = null;
             tempPopUp.ChosenItem = null;
-            tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+            tempPopUp.ChosenQuest = CreateNewQuest(1, 1);
             tempPopUp.Type = PopUpType.NewCharacter;
             UIManager.Instance.WaitingPopUps.Add(tempPopUp);
         }
@@ -125,7 +126,7 @@ public class QuestManager : MonoBehaviour
                     PopUp tempPopUp;
                     tempPopUp.ChosenCharacter = null;
                     tempPopUp.ChosenItem = null;
-                    tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+                    tempPopUp.ChosenQuest = CreateNewQuest(1, 1);
                     tempPopUp.Type = PopUpType.NewCharacter;
                     UIManager.Instance.WaitingPopUps.Add(tempPopUp);
                 }
@@ -520,10 +521,11 @@ public class QuestManager : MonoBehaviour
         }
     }
     //Creating a new quest depends only on the number of characters and the level of the quest
-    public static Quest CreateNewQuest(int numChar, int lvl) {
+    public Quest CreateNewQuest(int numChar, int lvl) {
         Quest tempQuest = new Quest();
         tempQuest.exists = true;
-        tempQuest.Title = "";
+        QuestCategory questType = (QuestCategory)Random.Range(0, QuestCategory.GetNames(typeof(QuestCategory)).Length);
+        tempQuest.Title = GenerateQuestName.NameQuest(questType);
         tempQuest.partySize = numChar;
         tempQuest.Level = lvl;
         tempQuest.ItemReward = CreateItemReward(numChar, lvl);

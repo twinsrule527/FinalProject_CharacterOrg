@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 //A manager object that specifically manages items that are not currently equipped/are in the shop
 public enum SortByType {
     Alphabet,
@@ -69,7 +70,9 @@ public class ItemManager : MonoBehaviour
             
         }
     }
-
+    //Refreshes the shop
+    [SerializeField] private TMP_Text CurrentGoldText;
+    [SerializeField] private TMP_Text GoldUpkeepText;
     public void RefreshShopItemsUI() {
         //Deletes all shop items which don't exist
         ShopItems.RemoveAll(item => item == null);
@@ -84,6 +87,9 @@ public class ItemManager : MonoBehaviour
                 ShopItemSlots[i].myImage.sprite = ShopItems[i].Sprite;
             }
         }
+        CurrentGoldText.text = "Current Gold: " + UIManager.Instance.CurrentGold.ToString();
+        //TODO: Introduce upkeep costs?
+        GoldUpkeepText.text = "Upkeep: " + "0" + " gold";
     }
     //This function refreshes new ShopItems
     private const int MAX_SHOP_COUNT = 6;
@@ -155,7 +161,7 @@ public class ItemManager : MonoBehaviour
                 PopUp tempPopUp;
                 tempPopUp.ChosenCharacter = null;
                 tempPopUp.ChosenItem = curItem;
-                tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+                tempPopUp.ChosenQuest = UIManager.Instance.GeneralQuestManager.CreateNewQuest(1, 1);
                 tempPopUp.Type = PopUpType.SellItem;
                 UIManager.Instance.WaitingPopUps.Add(tempPopUp);
             }

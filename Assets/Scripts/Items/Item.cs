@@ -62,6 +62,9 @@ public class Item : MonoBehaviour
         get {
             return _equippedCharacter;
         }
+        set {
+            _equippedCharacter = value;
+        }
     }
     public bool InShop;//Whether the item is in the shop or your general inventory
     [SerializeField] protected Sprite _sprite;

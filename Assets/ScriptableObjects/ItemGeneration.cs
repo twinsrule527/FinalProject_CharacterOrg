@@ -119,7 +119,7 @@ public class ItemGeneration : ScriptableObject
                 modifiers.Add(specItem.SecondaryModifier[i], specItem.SecondaryModifierValue[i]);
             }
             string declaredText = DeclareText(specItem);
-            newItem.DeclareTraits(modifiers, specItem.ItemName, specItem.Type, itemLevel, 0, declaredText, specItem.ItemSprite);
+            newItem.DeclareTraits(modifiers, specItem.ItemName, specItem.Type, itemLevel, CalculateBasePrice(specItem), declaredText, specItem.ItemSprite);
         }
         else {
             List<SpecificTraits> lvlItems = new List<SpecificTraits>();
@@ -152,7 +152,7 @@ public class ItemGeneration : ScriptableObject
                 modifiers.Add(specItem.SecondaryModifier[i], specItem.SecondaryModifierValue[i]);
             }
             string declaredText = DeclareText(specItem);
-            newItem.DeclareTraits(modifiers, specItem.ItemName, specItem.Type, itemLevel, 0, declaredText, specItem.ItemSprite);
+            newItem.DeclareTraits(modifiers, specItem.ItemName, specItem.Type, itemLevel, CalculateBasePrice(specItem), declaredText, specItem.ItemSprite);
 
         }
         //Needs to generate abilities
@@ -273,7 +273,7 @@ public class ItemGeneration : ScriptableObject
         Dictionary<StatType, int> modifiers = new Dictionary<StatType, int>();
         modifiers.Add(rnd.PotionType, 0);
         string PotionAbilityText = DeclareText(ItemType.Potion, rnd.Level, rnd.PotionType, rnd.IsHealthPotion);
-        newPotion.DeclareTraits(modifiers, rnd.ItemName, rnd.Type, rnd.Level, 0, PotionAbilityText, rnd.ItemSprite);
+        newPotion.DeclareTraits(modifiers, rnd.ItemName, rnd.Type, rnd.Level, CalculateBasePrice(rnd), PotionAbilityText, rnd.ItemSprite);
         //The potion's special abilities are inherent to the PotionType, so they are actually in the RunQuest function
         newPotion.OnQuestStartAbility = DoNothing;
         newPotion.OnQuestEndAbility = DoNothing;
@@ -302,19 +302,50 @@ public class ItemGeneration : ScriptableObject
         return "";
     }
     //String used for specific items
-    private string DeclareText(SpecificTraits myTrait) {
+    public string DeclareText(SpecificTraits myTrait) {
         string myDescription = "";
         for(int i = 0; i < myTrait.PrimaryModifierValue.Count; i++) {
-            myDescription += "+" + myTrait.PrimaryModifierValue[i].ToString() + " " + myTrait.PrimaryModifier[i].ToString() + ", ";
+            //Only shows the stat if its not equal to 0
+            if(myTrait.PrimaryModifierValue[i] != 0) {
+                myDescription += "+" + myTrait.PrimaryModifierValue[i].ToString() + " " + myTrait.PrimaryModifier[i].ToString() + ", ";
+            }
         }
         for(int i = 0; i < myTrait.SecondaryModifierValue.Count; i++) {
-            myDescription += "+" + myTrait.SecondaryModifierValue[i].ToString() + " " + myTrait.SecondaryModifier[i].ToString() + ", ";
+            if(myTrait.SecondaryModifierValue[i] != 0) {
+                myDescription += "+" + myTrait.SecondaryModifierValue[i].ToString() + " " + myTrait.SecondaryModifier[i].ToString() + ", ";
+            }
         }
         char[] removeChar = {',', ' '};
         myDescription = myDescription.TrimEnd(removeChar);
         return myDescription;
     }
-
+    //This calculates the Price of an item, given its traits
+        //Generates price differently for normal items and for Potions
+    private const int BASE_PRICE_PER_LEVEL = 5;
+    private const float PRICE_PER_MODIFIER = 3f;
+    private const int PRICE_PER_LEVEL_ABILITY = 2;
+    private int CalculateBasePrice(SpecificTraits itemTraits) {
+        int price = itemTraits.Level * BASE_PRICE_PER_LEVEL;
+        float modIncrease = 0;
+        foreach(int val in itemTraits.PrimaryModifierValue) {
+            modIncrease += val * PRICE_PER_MODIFIER;
+        }
+        foreach(int val in itemTraits.SecondaryModifierValue) {
+            modIncrease += val * PRICE_PER_MODIFIER;
+        }
+        price += Mathf.CeilToInt(modIncrease);
+        //Further increases cost if it has an ability
+        if(itemTraits.Ability != ItemAbilityReference.None) {
+            price += PRICE_PER_LEVEL_ABILITY * itemTraits.Level;
+        }
+        return price;
+    }
+    private const int POTION_PRICE_PER_LEVEL = 10;
+    private int CalculateBasePrice(PotionTraits itemTraits) {
+        int price = itemTraits.Level * POTION_PRICE_PER_LEVEL;
+        return price;
+    }
+    
     //This is for when an item does not have a special ability at a certain trigger time
     public void DoNothing(Item self, List<StatType> statsAffected) {
 

@@ -246,6 +246,7 @@ public class SaveGameJSON : MonoBehaviour
         foreach(ItemSave item in overWriteChar.Inventory) {
             Item newItem = LoadItemSave(item);
             tempChar.Inventory.Add(newItem);
+            newItem.EquippedCharacter = tempChar;
         }
     }
     public ItemSave CreateItemSave(Item item) {
@@ -283,6 +284,15 @@ public class SaveGameJSON : MonoBehaviour
         }
         else {
             newItem.DeclareTraits(oItem.Modifiers, oItem.ItemName, oItem.Type, oItem.Level, oItem.Price, oItem.AbilityDescription, oItem.sprite);
+            //Has to declare the item text independently because of the weird way in which normal items have their text generated
+            string myDescription = "";
+            Dictionary<StatType, int> tempDictionary = oItem.Modifiers;
+            foreach(var modifier in tempDictionary) {
+                myDescription += "+" + modifier.Value.ToString() + " " + modifier.Value.ToString() + ", ";
+            }
+            char[] removeChar = {',', ' '};
+            myDescription = myDescription.TrimEnd(removeChar);
+            newItem.AbilityText = myDescription;
             UIManager.Instance.GenerateItem.DeclareItemAbility(newItem, oItem.AbilityReference);
             newItem.AbilityAffectedStats = oItem.AbilityStats;
             return newItem;

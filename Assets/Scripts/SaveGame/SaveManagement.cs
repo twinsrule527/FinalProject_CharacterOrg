@@ -85,7 +85,7 @@ public class SaveManagement : MonoBehaviour
         tempPopUp.ChosenCharacter = null;
         tempPopUp.ChosenItem = null;
         tempPopUp.Type = PopUpType.SaveQuitGame;
-        tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+        tempPopUp.ChosenQuest = UIManager.Instance.GeneralQuestManager.CreateNewQuest(1, 1);
         UIManager.Instance.WaitingPopUps.Add(tempPopUp);
     }
     public void SaveQuitGame(string filename) {

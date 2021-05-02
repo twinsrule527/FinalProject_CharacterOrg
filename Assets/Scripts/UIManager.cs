@@ -90,7 +90,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         PopUp tempPopUp;
         tempPopUp.ChosenCharacter = null;
         tempPopUp.ChosenItem = null;
-        tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+        tempPopUp.ChosenQuest = UIManager.Instance.GeneralQuestManager.CreateNewQuest(1, 1);
         tempPopUp.Type = PopUpType.NewCharacter;
         for(int i = 0;  i< allCharacters.Count; i++) {
             allCharacters[i].inParty = false;
