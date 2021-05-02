@@ -59,6 +59,7 @@ public class SaveGameJSON : MonoBehaviour
         //Only saves it if the save file is not the same as the BASE_SAVE_FILE_NAME
         if(filename != BASE_SAVE_FILE_NAME) {
             SaveFile newFile = new SaveFile();
+            newFile.FileName = filename;
             newFile.myCharacters = new List<CharacterSave>();
             newFile.myShopItems = new List<ItemSave>();
             newFile.myUnequippedItems = new List<ItemSave>();
@@ -110,6 +111,7 @@ public class SaveGameJSON : MonoBehaviour
             Manager.GeneralItemManager.ShopItems = new List<Item>();
             foreach(ItemSave item in loadedFile.myShopItems) {
                 Item newItem = LoadItemSave(item);
+                newItem.InShop = true;
                 Manager.GeneralItemManager.ShopItems.Add(newItem);
             }
             foreach(QuestReference questRef in Manager.GeneralQuestManager.QuestSlots) {
@@ -117,11 +119,11 @@ public class SaveGameJSON : MonoBehaviour
             }
             for(int i = 0; i < loadedFile.myQuests.Count; i++) {
                 LoadQuestSave(loadedFile.myQuests[i], Manager.GeneralQuestManager.QuestSlots[i]);
+                Manager.GeneralQuestManager.activeQuests++;
             }
             Manager.CurrentGold = loadedFile.Gold;
-            //Then, everything needs to get refreshed
-            string JSONConversion = JsonUtility.ToJson(loadedFile);
-            WriteToFile(JSONConversion, BASE_SAVE_FILE_NAME);
+            //Everything gets refreshed as part of the Save Management script
+            
         }
     }
     //Additional Save File that saves existing files
@@ -173,7 +175,8 @@ public class SaveGameJSON : MonoBehaviour
             }
         }
         //Then, writes the save to the file
-
+        string writeFile = JsonUtility.ToJson(baseFile);
+        WriteToFile(writeFile, BASE_SAVE_FILE_NAME);
     }
     //Function for loading the existing SaveManagerFile
     public SaveList LoadExistingSaves() {
@@ -233,6 +236,7 @@ public class SaveGameJSON : MonoBehaviour
         tempChar.StatModifier = overWriteChar.StatModifiers;
         tempChar.XP = overWriteChar.xp;
         tempChar.myAbilityReference = overWriteChar.Ability;
+        tempChar.alive = true;
         //Has to use the CharacterGeneration delegates to give ability
         UIManager.Instance.GenerateCharacter.DeclareCharAbility(tempChar, overWriteChar.Ability);
         tempChar.AbilityAffectedStats = overWriteChar.AbilityStats;
@@ -259,10 +263,30 @@ public class SaveGameJSON : MonoBehaviour
     }
     public Item LoadItemSave(ItemSave oItem) {
         Item newItem = Instantiate(UIManager.Instance.GenerateItem.ItemPrefab, Vector3.zero, Quaternion.identity);
-        newItem.DeclareTraits(oItem.Modifiers, oItem.ItemName, oItem.Type, oItem.Level, oItem.Price, oItem.AbilityDescription, oItem.sprite);
-        UIManager.Instance.GenerateItem.DeclareItemAbility(newItem, oItem.AbilityReference);
-        newItem.AbilityAffectedStats = oItem.AbilityStats;
-        return newItem;
+        if(oItem.Type == ItemType.Potion) {
+            GameObject newObj = newItem.gameObject;
+            Destroy(newItem);
+            Item newPotion = newObj.AddComponent<ItemPotion>();
+            if(oItem.AbilityStats[0] == StatType.Endurance) {
+                string PotionAbilityText = UIManager.Instance.GenerateItem.DeclareText(ItemType.Potion, oItem.Level, oItem.AbilityStats[0], true);
+                newPotion.DeclareTraits(oItem.Modifiers, oItem.ItemName, oItem.Type, oItem.Level, oItem.Price, PotionAbilityText, oItem.sprite);
+            }
+            else {
+                string PotionAbilityText = UIManager.Instance.GenerateItem.DeclareText(ItemType.Potion, oItem.Level, oItem.AbilityStats[0], false);
+                newPotion.DeclareTraits(oItem.Modifiers, oItem.ItemName, oItem.Type, oItem.Level, oItem.Price, PotionAbilityText, oItem.sprite);
+            }
+            newPotion.OnQuestStartAbility = UIManager.Instance.GenerateItem.DoNothing;
+            newPotion.OnQuestEndAbility = UIManager.Instance.GenerateItem.DoNothing;
+            newPotion.AbilityAffectedStats = new List<StatType>();
+            newPotion.AbilityAffectedStats.Add(oItem.AbilityStats[0]);
+            return newPotion;
+        }
+        else {
+            newItem.DeclareTraits(oItem.Modifiers, oItem.ItemName, oItem.Type, oItem.Level, oItem.Price, oItem.AbilityDescription, oItem.sprite);
+            UIManager.Instance.GenerateItem.DeclareItemAbility(newItem, oItem.AbilityReference);
+            newItem.AbilityAffectedStats = oItem.AbilityStats;
+            return newItem;
+        }
     }
     public QuestSave CreateQuestSave(Quest quest) {
         QuestSave nSave = new QuestSave();

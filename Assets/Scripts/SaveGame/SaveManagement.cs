@@ -7,6 +7,12 @@ using TMPro;
 public class SaveManagement : MonoBehaviour
 {
     //Note: The start new game function is in the UIManager
+    private string _currentGamePlayedName;//Name of the current game being played
+    public string CurrentGamePlayerName {
+        get {
+            return _currentGamePlayedName;
+        }
+    }
     [SerializeField] private SaveGameJSON SaveGameFunctions;
     [SerializeField] private GameObject ExistingSavePrefab;//Prefab for a save file that already exists, added to the existing saves list at the beginning of the game
     [SerializeField] private VerticalLayoutGroup ExistingSavesGroup;
@@ -51,19 +57,70 @@ public class SaveManagement : MonoBehaviour
 
     //Deletes the selected save at a button press
     public void DeleteSelectedSave() {
-        string loadString = SaveGameFunctions.ReadFromFile(Application.persistentDataPath + "\\" + curSelectedRef.SaveName);
-        SaveFile loadFile = JsonUtility.FromJson<SaveFile>(loadString);
-        SaveGameFunctions.SaveDeleteFile(loadFile, true);
-        int refPos = CurrentExistingSaves.IndexOf(curSelectedRef.gameObject);
-        Destroy(curSelectedRef.gameObject);
-        CurrentExistingSaves.RemoveAt(refPos);
-        if(CurrentExistingSaves.Count > 0) {
-            SelectSave(CurrentExistingSaves[0].gameObject);
+        if(curSelectedRef != null) {
+            string loadString = SaveGameFunctions.ReadFromFile(curSelectedRef.SaveName);
+            SaveFile loadFile = JsonUtility.FromJson<SaveFile>(loadString);
+            SaveGameFunctions.SaveDeleteFile(loadFile, true);
+            int refPos = CurrentExistingSaves.IndexOf(curSelectedRef.gameObject);
+            Destroy(curSelectedRef.gameObject);
+            CurrentExistingSaves.RemoveAt(refPos);
+            if(CurrentExistingSaves.Count > 0) {
+                SelectSave(CurrentExistingSaves[0].gameObject);
+            }
+        }
+    }
+
+    public void LoadSelectedSave() {
+        if(curSelectedRef != null) {
+            SaveGameFunctions.LoadSaveFile(curSelectedRef.SaveName);
+            _currentGamePlayedName = curSelectedRef.SaveName;
+            UIManager.Instance.StartExistingGame();
         }
     }
 
     //Saves the game in its current state (ignoring whoever might be in certain parties), and then returns to the pregame menu
-    void SaveQuitGame() {
-        
+    //First function triggers the popup, while second does the actual saving and quitting
+    public void SaveQuitPopUpTrigger() {
+        PopUp tempPopUp = new PopUp();
+        tempPopUp.ChosenCharacter = null;
+        tempPopUp.ChosenItem = null;
+        tempPopUp.Type = PopUpType.SaveQuitGame;
+        tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
+        UIManager.Instance.WaitingPopUps.Add(tempPopUp);
+    }
+    public void SaveQuitGame(string filename) {
+        //When the player decides to actually quit, they quit
+        SaveGameFunctions.CreateSaveFile(filename);
+        UIManager Manager = UIManager.Instance;
+        //Deletes all existing items
+            //Also resets their lists
+        foreach(Item item in Manager.GeneralItemManager.UnequippedItems) {
+            Destroy(item.gameObject);
+        }
+        Manager.GeneralItemManager.UnequippedItems = new List<Item>();
+        foreach(Item item in Manager.GeneralItemManager.ShopItems) {
+            Destroy(item.gameObject);
+        }
+        Manager.GeneralItemManager.ShopItems = new List<Item>();
+        foreach(QuestReference questRef in Manager.GeneralQuestManager.QuestSlots) {
+            if(questRef.Reference.exists) {
+            foreach(Item item in questRef.Reference.ItemReward) {
+                Destroy(item.gameObject);
+            }
+            }
+            questRef.Reference.ItemReward = new List<Item>();
+        }
+        foreach(Character chara in Manager.allCharacters) {
+            foreach(Item item in chara.Inventory) {
+                Destroy(item.gameObject);
+            }
+            chara.Inventory = new List<Item>();
+            //Also deactivates characters
+            chara.gameObject.SetActive(false);
+        }
+        //Returns to the pregame screen
+        Manager.StartGameScreen.SetActive(true);
+        Manager.GameRunning = false;
+        LoadExistingSaves();
     }
 }

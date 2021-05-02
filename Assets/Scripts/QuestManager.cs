@@ -341,7 +341,7 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        //If all characters are assigned to quests, StartQuest becomes active
+        //If all characters are assigned to quests, and all of those quests are full, StartQuest becomes active
         int charactersOnQuests = 0;
         for(int i = 0; i< UIManager.Instance.livingCharacters; i++) {
             if(UIManager.Instance.allCharacters[i].inParty) {
@@ -349,7 +349,26 @@ public class QuestManager : MonoBehaviour
             }
         }
         if(charactersOnQuests >= UIManager.Instance.livingCharacters) {
-            QuestStartButton.interactable = true;
+            //Checks to see if the quests with characters on them are full
+            int temp = 0;
+            foreach(QuestReference reference in QuestSlots) {
+                if(reference.gameObject.activeInHierarchy) {
+                    int numInParty = reference.Reference.myParty.Members.Count;
+                    if(numInParty == 0 || numInParty == reference.Reference.partySize) {
+                        //do nothing
+                    }
+                    //Otherwise, increase temp by 1
+                    else {
+                        temp++;
+                    }
+                }
+            }
+            if(temp == 0) {
+                QuestStartButton.interactable = true;
+            }
+            else {
+                QuestStartButton.interactable = false;
+            }
         }
         else {
             QuestStartButton.interactable = false;

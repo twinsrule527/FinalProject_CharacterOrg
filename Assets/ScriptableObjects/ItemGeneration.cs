@@ -284,7 +284,7 @@ public class ItemGeneration : ScriptableObject
 
 
     //The declare text for potions specifically
-    private string DeclareText(ItemType myType, int lvl, StatType statModifier, bool modifiesHealth) {
+    public string DeclareText(ItemType myType, int lvl, StatType statModifier, bool modifiesHealth) {
         //Potions have a specific universal text that just gets plugged into
         string tempString = "";
         if(myType == ItemType.Potion) {

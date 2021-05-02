@@ -23,7 +23,8 @@ public enum PopUpType {
     NewCharacter,
     CharacterLevelUp,
     QuestComplete,
-    SellItem
+    SellItem,
+    SaveQuitGame
 }
 //This struct makes use of the PopUpType by declaring any objects that need to be declared
 public struct PopUp {
@@ -78,24 +79,64 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     }
 
     //Stuff that was in Start() but needs to be moved when the game actually starts
-    [SerializeField] private GameObject StartGameScreen;
+    public GameObject StartGameScreen;
     public void StartNewGame() {
         StartGameScreen.SetActive(false);
         _itemPageActive = true;
         QuestPage.SetActive(false);
+        ItemPage.SetActive(true);
+        SwitchPageButton.GetComponentInChildren<TMP_Text>().text = "Go to Quest Page";
         WaitingPopUps = new List<PopUp>();
         PopUp tempPopUp;
         tempPopUp.ChosenCharacter = null;
         tempPopUp.ChosenItem = null;
         tempPopUp.ChosenQuest = QuestManager.CreateNewQuest(1, 1);
         tempPopUp.Type = PopUpType.NewCharacter;
+        for(int i = 0;  i< allCharacters.Count; i++) {
+            allCharacters[i].inParty = false;
+            allCharacters[i].gameObject.SetActive(false);
+        }
         for(int i =0; i < NUM_START_CHARACTERS; i++) {
             WaitingPopUps.Add(tempPopUp);
         }
+        GeneralItemManager.ShopItems = new List<Item>();
+        GeneralItemManager.UnequippedItems = new List<Item>();
+        GeneralQuestManager.activeQuests = 0;
         CurrentGold = 0;
         GameRunning = true;
         
     }
+
+    //Starts running an already existing game
+    public void StartExistingGame() {
+        StartGameScreen.SetActive(false);
+        _itemPageActive = true;
+        QuestPage.SetActive(false);
+        ItemPage.SetActive(true);
+        SwitchPageButton.GetComponentInChildren<TMP_Text>().text = "Go to Quest Page";
+        WaitingPopUps = new List<PopUp>();
+        GameRunning = true;
+        livingCharacters = 0;
+        for(int i = 0; i <allCharacters.Count; i++) {
+            allCharacters[i].inParty = false;
+            if(allCharacters[i].alive && allCharacters[i].gameObject.activeInHierarchy) {
+                currentCharacter = allCharacters[i];
+                livingCharacters++;
+                allCharacters[i].RefreshUI();
+            }
+        }
+        if(GeneralItemManager.ShopItems.Count > 0) {
+            currentItem = GeneralItemManager.ShopItems[0];
+        }
+        else {
+            currentItem = null;
+        }
+        RefreshCharacterUI();
+        RefreshItemUI();
+        GeneralItemManager.RefreshUnequippedItemsUI();
+        GeneralItemManager.RefreshShopItemsUI();
+    }
+
 
     void Update() {
         //This all only occurs if there is a game running
@@ -260,22 +301,25 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private Button EquipUnequipButton;
     //Refreshes the UI of the currently selected Item, similar to how is done with characters
     public void RefreshItemUI() {
-        curItemImage.sprite = currentItem.Sprite;
-        curItemNameText.text = currentItem.ItemName;
-        curItemTypeText.text = currentItem.Type.ToString();
-        curItemLevelText.text = "Level " + currentItem.Level.ToString();
-        //An item in your inventory can only be sold for a fraction of its full price
-        if(currentItem.InShop) {
-            curItemPriceText.text = "Costs " + currentItem.Price.ToString() + " gold";
-        }
-        else {
-            curItemPriceText.text = "Sells for " + CalculateSellPrice(currentItem.Price).ToString() + " gold";
-        }
-        curItemAbilityText.text = currentItem.AbilityText;
-        //For different buttons, they change depending on what options the player has
-            //But only if there is a currently selected Character
-        if(currentCharacter != null) {
-            RefreshItemButtonUI();
+        //Only does anything if the currentItem is not null
+        if(currentItem != null) {
+            curItemImage.sprite = currentItem.Sprite;
+            curItemNameText.text = currentItem.ItemName;
+            curItemTypeText.text = currentItem.Type.ToString();
+            curItemLevelText.text = "Level " + currentItem.Level.ToString();
+            //An item in your inventory can only be sold for a fraction of its full price
+            if(currentItem.InShop) {
+                curItemPriceText.text = "Costs " + currentItem.Price.ToString() + " gold";
+            }
+            else {
+                curItemPriceText.text = "Sells for " + CalculateSellPrice(currentItem.Price).ToString() + " gold";
+            }
+            curItemAbilityText.text = currentItem.AbilityText;
+            //For different buttons, they change depending on what options the player has
+                //But only if there is a currently selected Character
+            if(currentCharacter != null) {
+                RefreshItemButtonUI();
+            }
         }
     }
 
@@ -362,6 +406,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private GameObject CharacterLevelUpPopUp;
     [SerializeField] private GameObject QuestCompletePopUp;
     [SerializeField] private GameObject SellItemPopUp;
+    [SerializeField] private GameObject SaveGamePopUp;
     //This function starts a new PopUp, using the 0th element of the waitingPopUp List
     public void StartPopUp() {
         PopUp tempPopUp = WaitingPopUps[0];
@@ -389,6 +434,10 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             SellItemPopUp.SetActive(true);
             SellItemItem.Reference = tempPopUp.ChosenItem;
             RefreshSellItemPopUp();
+        }
+        else if(curPopUp == PopUpType.SaveQuitGame) {
+            SaveGamePopUp.SetActive(true);
+            EnterSaveGamePopUp();
         }
     }
     //This function ends the current popUp, returning to the base screen
@@ -750,5 +799,43 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     public void CloseSellItemPopUp() {
         SellItemPopUp.SetActive(false);
         EndPopUp();
+    }
+
+    //Pop-Up function 5: Save and Quit Game
+    [Header("PopUp Window 5: Save/Quit Game")]
+    [SerializeField] private TMP_InputField SaveGameNameInput;
+    [SerializeField] private Button SaveGameButton;
+    
+    //Occurs when you open this save game
+    public void EnterSaveGamePopUp() {
+        SaveGameNameInput.text = GeneralSaveManager.CurrentGamePlayerName;
+        if(SaveGameNameInput.text == "") {
+            SaveGameButton.interactable = false;
+        }
+        else {
+            Debug.Log(SaveGameNameInput.text);
+            SaveGameButton.interactable = true;
+        }
+    }
+    //Refreshes the UI
+    public void RefreshSaveGamePopUp() {
+        if(SaveGameNameInput.text == "") {
+            SaveGameButton.interactable = false;
+        }
+        else {
+            SaveGameButton.interactable = true;
+        }
+    }
+    //Closes the popUp
+    public void CloseSaveGamePopUp() {
+        SaveGamePopUp.SetActive(false);
+        EndPopUp();
+    }
+    //Saves and closes the popUp and the current game
+    public void SaveGameThenClose() {
+        string newString = SaveGameNameInput.text;
+        SaveGamePopUp.SetActive(false);
+        EndPopUp();
+        GeneralSaveManager.SaveQuitGame(newString);
     }
 }
