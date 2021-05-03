@@ -108,6 +108,7 @@ public class Character : MonoBehaviour
         curHealth = Mathf.Clamp(curHealth, 0, baseHealth);
         if(curHealth > 0) {
             string healthString = CharacterName + " healed back up to " + curHealth.ToString() + " health.";
+            refQuest.QuestOccurences.Add(healthString);
         }
         quest = refQuest;
     }

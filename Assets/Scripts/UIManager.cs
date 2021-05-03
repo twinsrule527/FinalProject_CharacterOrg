@@ -45,6 +45,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     public Item currentItem;
     public QuestReference currentQuestReference;
     public int CurrentGold;
+    public int CurrentGoldUpkeep;//How much it costs to keep the characters alive
     //Raycasting Stuff for managing 
     GraphicRaycaster m_Raycaster;
     PointerEventData m_PointerEventData;
@@ -80,6 +81,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
 
     //Stuff that was in Start() but needs to be moved when the game actually starts
     public GameObject StartGameScreen;
+    private const int STARTING_GOLD = 20;
     public void StartNewGame() {
         StartGameScreen.SetActive(false);
         _itemPageActive = true;
@@ -102,7 +104,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         GeneralItemManager.ShopItems = new List<Item>();
         GeneralItemManager.UnequippedItems = new List<Item>();
         GeneralQuestManager.activeQuests = 0;
-        CurrentGold = 0;
+        CurrentGold = 20;
         GameRunning = true;
         
     }
@@ -154,6 +156,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
                         GeneralQuestManager.activeQuests++;
                         GeneralQuestManager.QuestSlots[i].Reference = newQuest;
                     }
+                    CurrentGoldUpkeep = CalculateUpkeepCost();
                     GeneralItemManager.UpdateShop();
                 }
             }
@@ -393,6 +396,19 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             
         }
 
+    }
+    //Calculates how much gold it costs to keep the game going
+    private int BASE_UPKEEP_PER_CHAR = 5;
+    private int LEVEL_UPKEEP_PER_CHAR = 2;
+    public int CalculateUpkeepCost() {
+        int temp = 0;
+        foreach(Character chara in allCharacters) {
+            if(chara.alive && chara.gameObject.activeInHierarchy) {
+                temp += BASE_UPKEEP_PER_CHAR;
+                temp += chara.Level * LEVEL_UPKEEP_PER_CHAR;
+            }
+        }
+        return temp;
     }
     //This Sorting Algorithm overrides the one in the ItemManager, but it doesn't need inputs
     [Header("Inventory Sorting")]

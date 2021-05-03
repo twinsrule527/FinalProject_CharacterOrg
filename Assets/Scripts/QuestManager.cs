@@ -55,6 +55,8 @@ public class QuestManager : MonoBehaviour
     }
     //Triggered by the RunQuest Button, activates all active quests
     public void RunAllActiveQuests() {
+        //Pay the upkeep cost:
+        UIManager.Instance.CurrentGoldUpkeep -= UIManager.Instance.CurrentGoldUpkeep;
         for(int i = 0; i < activeQuests; i++) {
             //Each quest that has enough characters fires
             if(QuestSlots[i].Reference.partySize == QuestSlots[i].Reference.myParty.Members.Count) {
@@ -191,6 +193,7 @@ public class QuestManager : MonoBehaviour
             int dmgDealt = Mathf.CeilToInt(AssignedDmg[i] / CalculateEffDef(tempChar));
             tempChar.curHealth -= dmgDealt;
             string newString = tempChar.CharacterName + " was dealt " + dmgDealt.ToString() + " damage.";
+            quest.QuestOccurences.Add(newString);
         }
 
             //Luck is used to determine additional rewards

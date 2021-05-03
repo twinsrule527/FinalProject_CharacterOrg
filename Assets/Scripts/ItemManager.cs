@@ -88,8 +88,7 @@ public class ItemManager : MonoBehaviour
             }
         }
         CurrentGoldText.text = "Current Gold: " + UIManager.Instance.CurrentGold.ToString();
-        //TODO: Introduce upkeep costs?
-        GoldUpkeepText.text = "Upkeep: " + "0" + " gold";
+        GoldUpkeepText.text = "Upkeep: " + UIManager.Instance.CurrentGoldUpkeep.ToString() + " gold";
     }
     //This function refreshes new ShopItems
     private const int MAX_SHOP_COUNT = 6;
@@ -143,7 +142,6 @@ public class ItemManager : MonoBehaviour
                 UnequippedItems.Add(curItem);
                 ShopItems.Remove(curItem);
                 curItem.InShop = false;
-                RefreshShopItemsUI();
                 RefreshUnequippedItemsUI();
                 UIManager.Instance.RefreshItemUI();
             }
@@ -166,6 +164,7 @@ public class ItemManager : MonoBehaviour
                 UIManager.Instance.WaitingPopUps.Add(tempPopUp);
             }
         }
+        RefreshShopItemsUI();
     }
 
     //This function uses Linq/Lambdas to sort your inventory
