@@ -170,6 +170,7 @@ public class Character : MonoBehaviour
         }
     }
     [SerializeField] private List<Image> InventoryImage;
+    public Image myBack;
     //This function refreshes the UI associated with this specific character
     public void RefreshUI() {
         if(alive) {

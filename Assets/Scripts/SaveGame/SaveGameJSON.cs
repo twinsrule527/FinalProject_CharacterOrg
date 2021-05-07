@@ -293,8 +293,8 @@ public class SaveGameJSON : MonoBehaviour
             char[] removeChar = {',', ' '};
             myDescription = myDescription.TrimEnd(removeChar);
             newItem.AbilityText = myDescription;
+            newItem.AbilityAffectedStats = new List<StatType>(oItem.AbilityStats);
             UIManager.Instance.GenerateItem.DeclareItemAbility(newItem, oItem.AbilityReference);
-            newItem.AbilityAffectedStats = oItem.AbilityStats;
             return newItem;
         }
     }

@@ -24,7 +24,8 @@ public enum PopUpType {
     CharacterLevelUp,
     QuestComplete,
     SellItem,
-    SaveQuitGame
+    SaveQuitGame,
+    Info
 }
 //This struct makes use of the PopUpType by declaring any objects that need to be declared
 public struct PopUp {
@@ -42,6 +43,8 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     public QuestManager GeneralQuestManager;
     public SaveManagement GeneralSaveManager;
     public Character currentCharacter;
+    [SerializeField] private Color CurrentCharacterColor;
+    [SerializeField] private Color BaseCharacterColor;
     public Item currentItem;
     public QuestReference currentQuestReference;
     public int CurrentGold;
@@ -122,7 +125,11 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         for(int i = 0; i <allCharacters.Count; i++) {
             allCharacters[i].inParty = false;
             if(allCharacters[i].alive && allCharacters[i].gameObject.activeInHierarchy) {
+                if(currentCharacter != null) {
+                    currentCharacter.myBack.color = BaseCharacterColor;
+                }
                 currentCharacter = allCharacters[i];
+                currentCharacter.myBack.color = CurrentCharacterColor;
                 livingCharacters++;
                 allCharacters[i].RefreshUI();
             }
@@ -168,50 +175,88 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
                 //Gets the first object in the list that can be interacted with, and interacts with it
                 //If there is no Pop-up window, there's different actions than if there is a pop-up window
                 if(curPopUp == PopUpType.None) {
-                    for(int i = 0; i< results.Count; i++) {
+                    if(!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)) {
+
+                        for(int i = 0; i< results.Count; i++) {
+                            
+                                //These tag are used to determine something that can be clicked but isn't a button
+                            if(results[i].gameObject.CompareTag("Character")) {
+                                //if it is a choosable character, it becomes the current character
+                                    //Objects with the "Character" tag will always have a parent with the Character Class
+                                Character checkCharacter = results[i].gameObject.GetComponentInParent<Character>();
+                                if(checkCharacter.alive) {
+                                    currentCharacter.myBack.color = BaseCharacterColor;
+                                    currentCharacter = checkCharacter;
+                                    currentCharacter.myBack.color = CurrentCharacterColor;
+                                    RefreshCharacterUI();
+                                    break;
+                                }
+                            }
+                            if(results[i].gameObject.CompareTag("Item")) {
+                                //Objects with the "Item" tag will always have an ItemReference compoenent
+                                ItemReference checkItem = results[i].gameObject.GetComponent<ItemReference>();
+                                if(checkItem.Reference != null) {
+                                    currentItem = checkItem.Reference;
+                                    RefreshItemUI();
+                                    break;
+                                }
+                            }
+                            if(results[i].gameObject.CompareTag("Quest")) {
+                                //Objects with "Quest" tag always have a QuestReference class
+                                QuestReference checkQuest = results[i].gameObject.GetComponent<QuestReference>();
+                                if(checkQuest.Reference.exists) {
+                                    currentQuestReference = checkQuest;
+                                    GeneralQuestManager.RefreshSelectedQuest();
+                                    break;
+                                }
+                            }
+                            if(results[i].gameObject.CompareTag("CharacterReference")) {
+                                //Character References on the Quest page work similar to with general Character
+                                CharacterReference checkRef = results[i].gameObject.GetComponent<CharacterReference>();
+                                if(checkRef.Reference.alive) {
+                                    currentCharacter.myBack.color = BaseCharacterColor;
+                                    currentCharacter = checkRef.Reference;
+                                    currentCharacter.myBack.color = CurrentCharacterColor;
+                                    RefreshCharacterUI();
+                                    break;
+                                }
+                            }
+                            if(results[i].gameObject.CompareTag("Cover")) {
+                                break;
+                            }
                         
-                            //These tag are used to determine something that can be clicked but isn't a button
-                        if(results[i].gameObject.CompareTag("Character")) {
-                            //if it is a choosable character, it becomes the current character
-                                //Objects with the "Character" tag will always have a parent with the Character Class
-                            Character checkCharacter = results[i].gameObject.GetComponentInParent<Character>();
-                            if(checkCharacter.alive) {
-                                currentCharacter = checkCharacter;
-                                RefreshCharacterUI();
-                                break;
+                        }
+                    }
+                    //If player is holding shift down, it goes to an info popUp
+                    else {
+                        for(int i = 0; i< results.Count; i++) {
+                            if(results[i].gameObject.CompareTag("CharacterInstruct")) {
+                                //Creates the Character Instruction PopUp
+                                PopUp tempPopUp;
+                                //Each popUp assigns to exist the type which they are
+                                tempPopUp.ChosenCharacter = allCharacters[0];
+                                tempPopUp.ChosenItem = null;
+                                tempPopUp.ChosenQuest = UIManager.Instance.GeneralQuestManager.CreateNewQuest(1, 1);
+                                tempPopUp.Type = PopUpType.Info;
+                                WaitingPopUps.Add(tempPopUp);
+                            }
+                            else if(results[i].gameObject.CompareTag("ItemInstruct")) {
+                                PopUp tempPopUp;
+                                tempPopUp.ChosenCharacter = null;
+                                tempPopUp.ChosenItem = currentItem;
+                                tempPopUp.ChosenQuest = UIManager.Instance.GeneralQuestManager.CreateNewQuest(1, 1);
+                                tempPopUp.Type = PopUpType.Info;
+                                WaitingPopUps.Add(tempPopUp);
+                            }
+                            else if(results[i].gameObject.CompareTag("QuestInstruct")) {
+                                PopUp tempPopUp;
+                                tempPopUp.ChosenCharacter = null;
+                                tempPopUp.ChosenItem = null;
+                                tempPopUp.ChosenQuest = UIManager.Instance.GeneralQuestManager.CreateNewQuest(1, 1);
+                                tempPopUp.Type = PopUpType.Info;
+                                WaitingPopUps.Add(tempPopUp);
                             }
                         }
-                        if(results[i].gameObject.CompareTag("Item")) {
-                            //Objects with the "Item" tag will always have an ItemReference compoenent
-                            ItemReference checkItem = results[i].gameObject.GetComponent<ItemReference>();
-                            if(checkItem.Reference != null) {
-                                currentItem = checkItem.Reference;
-                                RefreshItemUI();
-                                break;
-                            }
-                        }
-                        if(results[i].gameObject.CompareTag("Quest")) {
-                            //Objects with "Quest" tag always have a QuestReference class
-                            QuestReference checkQuest = results[i].gameObject.GetComponent<QuestReference>();
-                            if(checkQuest.Reference.exists) {
-                                currentQuestReference = checkQuest;
-                                GeneralQuestManager.RefreshSelectedQuest();
-                                break;
-                            }
-                        }
-                        if(results[i].gameObject.CompareTag("CharacterReference")) {
-                            //Character References on the Quest page work similar to with general Character
-                            CharacterReference checkRef = results[i].gameObject.GetComponent<CharacterReference>();
-                            if(checkRef.Reference.alive) {
-                                currentCharacter = checkRef.Reference;
-                                RefreshCharacterUI();
-                                break;
-                            }
-                        }
-                        if(results[i].gameObject.CompareTag("Cover")) {
-                            break;
-                        }
-                    
                     }
                 }
                 else {
@@ -257,6 +302,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     //Function that Refreshes the UI for the Current Character
     public void RefreshCharacterUI() {//STILL NEEDS TO SHOW SPECIAL ABILITIES
         currentCharacter.RefreshUI();
+        currentCharacter.myBack.color = CurrentCharacterColor;
         //UI is set to be the same as that of the selected character
         curCharNameText.text = currentCharacter.NameText.text;
         curCharLevelText.text = currentCharacter.LevelText.text;
@@ -423,6 +469,9 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private GameObject QuestCompletePopUp;
     [SerializeField] private GameObject SellItemPopUp;
     [SerializeField] private GameObject SaveGamePopUp;
+    [SerializeField] private GameObject CharacterInstructionPopUp;
+    [SerializeField] private GameObject ItemInstructionPopUp;
+    [SerializeField] private GameObject QuestInstructionPopUp;
     //This function starts a new PopUp, using the 0th element of the waitingPopUp List
     public void StartPopUp() {
         PopUp tempPopUp = WaitingPopUps[0];
@@ -454,6 +503,23 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         else if(curPopUp == PopUpType.SaveQuitGame) {
             SaveGamePopUp.SetActive(true);
             EnterSaveGamePopUp();
+        }
+        else if(curPopUp == PopUpType.Info) {
+            if(tempPopUp.ChosenCharacter != null ) {
+                //Activate character instructions
+                CurInstructionPopUp = 0;
+                CharacterInstructionPopUp.SetActive(true);
+            }
+            else if(tempPopUp.ChosenItem != null) {
+                //Activate Item instructions
+                CurInstructionPopUp = 1;
+                ItemInstructionPopUp.SetActive(true);
+            }
+            else {
+                //Activate Quest Instructions
+                CurInstructionPopUp = 2;
+                QuestInstructionPopUp.SetActive(true);
+            }
         }
     }
     //This function ends the current popUp, returning to the base screen
@@ -570,7 +636,11 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         //Character is given a starting potion
         Item startPotion = GenerateItem.PotionGeneration(1);
         currentItem = startPotion;
+        if(currentCharacter != null) {
+            currentCharacter.myBack.color = BaseCharacterColor;
+        }
         currentCharacter = newCharacter;
+        currentCharacter.myBack.color = CurrentCharacterColor;
         startPotion.Equip(newCharacter);
         newCharacter.ResetXP();
         RefreshLevelUpPopUp();
@@ -655,7 +725,9 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             characterLevelledUp.curHealth = characterLevelledUp.baseHealth;
         }
         CharacterLevelUpPopUp.SetActive(false);
+        currentCharacter.myBack.color = BaseCharacterColor;
         currentCharacter = characterLevelledUp;
+        currentCharacter.myBack.color = CurrentCharacterColor;
         characterLevelledUp.RefreshUI();
         RefreshCharacterUI();
         RefreshItemUI();
@@ -853,5 +925,49 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         SaveGamePopUp.SetActive(false);
         EndPopUp();
         GeneralSaveManager.SaveQuitGame(newString);
+    }
+
+    //PopUp Window 6: Instruction PopUp
+    
+    [Header("PopUp Window 5: Save/Quit Game")]
+    [SerializeField] private GameObject[] CharacterInstructionPages;
+    [SerializeField] private GameObject[] ItemInstructionPages;
+    [SerializeField] private GameObject[] QuestInstructionPages;
+    private int CurInstructionPopUp;//0 = Character, 1 = item, 2 = quest
+    public void EnterInstructionPopUp() {
+        switch(CurInstructionPopUp) {
+            case 0:
+                foreach(GameObject obj in CharacterInstructionPages) {
+                    obj.SetActive(false);
+                }
+                CharacterInstructionPages[0].SetActive(true);
+                break;
+            case 1:
+                foreach(GameObject obj in ItemInstructionPages) {
+                    obj.SetActive(false);
+                }
+                ItemInstructionPages[0].SetActive(true);
+                break;
+            case 2:
+                foreach(GameObject obj in QuestInstructionPages) {
+                    obj.SetActive(false);
+                }
+                QuestInstructionPages[0].SetActive(true);
+                break;
+        }
+    }
+    public void CloseInstructionPopUp() {
+        switch(CurInstructionPopUp) {
+            case 0:
+                CharacterInstructionPopUp.SetActive(false);
+                break;
+            case 1:
+                ItemInstructionPopUp.SetActive(false);
+                break;
+            case 2:
+                QuestInstructionPopUp.SetActive(false);
+                break;
+        }
+        EndPopUp();
     }
 }

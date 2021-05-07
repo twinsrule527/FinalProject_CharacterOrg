@@ -11,6 +11,9 @@ TagManager:
   - Button
   - CharacterReference
   - Save
+  - CharacterInstruct
+  - ItemInstruct
+  - QuestInstruct
   layers:
   - Default
   - TransparentFX
