@@ -288,10 +288,13 @@ public class SaveGameJSON : MonoBehaviour
             string myDescription = "";
             Dictionary<StatType, int> tempDictionary = oItem.Modifiers;
             foreach(var modifier in tempDictionary) {
-                myDescription += "+" + modifier.Value.ToString() + " " + modifier.Value.ToString() + ", ";
+                if(modifier.Value != 0) {
+                    myDescription += "+" + modifier.Value.ToString() + " " + modifier.Key.ToString() + ", ";
+                }
             }
             char[] removeChar = {',', ' '};
             myDescription = myDescription.TrimEnd(removeChar);
+            myDescription += ". ";
             newItem.AbilityText = myDescription;
             newItem.AbilityAffectedStats = new List<StatType>(oItem.AbilityStats);
             UIManager.Instance.GenerateItem.DeclareItemAbility(newItem, oItem.AbilityReference);

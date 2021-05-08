@@ -89,7 +89,7 @@ public class QuestManager : MonoBehaviour
                 numCalc++;
             }
         }
-        if(numChars > 1 && numCalc >= Mathf.FloorToInt(numChars / 2f) + 1) {
+        if(numChars > 1 && numCalc >= Mathf.FloorToInt(numChars / 2f) + 1 && numChars < 10) {
             //Create a new character
             PopUp tempPopUp;
             tempPopUp.ChosenCharacter = null;
@@ -136,7 +136,8 @@ public class QuestManager : MonoBehaviour
         }
         
     }
-    //This script runs through a quest, outputting needed 
+    //This script runs through a quest, outputting needed quest
+    private const float GOLD_LUCK_MULTIPLIER = 0.25f;
     public void RunQuest(ref Quest quest) {
         //The quest happens in 3 Steps:
             //Step 1: StartQuest
@@ -199,7 +200,7 @@ public class QuestManager : MonoBehaviour
             //Luck is used to determine additional rewards
         //First, group rewards:
             //Gold
-        tempParty.LuckGoldReward = tempParty.PartyLuck + Random.Range(-2, 2);
+        tempParty.LuckGoldReward = Mathf.FloorToInt((tempParty.PartyLuck + Random.Range(-5, 5)) * GOLD_LUCK_MULTIPLIER);
             //And possibly, an item
         float rnd = Random.Range(0f, 1f);
         float percPerLevelItem = ((float)tempParty.PartyLuck / quest.Level) / 100f;
@@ -547,19 +548,19 @@ public class QuestManager : MonoBehaviour
     }
 
     //This function determines a gold reward for a quest
-    private const int AVE_GOLD_PER_LEVEL_CHAR = 15;
+    private const int AVE_GOLD_PER_LEVEL_CHAR = 5;
     private static int CalculateGoldReward(int numChar, int lvl, List<Item> currItemReward) {
         int tempReward = 0;
         //TODO: Determine the correct amount of reward per quest
         tempReward += numChar * lvl * AVE_GOLD_PER_LEVEL_CHAR;
-        tempReward += Random.Range(0, AVE_GOLD_PER_LEVEL_CHAR / 2);
+        tempReward += Random.Range(0, AVE_GOLD_PER_LEVEL_CHAR);
         //Reduce Temp reward depending on ItemRewards
         foreach(Item item in currItemReward) {
             tempReward -= item.Price;
         }
         //Has a minimum reward amount
         if(tempReward < 0) {
-            tempReward = Random.Range(AVE_GOLD_PER_LEVEL_CHAR / 3, AVE_GOLD_PER_LEVEL_CHAR);
+            tempReward = Random.Range(1, AVE_GOLD_PER_LEVEL_CHAR);
         }
         return tempReward;
     }

@@ -140,6 +140,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         else {
             currentItem = null;
         }
+        CurrentGoldUpkeep = CalculateUpkeepCost();
         RefreshCharacterUI();
         RefreshItemUI();
         GeneralItemManager.RefreshUnequippedItemsUI();
@@ -520,6 +521,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
                 CurInstructionPopUp = 2;
                 QuestInstructionPopUp.SetActive(true);
             }
+            EnterInstructionPopUp();
         }
     }
     //This function ends the current popUp, returning to the base screen

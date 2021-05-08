@@ -317,6 +317,7 @@ public class ItemGeneration : ScriptableObject
         }
         char[] removeChar = {',', ' '};
         myDescription = myDescription.TrimEnd(removeChar);
+        myDescription += ". ";
         return myDescription;
     }
     //This calculates the Price of an item, given its traits
