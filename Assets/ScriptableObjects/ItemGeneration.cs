@@ -478,7 +478,7 @@ public class ItemGeneration : ScriptableObject
     public string ChallengeDeclareText(Item self, List<StatType> statsAffected) {
         string newString ="Gives a bonus to ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += " when the equipped character goes on a higher level quest.";
@@ -577,7 +577,7 @@ public class ItemGeneration : ScriptableObject
     public string DiverseInventoryDeclareText(Item self, List<StatType> statsAffected) {
         string newString = " Gives a bonus to ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += " relative to the different levels of items its character carries.";
@@ -613,7 +613,7 @@ public class ItemGeneration : ScriptableObject
     public string EmptyHandedDeclareText(Item self, List<StatType> statsAffected) {
         string newString = " Gives a bonus to ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += " for having empty Inventory slots.";
@@ -644,7 +644,7 @@ public class ItemGeneration : ScriptableObject
     public string LeveledDeclareText(Item self, List<StatType> statsAffected) {
         string newString = "Gives a bonus to the equipped character's ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += " relative to the character's level.";
@@ -680,7 +680,7 @@ public class ItemGeneration : ScriptableObject
         if(bestChar == myChar) {
             self.abilityActive = true;
             myChar.StatModifier[statsAffected[0]] += self.Level;
-            string tempString = self.ItemName + " boosted " + myChar.CharacterName + " 's " + statsAffected[0].ToString() + " for being the highest in their party.";
+            string tempString = self.ItemName + " boosted " + myChar.CharacterName + "'s " + statsAffected[0].ToString() + " for being the highest in their party.";
             myChar.refQuest.QuestOccurences.Add(tempString);
         }
         else {
@@ -711,7 +711,7 @@ public class ItemGeneration : ScriptableObject
         }
         foreach(StatType stat in statsAffected) {
             if(stat != StatType.Endurance) {
-                string tempString = myChar.CharacterName + " rallied their party using their " + self.ItemName + ", giving +" + Mathf.CeilToInt(self.Level / 3f).ToString() + " to theirallies' " + stat.ToString() + ".";
+                string tempString = myChar.CharacterName + " rallied their party using their " + self.ItemName + ", giving +" + Mathf.CeilToInt(self.Level / 3f).ToString() + " to their allies' " + stat.ToString() + ".";
                 myChar.refQuest.QuestOccurences.Add(tempString);
             }
         }
@@ -740,7 +740,7 @@ public class ItemGeneration : ScriptableObject
     public string RallyDeclareText(Item self, List<StatType> statsAffected) {
         string newString = "Rallies other characters in the party, boosting their ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += ".";
@@ -913,7 +913,7 @@ public class ItemGeneration : ScriptableObject
     public string TidalDeclareText(Item self, List<StatType> statsAffected) {
         string newString = "Gives an additional bonus to ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += "that increases/decreases from quest to quest.";
@@ -933,7 +933,7 @@ public class ItemGeneration : ScriptableObject
     public string WealthyDeclareText(Item self, List<StatType> statsAffected) {
         string newString = "Grants a gold reward during quests relative to the equipped character's ";
         foreach(StatType stat in statsAffected) {
-            newString += stat.ToString() + "' ";
+            newString += stat.ToString() + ", ";
         }
         newString = newString.TrimEnd(',', ' ');
         newString += ".";

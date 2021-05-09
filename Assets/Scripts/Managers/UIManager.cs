@@ -445,16 +445,23 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
 
     }
     //Calculates how much gold it costs to keep the game going
-    private int BASE_UPKEEP_PER_CHAR = 5;
-    private int LEVEL_UPKEEP_PER_CHAR = 2;
+    private const int BASE_UPKEEP_PER_CHAR = 5;
+    private const int LEVEL_UPKEEP_PER_CHAR = 2;
+    private const float LEVEL_ADDITIONAL_MULTIPLIER_UPKEEP = 0.2f;
     public int CalculateUpkeepCost() {
         int temp = 0;
+        int highestLvl = 0;
         foreach(Character chara in allCharacters) {
             if(chara.alive && chara.gameObject.activeInHierarchy) {
                 temp += BASE_UPKEEP_PER_CHAR;
                 temp += chara.Level * LEVEL_UPKEEP_PER_CHAR;
+                if(chara.Level > highestLvl) {
+                    highestLvl = chara.Level;
+                }
             }
         }
+        //Applies a multiplier dependent on your highest level character
+        temp = Mathf.CeilToInt(temp * (1 + highestLvl * LEVEL_ADDITIONAL_MULTIPLIER_UPKEEP));
         return temp;
     }
     //This Sorting Algorithm overrides the one in the ItemManager, but it doesn't need inputs

@@ -37,6 +37,7 @@ public class SaveManagement : MonoBehaviour
         }
     }
     void Start() {
+        Debug.Log(Application.persistentDataPath);
         SaveGameFunctions.CreateExistingSavesFile();
         LoadExistingSaves();
     }
