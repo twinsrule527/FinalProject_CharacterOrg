@@ -154,7 +154,7 @@ public class CharacterGeneration : ScriptableObject
     }
 
     //These next two work together to increase other party members stats during a quest
-    private const float BONUS_DIVIDER = 3f;
+    private const float BONUS_DIVIDER = 2f;
     public void StartQuestIncreasePartyStat(Character self, List<StatType> statsAffected) {
         //NEED TO IMPLEMENT QUESTS MORE BEFORE USING THIS
         if(statsAffected.Contains(StatType.Endurance)) {
@@ -162,6 +162,8 @@ public class CharacterGeneration : ScriptableObject
         }
         else {
             foreach(StatType stat in statsAffected) {
+                string tempString = self.CharacterName + " boosted their party member's " + stat + " with their special ability.";
+                self.refQuest.QuestOccurences.Add(tempString);
                 foreach(Character chara in self.refQuest.myParty.Members) {
                     if(chara != self) {
                         chara.StatModifier[stat] += Mathf.CeilToInt(self.Level / BONUS_DIVIDER);
@@ -174,9 +176,10 @@ public class CharacterGeneration : ScriptableObject
         //NEED TO IMPLEMENT QUESTS MORE BEFORE USING THIS
         if(statsAffected.Contains(StatType.Endurance)) {
             //Endurance means it is a healing ability
+            string tempString = self.CharacterName + " healed their party members with their special ability.";
             foreach(Character chara in self.refQuest.myParty.Members) {
                 if(chara != self) {
-                    chara.curHealth += self.Level;
+                    chara.curHealth += Mathf.CeilToInt(self.Level / BONUS_DIVIDER);
                 }
             }
         }

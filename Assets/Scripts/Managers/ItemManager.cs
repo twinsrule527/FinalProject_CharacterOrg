@@ -133,6 +133,8 @@ public class ItemManager : MonoBehaviour
         }
     }
     //This function sells/buys an item - If selling, it has a popUp first
+    public AudioSource SellSound;
+    [SerializeField] private AudioSource BuySound;
     public void BuySellCurrentitem() {
         Item curItem = UIManager.Instance.currentItem;
         //Buys the item if it is in the shop
@@ -144,6 +146,7 @@ public class ItemManager : MonoBehaviour
                 curItem.InShop = false;
                 RefreshUnequippedItemsUI();
                 UIManager.Instance.RefreshItemUI();
+                BuySound.Play();
             }
             else {
                 UIManager.Instance.RefreshItemUI();

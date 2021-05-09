@@ -216,6 +216,16 @@ public class Character : MonoBehaviour
         else {
             //If not alive, things happen differently
             _nameText.text = "DEAD";
+            _levelText.text = "Level: -";
+            _healthText.text = "HP: 0/0";
+            _healthBar.fillAmount = 0;
+            foreach(var stat in Stat) {
+                _statText[stat.Key].text = "-";
+            }
+            foreach(Image image in InventoryImage) {
+                image.enabled = false;
+            }
+
         }
     }
 

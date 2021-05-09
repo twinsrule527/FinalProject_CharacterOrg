@@ -72,6 +72,7 @@ public class SaveManagement : MonoBehaviour
 
     public void LoadSelectedSave() {
         if(curSelectedRef != null) {
+            UIManager.Instance.GeneralQuestManager.activeQuests = 0;
             SaveGameFunctions.LoadSaveFile(curSelectedRef.SaveName);
             _currentGamePlayedName = curSelectedRef.SaveName;
             UIManager.Instance.StartExistingGame();

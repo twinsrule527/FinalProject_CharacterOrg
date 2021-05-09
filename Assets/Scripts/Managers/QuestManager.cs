@@ -54,7 +54,10 @@ public class QuestManager : MonoBehaviour
         */
     }
     //Triggered by the RunQuest Button, activates all active quests
+    [SerializeField] private AudioSource questSound;
     public void RunAllActiveQuests() {
+        //Play audio
+        questSound.Play();
         //Pay the upkeep cost:
         UIManager.Instance.CurrentGoldUpkeep -= UIManager.Instance.CurrentGoldUpkeep;
         for(int i = 0; i < activeQuests; i++) {

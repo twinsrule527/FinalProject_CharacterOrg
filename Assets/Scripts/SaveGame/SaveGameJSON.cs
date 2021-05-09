@@ -297,6 +297,7 @@ public class SaveGameJSON : MonoBehaviour
             myDescription += ". ";
             newItem.AbilityText = myDescription;
             newItem.AbilityAffectedStats = new List<StatType>(oItem.AbilityStats);
+            newItem.AbilityReference = oItem.AbilityReference;
             UIManager.Instance.GenerateItem.DeclareItemAbility(newItem, oItem.AbilityReference);
             return newItem;
         }

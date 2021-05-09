@@ -711,7 +711,7 @@ public class ItemGeneration : ScriptableObject
         }
         foreach(StatType stat in statsAffected) {
             if(stat != StatType.Endurance) {
-                string tempString = myChar.CharacterName + " rallied their party using their " + self.ItemName + ", giving +" + Mathf.CeilToInt(self.Level / 3f).ToString() + " to their " + stat.ToString() + ".";
+                string tempString = myChar.CharacterName + " rallied their party using their " + self.ItemName + ", giving +" + Mathf.CeilToInt(self.Level / 3f).ToString() + " to theirallies' " + stat.ToString() + ".";
                 myChar.refQuest.QuestOccurences.Add(tempString);
             }
         }

@@ -482,12 +482,14 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         //Depending on which popUp type it is, different things happen
         if(curPopUp == PopUpType.NewCharacter) {
             NewCharacterPopUp.SetActive(true);
+            NewCharSound.Play();
             livingCharacters++;
             CreateNewCharacterStep1(1);
             RefreshNewCharacterPopUp();
         }
         else if(curPopUp == PopUpType.CharacterLevelUp) {
             CharacterLevelUpPopUp.SetActive(true);
+            CharLevelUpSound.Play();
             characterLevelledUp = tempPopUp.ChosenCharacter;
             RefreshLevelUpPopUp();
         }
@@ -551,6 +553,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private Color AbilityPanelBaseColor;
     [SerializeField] private Color AbilityPanelSelectedColor;
     private bool abilityIsSelected;//Bool used to see if button can be pressed
+    [SerializeField] private AudioSource NewCharSound;
     //Starts the first step for creating a new character
     private void CreateNewCharacterStep1(int charLevel) {
         AbilitiesToChooseFrom = new List<Ability>();
@@ -660,6 +663,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
     [SerializeField] private List<Button> LevelUpIncreaseButton;
     [SerializeField] private List<int> AssignedStatPoints;
     [SerializeField] private Button LevelUpFinishButton;
+    [SerializeField] private AudioSource CharLevelUpSound;
     //The Graphics raycast response when this is the available pop-up
     private void LevelUpRaycast(List<RaycastResult> results) {
         //Does nothing
@@ -883,6 +887,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
         else if(GeneralItemManager.ShopItems.Count > 0) {
             currentItem = GeneralItemManager.ShopItems[0];
         }
+        GeneralItemManager.SellSound.Play();
         RefreshItemUI();
             
     }
