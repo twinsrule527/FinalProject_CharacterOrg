@@ -915,7 +915,6 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
             SaveGameButton.interactable = false;
         }
         else {
-            Debug.Log(SaveGameNameInput.text);
             SaveGameButton.interactable = true;
         }
     }

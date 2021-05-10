@@ -55,6 +55,7 @@ public class SaveGameJSON : MonoBehaviour
 {
     private const string BASE_SAVE_FILE_NAME = "~Saves";//Name of the save file which contains reference to other save files
     private const string BASE_TEXT_DOC = "Player.log";
+    public const string SAVE_DIRECTORY = "SaveFiles";
     //Create a new Save File
     public void CreateSaveFile(string filename) {
         //Only saves it if the save file is not the same as the BASE_SAVE_FILE_NAME
@@ -87,14 +88,14 @@ public class SaveGameJSON : MonoBehaviour
             //File is saved to the list of saves
             SaveDeleteFile(newFile, false);
             string JSONConversion = JsonUtility.ToJson(newFile);
-            WriteToFile(JSONConversion, filename);
+            WriteToFile(JSONConversion, SAVE_DIRECTORY + "\\" + filename);
         }
 
     }
     //Load an existing save File
     public void LoadSaveFile(string filename) {
         if(filename != BASE_SAVE_FILE_NAME) {
-            string JSONString = ReadFromFile(filename);
+            string JSONString = ReadFromFile(SAVE_DIRECTORY + "\\" + filename);
             SaveFile loadedFile = JsonUtility.FromJson<SaveFile>(JSONString);
             //Goes through each element of the loaded file, overwriting existing info
             UIManager Manager = UIManager.Instance;
@@ -137,7 +138,7 @@ public class SaveGameJSON : MonoBehaviour
         if(delete) {
             if(baseFile.FileNames.Contains(newFile.FileName)) {
                 //Deletes the file if it exists
-                File.Delete(Application.persistentDataPath + "\\" + newFile.FileName);
+                File.Delete(Application.persistentDataPath + "\\" + SAVE_DIRECTORY + "\\" + newFile.FileName);
                 int pos = baseFile.FileNames.IndexOf(newFile.FileName);
                 baseFile.FileNames.RemoveAt(pos);
                 baseFile.NumChars.RemoveAt(pos);
@@ -185,7 +186,6 @@ public class SaveGameJSON : MonoBehaviour
         List<string> saveFiles = new List<string>();
         foreach(string save in saveDirectory) {
             saveFiles.Add(save);
-            Debug.Log(save);
         }
         SaveList mySaves = LoadExistingSaves();
         List<string> mySaveNames = mySaves.FileNames;
@@ -211,6 +211,7 @@ public class SaveGameJSON : MonoBehaviour
         return myList;
     }
     //Checks to see if the Existing saves file exists, and if it doesn't, it creates it
+        //Also does the same with the directory for save files
     public void CreateExistingSavesFile() {
         if(!File.Exists(Application.persistentDataPath + "\\" + BASE_SAVE_FILE_NAME)) {
             SaveList newList = new SaveList();
@@ -219,6 +220,10 @@ public class SaveGameJSON : MonoBehaviour
             newList.NumChars = new List<int>();
             string ListJSON = JsonUtility.ToJson(newList);
             WriteToFile(ListJSON, BASE_SAVE_FILE_NAME);
+        }
+        //Creates a save directory
+        if(!Directory.Exists(Application.persistentDataPath + "\\" + SAVE_DIRECTORY)) {
+            Directory.CreateDirectory(Application.persistentDataPath + "\\" + SAVE_DIRECTORY);
         }
     }
     //Function for writing the JSON string to the save file - Used the code from Class 10 - Save Files; Slide 28

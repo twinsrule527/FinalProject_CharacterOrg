@@ -79,7 +79,7 @@ public class ItemGeneration : ScriptableObject
         //need to make these other options more of a scale
             //Potions become less likely at higher levels
                 //Because there are more item options at higher levels
-        else if(rnd > 0.45f + 0.25f * itemLevel) {
+        else if(rnd > 0.5f + 0.25f * itemLevel) {
             //Generate a Potion Item
             newItem = PotionGeneration(itemLevel);
         }

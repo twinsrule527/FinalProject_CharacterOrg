@@ -64,7 +64,7 @@ public class SaveManagement : MonoBehaviour
     //Deletes the selected save at a button press
     public void DeleteSelectedSave() {
         if(curSelectedRef != null) {
-            string loadString = SaveGameFunctions.ReadFromFile(curSelectedRef.SaveName);
+            string loadString = SaveGameFunctions.ReadFromFile(SaveGameJSON.SAVE_DIRECTORY + "\\" + curSelectedRef.SaveName);
             SaveFile loadFile = JsonUtility.FromJson<SaveFile>(loadString);
             SaveGameFunctions.SaveDeleteFile(loadFile, true);
             int refPos = CurrentExistingSaves.IndexOf(curSelectedRef.gameObject);
