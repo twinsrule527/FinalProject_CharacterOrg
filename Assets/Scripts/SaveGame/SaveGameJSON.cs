@@ -54,6 +54,7 @@ public class SaveFile {//This serializable class is the class which is put in a 
 public class SaveGameJSON : MonoBehaviour
 {
     private const string BASE_SAVE_FILE_NAME = "~Saves";//Name of the save file which contains reference to other save files
+    private const string BASE_TEXT_DOC = "Player.log";
     //Create a new Save File
     public void CreateSaveFile(string filename) {
         //Only saves it if the save file is not the same as the BASE_SAVE_FILE_NAME
@@ -177,6 +178,31 @@ public class SaveGameJSON : MonoBehaviour
         //Then, writes the save to the file
         string writeFile = JsonUtility.ToJson(baseFile);
         WriteToFile(writeFile, BASE_SAVE_FILE_NAME);
+    }
+    //I had an issue with files not being deleted when they're supposed to, so now this program deletes save files if it can't find it in the list of Saves
+    public void DeleteUnusedSaves() {
+        string[] saveDirectory = Directory.GetFiles(Application.persistentDataPath);
+        List<string> saveFiles = new List<string>();
+        foreach(string save in saveDirectory) {
+            saveFiles.Add(save);
+            Debug.Log(save);
+        }
+        SaveList mySaves = LoadExistingSaves();
+        List<string> mySaveNames = mySaves.FileNames;
+        foreach(string save in mySaveNames) {
+            //If the save is in the list of existing saves, it is removed from the list
+            if(saveFiles.Contains(Application.persistentDataPath + "\\" + save)) {
+                saveFiles.Remove(Application.persistentDataPath + "\\" + save);
+            }
+        }
+        //Base Save is also removed from the list
+        saveFiles.Remove(Application.persistentDataPath + "\\" + BASE_SAVE_FILE_NAME);
+        saveFiles.Remove(Application.persistentDataPath + "\\" + BASE_TEXT_DOC);
+        foreach(string save in saveFiles) {
+            //Deletes every file not in the directory
+            Debug.Log(save);
+            File.Delete(save);
+        }
     }
     //Function for loading the existing SaveManagerFile
     public SaveList LoadExistingSaves() {

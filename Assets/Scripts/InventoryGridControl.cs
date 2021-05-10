@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 //This script is used by the Item Manager to re-size the Item List of Unequipped Items
+    //All of my scrolling stuff was helped along by this youtube playlist, but none of it was directly copied:
+        //https://www.youtube.com/playlist?list=PLL8DeMf3fIgFSJj6OTxXceaMtD5vWFER5
 public class InventoryGridControl : MonoBehaviour
 {
     public const int ITEMS_PER_UNEQUIPPED_ROW = 5;//How many items appear in any one row of unequipped items

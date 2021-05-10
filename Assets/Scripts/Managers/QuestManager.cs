@@ -551,10 +551,10 @@ public class QuestManager : MonoBehaviour
     }
 
     //This function determines a gold reward for a quest
-    private const int AVE_GOLD_PER_LEVEL_CHAR = 5;
+    private const int AVE_GOLD_PER_LEVEL_CHAR = 7;
     private static int CalculateGoldReward(int numChar, int lvl, List<Item> currItemReward) {
         int tempReward = 0;
-        //TODO: Determine the correct amount of reward per quest
+        //Determinea the correct amount of reward per quest
         tempReward += numChar * lvl * AVE_GOLD_PER_LEVEL_CHAR;
         tempReward += Random.Range(0, AVE_GOLD_PER_LEVEL_CHAR);
         //Reduce Temp reward depending on ItemRewards

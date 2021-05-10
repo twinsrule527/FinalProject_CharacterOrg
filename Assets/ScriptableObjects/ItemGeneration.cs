@@ -67,26 +67,19 @@ public class ItemGeneration : ScriptableObject
     [SerializeField] public Item ItemPrefab;
     public string Name;
     public Item BasicGeneration(int itemLevel) {
-        /*Item newItem = Instantiate(ItemPrefab, Vector3.zero, Quaternion.identity);
-        Dictionary<StatType, int> modifiers = new Dictionary<StatType, int>();
-        modifiers.Add(StatType.Strength, 2);
-        modifiers.Add(StatType.Defense, 3);
-
-        newItem.DeclareTraits(modifiers, "NAME", ItemType.Weapon, itemLevel, 15, "This is my ability text", test);
-        newItem.OnQuestStartAbility = DoNothing;
-        newItem.OnQuestEndAbility = DoNothing;
-        return newItem;*/
         Item newItem;
         //Actual generation starts here
             //Picks what ItemType is being generated, between Potions, Specifics, and Misc
         float rnd = Random.Range(0f, 1f);
         if(rnd > 2f) {
-            //Always a 10% chance to be a Misc Item
+            //Misc Items have been removed, hopefully I may be able to implement them at some future time
             newItem = PotionGeneration(itemLevel);
 
         }
         //need to make these other options more of a scale
-        else if(rnd > 0.45f) {
+            //Potions become less likely at higher levels
+                //Because there are more item options at higher levels
+        else if(rnd > 0.45f + 0.25f * itemLevel) {
             //Generate a Potion Item
             newItem = PotionGeneration(itemLevel);
         }

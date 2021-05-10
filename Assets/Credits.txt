@@ -1,0 +1,12 @@
+Credits to:
+
+SPRITES:
+- Potion sprites - RPGRetroItems - https://blodyavenger.itch.io/rpg-items-retro-pack
+- Other item sprites - HeroPixelAssets - By Aleksander Makarov - License is in folder with the Assets
+
+SOUNDS:
+- Buy_Item_Sound, LevelUp_Sound, Unlock_Sound - Created using Bfxr - bfxr.net
+- SellItem_Sound, StartQuest_Sound - From the NYU_GameCenter's Sound Effects Library
+
+FONTS:
+- Neuton by Brian Zick - Open Font License is in folder with the Assets

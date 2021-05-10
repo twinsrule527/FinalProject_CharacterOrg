@@ -37,8 +37,13 @@ public class SaveManagement : MonoBehaviour
         }
     }
     void Start() {
-        Debug.Log(Application.persistentDataPath);
         SaveGameFunctions.CreateExistingSavesFile();
+        //Wasn't sure where to put this:
+            //If other deletion methods do not work to get rid of extraneous save files, 
+            //this runs through all save files at the beginning of the game and deletes saves which are not in the directory 
+                //(Which is only ones which have already been deleted)
+                    //Example: this might happen if a player quits the game while deleting a save?
+        SaveGameFunctions.DeleteUnusedSaves();
         LoadExistingSaves();
     }
     //When a save is selected, it becomes the selected save on the UI, etc.

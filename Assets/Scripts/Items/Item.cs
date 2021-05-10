@@ -10,7 +10,7 @@ public enum ItemType {
     Armor,
     Ring,
     Shield,
-    Misc
+    Misc//Unused - Keeping the framework for this additional type around, in case I go back to it
 }
 public class Item : MonoBehaviour
 {

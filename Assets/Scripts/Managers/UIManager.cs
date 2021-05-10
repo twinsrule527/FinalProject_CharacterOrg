@@ -445,8 +445,8 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
 
     }
     //Calculates how much gold it costs to keep the game going
-    private const int BASE_UPKEEP_PER_CHAR = 5;
-    private const int LEVEL_UPKEEP_PER_CHAR = 2;
+    private const int BASE_UPKEEP_PER_CHAR = 8;
+    private const int LEVEL_UPKEEP_PER_CHAR = 4;
     private const float LEVEL_ADDITIONAL_MULTIPLIER_UPKEEP = 0.2f;
     public int CalculateUpkeepCost() {
         int temp = 0;
@@ -833,7 +833,7 @@ public class UIManager : Singleton<UIManager>//Probably the only singleton in th
                     QuestCompleteLuckItem[i].myImage.sprite = completedQuest.myParty.LuckItemReward[i].Sprite;
                 }
         }
-        //TODO: Also needs to have text of other effects, but that will be added later
+        //Adds the text of additional effects
         string textLogString = "";
         foreach(string str in completedQuest.QuestOccurences) {
             textLogString += str + "\n";
